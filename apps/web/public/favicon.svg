@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+
+    <!-- Warm golden radial gradient for glass -->
+    <radialGradient id="g-bulb" cx="38%" cy="28%" r="72%" gradientUnits="objectBoundingBox">
+      <stop offset="0%"   stop-color="#FFFDE7"/>
+      <stop offset="28%"  stop-color="#FFD600"/>
+      <stop offset="72%"  stop-color="#FFA000"/>
+      <stop offset="100%" stop-color="#E65100"/>
+    </radialGradient>
+
+    <!-- Inner ambient glow behind bolt -->
+    <radialGradient id="g-inner" cx="50%" cy="50%" r="50%" gradientUnits="objectBoundingBox">
+      <stop offset="0%"   stop-color="#FFFFFF" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Soft glow applied to the bolt -->
+    <filter id="f-glow" x="-80%" y="-50%" width="260%" height="200%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="3.2" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Subtle warm drop shadow for depth -->
+    <filter id="f-shadow" x="-14%" y="-10%" width="128%" height="128%">
+      <feDropShadow dx="0" dy="2.5" stdDeviation="3" flood-color="#7C3A00" flood-opacity="0.28"/>
+    </filter>
+
+  </defs>
+
+  <g filter="url(#f-shadow)">
+
+    <!-- ── Bulb glass ─────────────────────────────────── -->
+    <path
+      d="M50,12
+         C68,12 84,24 84,42
+         C84,55 76,65 68,70
+         L32,70
+         C24,65 16,55 16,42
+         C16,24 32,12 50,12 Z"
+      fill="url(#g-bulb)"
+    />
+
+    <!-- Ambient inner glow (makes it look lit) -->
+    <ellipse cx="50" cy="44" rx="26" ry="24" fill="url(#g-inner)"/>
+
+    <!-- Glass shine highlight (upper-left) -->
+    <ellipse
+      cx="36" cy="28" rx="11" ry="6.5"
+      fill="white" opacity="0.22"
+      transform="rotate(-25 36 28)"
+    />
+
+    <!-- ── Lightning bolt filament (upward) ──────────── -->
+    <!-- The bolt goes overall bottom-left → top-right with a mid-kink, replacing the filament -->
+    <polygon
+      points="53,30 59,48 53,48 46,64 42,50 47,50"
+      fill="white" opacity="0.95"
+      filter="url(#f-glow)"
+    />
+
+    <!-- ── Sparkles ────────────────────────────────────── -->
+
+    <!-- Upper-right sparkle (size 5) -->
+    <path
+      d="M67,21 L68.5,24.5 L72,26 L68.5,27.5 L67,31 L65.5,27.5 L62,26 L65.5,24.5 Z"
+      fill="white" opacity="0.86"
+    />
+
+    <!-- Left-mid sparkle (size 4) -->
+    <path
+      d="M28,40 L29,43 L32,44 L29,45 L28,48 L27,45 L24,44 L27,43 Z"
+      fill="white" opacity="0.70"
+    />
+
+    <!-- Tiny sparkle beside bolt tip (size 3) -->
+    <path
+      d="M57,24 L57.8,26.3 L60,27 L57.8,27.7 L57,30 L56.2,27.7 L54,27 L56.2,26.3 Z"
+      fill="white" opacity="0.90"
+    />
+
+    <!-- ── Base / socket ───────────────────────────────── -->
+
+    <!-- Band 1 — widest, directly below glass -->
+    <rect x="32" y="70" width="36" height="7"  fill="#CFD8DC"/>
+
+    <!-- Band 2 -->
+    <rect x="33" y="77" width="34" height="5"  fill="#B0BEC5"/>
+
+    <!-- Band 3 -->
+    <rect x="35" y="82" width="30" height="5"  fill="#90A4AE"/>
+
+    <!-- Bottom cap — rounded -->
+    <path d="M37,87 Q37,93 50,93 Q63,93 63,87 Z" fill="#78909C"/>
+
+  </g>
+</svg>

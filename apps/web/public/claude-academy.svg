@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="34 16 182 168">
+  <!--
+    GRID: pixel unit P = 14px
+    Canvas: 240 × 260, transparent background
+    Centre X: 120
+
+    CLAWD HEAD ANATOMY (from terminal screenshot):
+    - Flat-top rectangle head
+    - Two small square ear nubs at TOP CORNERS (left & right sides)
+    - Two dark square eyes
+    - Two small square arm stubs sticking out LEFT & RIGHT sides (mid-body)
+    - Two small square foot nubs at BOTTOM
+
+    CAP sits flush on the flat top of the head.
+
+    Colour: #D4785A (Clawd orange)
+  -->
+
+  <!-- ═══════════════════════════ -->
+  <!--      GRADUATION CAP        -->
+  <!-- cap board flush with head top at y=80 -->
+  <!-- ═══════════════════════════ -->
+
+  <!-- Mortarboard board — diamond centred at x=120 -->
+  <!-- Widest points extend well past head for good cap silhouette -->
+  <polygon points="120,22  196,56  120,70  44,56" fill="#1A1A1A"/>
+  <!-- Top sheen -->
+  <polygon points="120,24  188,55  120,64  52,55" fill="rgba(255,255,255,0.07)"/>
+
+  <!-- Cap cylinder band — sits between board and head flat top -->
+  <rect x="90" y="58" width="60" height="14" rx="2" fill="#111"/>
+  <!-- Band top highlight -->
+  <rect x="90" y="58" width="60" height="3"  rx="1" fill="#2a2a2a"/>
+
+  <!-- Tassel from right tip (196, 56) -->
+  <line x1="196" y1="56" x2="196" y2="82"  stroke="#D4785A" stroke-width="2.2" stroke-linecap="round"/>
+  <circle cx="196" cy="83" r="4.5" fill="#D4785A"/>
+  <!-- Threads -->
+  <line x1="191" y1="87" x2="188" y2="100" stroke="#B85E42" stroke-width="1.8" stroke-linecap="round"/>
+  <line x1="196" y1="87" x2="196" y2="102" stroke="#D4785A" stroke-width="1.8" stroke-linecap="round"/>
+  <line x1="201" y1="87" x2="204" y2="100" stroke="#B85E42" stroke-width="1.8" stroke-linecap="round"/>
+
+
+  <!-- ═══════════════════════════ -->
+  <!--      CLAWD HEAD & BODY     -->
+  <!-- ═══════════════════════════ -->
+
+  <g fill="#D4785A">
+
+    <!-- ── EAR NUBS (top corners, same level as top of head) ── -->
+    <!-- Sit proud of the head sides at the top, flat with head top -->
+    <!-- Left ear: flush with head top (y=72), touching left side of head (x=62) -->
+    <rect x="48"  y="72" width="18" height="18" rx="2"/>
+    <!-- Right ear: mirrored -->
+    <rect x="174" y="72" width="18" height="18" rx="2"/>
+
+    <!-- ── MAIN HEAD BLOCK ── -->
+    <!-- Flat top at y=72, flat bottom at y=164 -->
+    <!-- Width: 110px (x=65 to x=175), centred at 120 -->
+    <rect x="66"  y="72" width="108" height="92" rx="3"/>
+
+    <!-- ── ARM STUBS (stick out from sides, mid-body level) ── -->
+    <!-- Left arm: flush left side of head, vertically centred on body -->
+    <rect x="40"  y="118" width="26" height="18" rx="3"/>
+    <!-- Right arm: mirrored -->
+    <rect x="174" y="118" width="26" height="18" rx="3"/>
+
+    <!-- ── FOOT NUBS (bottom corners of head) ── -->
+    <!-- Left foot -->
+    <rect x="78"  y="158" width="28" height="20" rx="2"/>
+    <!-- Right foot -->
+    <rect x="134" y="158" width="28" height="20" rx="2"/>
+
+  </g>
+
+  <!-- ═══════════════════════════ -->
+  <!--      EYES                  -->
+  <!-- ═══════════════════════════ -->
+
+  <!-- Two square eyes, symmetric around x=120                   -->
+  <!-- Each eye: 26×26, inner gap: 12px                          -->
+  <!-- Left eye centre: x = 120 - 6 - 13 = 101  -->
+  <!-- Right eye centre: x = 120 + 6 + 13 = 139  -->
+
+  <!-- Left eye -->
+  <rect x="85"  y="90" width="28" height="26" rx="3" fill="#3D1F14"/>
+  <rect x="88"  y="93" width="10" height="10" rx="1" fill="#C4624A" opacity="0.4"/>
+  <rect x="88"  y="93" width="5"  height="5"  rx="1" fill="rgba(255,215,185,0.9)"/>
+
+  <!-- Right eye -->
+  <rect x="127" y="90" width="28" height="26" rx="3" fill="#3D1F14"/>
+  <rect x="130" y="93" width="10" height="10" rx="1" fill="#C4624A" opacity="0.4"/>
+  <rect x="130" y="93" width="5"  height="5"  rx="1" fill="rgba(255,215,185,0.9)"/>
+
+</svg>

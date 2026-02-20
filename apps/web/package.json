@@ -1,0 +1,38 @@
+{
+  "name": "@futureofdev/web",
+  "type": "module",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "lint": "eslint src --ext .ts,.tsx,.astro",
+    "type-check": "astro check && tsc --noEmit"
+  },
+  "dependencies": {
+    "@astrojs/vercel": "^8.0.0",
+    "@astrojs/react": "^4.1.0",
+    "@astrojs/sitemap": "^3.2.0",
+    "@futureofdev/sanity-client": "workspace:*",
+    "@futureofdev/ui": "workspace:*",
+    "@portabletext/react": "^3.1.0",
+    "@sanity/astro": "^3.2.0",
+    "@sanity/client": "^7.14.0",
+    "@sanity/image-url": "^1.1.0",
+    "@tailwindcss/vite": "^4.0.0",
+    "astro": "^5.1.0",
+    "dotenv": "^17.2.3",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "resend": "^6.9.2",
+    "tailwindcss": "^4.0.0"
+  },
+  "devDependencies": {
+    "@futureofdev/eslint-config": "workspace:*",
+    "@futureofdev/typescript-config": "workspace:*",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "typescript": "^5.7.0"
+  }
+}

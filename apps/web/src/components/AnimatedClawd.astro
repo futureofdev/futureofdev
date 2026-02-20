@@ -1,0 +1,100 @@
+---
+interface Props {
+  class?: string;
+}
+const { class: className = "" } = Astro.props;
+---
+
+<div class={`inline-block ${className}`}>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 240 260"
+    class="w-full h-auto clawd-svg"
+    aria-hidden="true"
+  >
+    <!--
+      All animated children sit inside .clawd-char so the float
+      lifts the whole character together. The tassel is in its own
+      group with a fill-box transform so it pivots at its attachment
+      point. Eyes are individually grouped for the blink scaleY.
+    -->
+    <g class="clawd-char">
+
+      <!-- ── Mortarboard ─────────────────────────────── -->
+      <polygon points="120,22 196,56 120,70 44,56" fill="#1A1A1A"/>
+      <polygon points="120,24 188,55 120,64 52,55" fill="rgba(255,255,255,0.07)"/>
+      <rect x="90" y="58" width="60" height="14" rx="2" fill="#111"/>
+      <rect x="90" y="58" width="60" height="3"  rx="1" fill="#2a2a2a"/>
+
+      <!-- ── Tassel (swings on its own) ──────────────── -->
+      <g class="clawd-tassel">
+        <line x1="196" y1="56" x2="196" y2="82"  stroke="#D4785A" stroke-width="2.2" stroke-linecap="round"/>
+        <circle cx="196" cy="83" r="4.5" fill="#D4785A"/>
+        <line x1="191" y1="87" x2="188" y2="100" stroke="#B85E42" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="196" y1="87" x2="196" y2="102" stroke="#D4785A" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="201" y1="87" x2="204" y2="100" stroke="#B85E42" stroke-width="1.8" stroke-linecap="round"/>
+      </g>
+
+      <!-- ── Body ────────────────────────────────────── -->
+      <g fill="#D4785A">
+        <rect x="48"  y="72"  width="18"  height="18" rx="2"/>  <!-- left ear  -->
+        <rect x="174" y="72"  width="18"  height="18" rx="2"/>  <!-- right ear -->
+        <rect x="66"  y="72"  width="108" height="92" rx="3"/>  <!-- head      -->
+        <rect x="40"  y="118" width="26"  height="18" rx="3"/>  <!-- left arm  -->
+        <rect x="174" y="118" width="26"  height="18" rx="3"/>  <!-- right arm -->
+        <rect x="78"  y="158" width="28"  height="20" rx="2"/>  <!-- left foot -->
+        <rect x="134" y="158" width="28"  height="20" rx="2"/>  <!-- right foot-->
+      </g>
+
+      <!-- ── Eyes (blink independently) ─────────────── -->
+      <g class="clawd-eye">
+        <rect x="85"  y="90" width="28" height="26" rx="3" fill="#3D1F14"/>
+        <rect x="88"  y="93" width="10" height="10" rx="1" fill="#C4624A" opacity="0.4"/>
+        <rect x="88"  y="93" width="5"  height="5"  rx="1" fill="rgba(255,215,185,0.9)"/>
+      </g>
+      <g class="clawd-eye clawd-eye-r">
+        <rect x="127" y="90" width="28" height="26" rx="3" fill="#3D1F14"/>
+        <rect x="130" y="93" width="10" height="10" rx="1" fill="#C4624A" opacity="0.4"/>
+        <rect x="130" y="93" width="5"  height="5"  rx="1" fill="rgba(255,215,185,0.9)"/>
+      </g>
+
+    </g>
+  </svg>
+</div>
+
+<style>
+  /* ── Float ─────────────────────────────────────────────── */
+  .clawd-char {
+    animation: clawd-float 3.5s ease-in-out infinite;
+  }
+  @keyframes clawd-float {
+    0%, 100% { transform: translateY(0px);  }
+    50%       { transform: translateY(-9px); }
+  }
+
+  /* ── Tassel pendulum ───────────────────────────────────── */
+  .clawd-tassel {
+    transform-box:    fill-box;
+    transform-origin: 50% 0%;          /* pivot at top of bounding box */
+    animation:        clawd-tassel 2.8s ease-in-out infinite;
+  }
+  @keyframes clawd-tassel {
+    0%, 100% { transform: rotate(0deg);   }
+    30%       { transform: rotate(14deg);  }
+    70%       { transform: rotate(-9deg);  }
+  }
+
+  /* ── Blink ─────────────────────────────────────────────── */
+  .clawd-eye {
+    transform-box:    fill-box;
+    transform-origin: 50% 50%;
+    animation:        clawd-blink 4.5s ease-in-out infinite;
+  }
+  .clawd-eye-r {
+    animation-delay: 0.06s;            /* tiny offset keeps eyes in sync */
+  }
+  @keyframes clawd-blink {
+    0%, 86%, 93%, 100% { transform: scaleY(1);    }
+    89%                 { transform: scaleY(0.07); }
+  }
+</style>

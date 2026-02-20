@@ -1,0 +1,346 @@
+---
+import LandingLayout from "../layouts/LandingLayout.astro";
+import AnimatedClawd from "../components/AnimatedClawd.astro";
+import { sanityClient, allCoursesQuery } from "@futureofdev/sanity-client";
+
+let courses: any[] = [];
+try {
+  courses = await sanityClient.fetch(allCoursesQuery);
+} catch (e) {
+  // Sanity not configured or no courses yet
+}
+
+const allTags = [...new Set(courses.flatMap((c: any) => c.tags ?? []))];
+---
+
+<LandingLayout
+  title="Claude Academy — Free Courses with Claude"
+  description="Free, open-source courses where Claude is your teacher. Learn to code, master AI workflows, and build real things — whatever your starting point."
+  favicon="/claude-academy.svg"
+>
+
+  <!-- Back navigation -->
+  <nav class="fixed top-4 left-4 z-40">
+    <a
+      href="/"
+      class="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors font-mono p-2 -m-2"
+    >
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+      </svg>
+      <span class="hidden sm:inline">Home</span>
+    </a>
+  </nav>
+
+  <!-- ── Hero ──────────────────────────────────────────── -->
+  <section class="py-16 md:py-24 px-4">
+    <div class="container mx-auto max-w-2xl text-center">
+      <div class="flex justify-center mb-8">
+        <AnimatedClawd class="w-24 md:w-28" />
+      </div>
+      <p class="text-xs font-mono uppercase tracking-widest text-primary mb-3">Claude Academy</p>
+      <h1 class="text-4xl md:text-6xl font-bold tracking-tight font-mono mb-6">
+        Learn with Claude
+      </h1>
+      <p class="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-xl mx-auto">
+        Completely free, and open-source courses with Claude as your teacher. Build real things & future proof your career.
+      </p>
+    </div>
+  </section>
+
+  <!-- ── License legend ────────────────────────────────── -->
+  <section class="px-4 pb-6">
+    <div class="container mx-auto max-w-2xl space-y-1.5">
+      <p class="text-xs text-muted-foreground/70 font-mono">
+        <span class="text-muted-foreground font-semibold">Every course is free.</span> The license tag tells you which Claude plan you need to take it.
+      </p>
+      <p class="text-xs text-muted-foreground/70 font-mono">
+        <span class="text-muted-foreground">Free license</span> — any Claude account works, including the free tier.
+      </p>
+      <p class="text-xs text-muted-foreground/70 font-mono">
+        <span class="text-muted-foreground">Pro license</span> — requires Claude Pro. Needed for courses that use Claude Code or Claude Cowork.
+      </p>
+    </div>
+  </section>
+
+  <!-- ── Newsletter ─────────────────────────────────────── -->
+  <section class="px-4 pb-10">
+    <div class="container mx-auto max-w-2xl">
+      <div class="p-4 md:p-6 rounded-xl border border-border bg-card/50">
+        <p class="text-sm font-semibold text-foreground mb-1">Get notified when new courses drop</p>
+        <p class="text-sm text-muted-foreground mb-4">We're building courses across every area. Subscribe to hear when the next one is ready.</p>
+        <form id="academy-newsletter-form" class="flex flex-col sm:flex-row gap-3">
+          <input
+            type="email"
+            name="email"
+            required
+            placeholder="you@example.com"
+            class="flex-1 px-4 py-2.5 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-colors text-sm"
+          />
+          <button
+            type="submit"
+            class="px-5 py-2.5 rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors whitespace-nowrap text-sm"
+          >
+            Subscribe
+          </button>
+        </form>
+        <p id="academy-newsletter-message" class="mt-3 text-sm hidden"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Courses ────────────────────────────────────────── -->
+  <section class="pb-16 md:pb-24 px-4">
+    <div class="container mx-auto max-w-2xl space-y-12 md:space-y-16">
+
+      <div>
+        <div class="flex items-center justify-between mb-6 gap-4 flex-wrap">
+          <h2 class="text-xs font-mono uppercase tracking-widest text-muted-foreground">Courses</h2>
+
+          {allTags.length > 0 && (
+            <div class="flex items-center gap-2 flex-wrap" id="tag-filters">
+              <button
+                data-tag="all"
+                class="tag-btn active px-3 py-1 text-xs font-mono rounded-full border transition-colors border-primary bg-primary/10 text-primary"
+              >
+                All
+              </button>
+              {allTags.map((tag: any) => (
+                <button
+                  data-tag={tag}
+                  class="tag-btn px-3 py-1 text-xs font-mono rounded-full border transition-colors border-border text-muted-foreground hover:border-primary/50 hover:text-foreground"
+                >
+                  {tag}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {courses.length > 0 ? (
+          <div class="space-y-4" id="course-list">
+            {courses.map((course: any) => (
+              course.comingSoon ? (
+                <a
+                  href={`/claude-academy/${course.slug.current}`}
+                  class="course-card block group rounded-xl border border-border bg-card/50 p-4 md:p-6 transition-all opacity-70 hover:opacity-90"
+                  data-tags={(course.tags ?? []).join(",")}
+                >
+                  <div class="flex items-start justify-between gap-4">
+                    <div class="flex-1 min-w-0">
+                      <div class="flex items-center gap-2 mb-3 flex-nowrap">
+                        <span class="text-xs font-mono uppercase tracking-wide text-muted-foreground whitespace-nowrap">
+                          {course.title}
+                        </span>
+                        <span class="inline-flex items-center px-2 py-0.5 text-[10px] font-mono font-semibold uppercase tracking-wider bg-muted text-muted-foreground rounded-full whitespace-nowrap">
+                          Coming Soon
+                        </span>
+                      </div>
+                      {course.tagline && (
+                        <h3 class="text-lg md:text-xl font-semibold text-muted-foreground mb-2">
+                          {course.tagline}
+                        </h3>
+                      )}
+                      {course.description && (
+                        <p class="text-sm text-muted-foreground/70 leading-relaxed line-clamp-3">
+                          {course.description}
+                        </p>
+                      )}
+                    </div>
+                    <div class="flex-shrink-0 self-center text-muted-foreground/40 hidden sm:block">
+                      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                      </svg>
+                    </div>
+                  </div>
+                </a>
+              ) : (
+                <a
+                  href={`/claude-academy/${course.slug.current}`}
+                  class="course-card block group rounded-xl border border-border bg-card p-4 md:p-6 hover:border-primary/50 hover:bg-muted/30 transition-all"
+                  data-tags={(course.tags ?? []).join(",")}
+                >
+                  <div class="flex items-start justify-between gap-4">
+                    <div class="flex-1 min-w-0">
+                      <div class="flex items-center gap-2 mb-3 flex-nowrap">
+                        <span class="text-xs font-mono uppercase tracking-wide text-primary whitespace-nowrap">
+                          {course.title}
+                        </span>
+                        {course.level && (
+                          <span class="inline-flex items-center px-2 py-0.5 text-[10px] font-mono uppercase tracking-wider border border-border text-muted-foreground rounded-full whitespace-nowrap">
+                            {course.level}
+                          </span>
+                        )}
+                        {(course.tags ?? []).map((tag: string) => (
+                          <span class="inline-flex items-center px-2 py-0.5 text-[10px] font-mono uppercase tracking-wider bg-primary/8 text-primary/70 rounded-full whitespace-nowrap">
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                      {course.tagline && (
+                        <h3 class="text-lg md:text-xl font-semibold text-foreground group-hover:text-primary transition-colors mb-2">
+                          {course.tagline}
+                        </h3>
+                      )}
+                      {course.description && (
+                        <p class="text-sm text-muted-foreground leading-relaxed line-clamp-3">
+                          {course.description}
+                        </p>
+                      )}
+                    </div>
+                    <div class="flex-shrink-0 self-center text-muted-foreground group-hover:text-primary transition-colors hidden sm:block">
+                      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                      </svg>
+                    </div>
+                  </div>
+                </a>
+              )
+            ))}
+
+            <p id="no-courses" class="hidden text-sm text-muted-foreground py-4">
+              No courses in this category yet — check back soon.
+            </p>
+          </div>
+        ) : (
+          <div class="py-12 text-center text-muted-foreground">
+            <p class="text-sm">Courses coming soon — subscribe below to be notified.</p>
+          </div>
+        )}
+
+      </div>
+
+      <!-- Skill-based learning -->
+      <div>
+        <h2 class="text-xs font-mono uppercase tracking-widest text-muted-foreground mb-6">Skill-based learning</h2>
+        <div class="space-y-4 text-muted-foreground">
+          <p>
+            <span class="text-foreground font-medium">Every course is built around a Skill.</span> A Skill is a small, focused package you install into Claude — it gives Claude the context, knowledge, and structure to guide you through the material properly, like a tutor who always knows exactly where you are.
+          </p>
+          <p>
+            <span class="text-foreground font-medium">No licence required.</span> Anthropic made Skills free on all plans. All you need is a Claude account — free or paid — and you're ready to start.
+          </p>
+          <p>
+            <span class="text-foreground font-medium">Learn by doing, not watching.</span> Each Skill turns Claude into an active teacher for that course. You ask questions, work through exercises, and build real things — Claude keeps you on track, challenges you, and adapts to how you learn.
+          </p>
+        </div>
+      </div>
+
+      <!-- What Claude Academy covers -->
+      <div>
+        <h2 class="text-xs font-mono uppercase tracking-widest text-muted-foreground mb-6">What Claude Academy covers</h2>
+        <div class="grid gap-4">
+          {[
+            { label: "Software development", body: "From zero to shipping real projects. HTML, CSS, JavaScript, APIs — actual understanding, not copy-paste." },
+            { label: "Agent Skills", body: "Build and deploy your own Claude Skills. Understand how agents work and create workflows that handle the repetitive work for you." },
+            { label: "Product management", body: "Define, prioritise, and ship better products using AI to research, write specs, and move faster." },
+            { label: "Getting more from Claude", body: "Learn to prompt, direct, and collaborate with Claude so you can multiply what you get done." },
+            { label: "Agentic workflows", body: "Understand how AI agents work and design workflows where they handle the repetitive work." },
+            { label: "Data & analytics", body: "Explore, clean, and interpret data with Claude as your co-analyst — no data science degree needed." },
+            { label: "Design & content", body: "Sharpen your ideas, write better copy, and communicate more clearly with AI in the loop." },
+          ].map(({ label, body }) => (
+            <div class="p-5 rounded-lg border border-border/60 bg-card/50">
+              <p class="text-sm font-semibold text-foreground mb-1">{label}</p>
+              <p class="text-sm text-muted-foreground">{body}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Philosophy -->
+      <div>
+        <h2 class="text-xs font-mono uppercase tracking-widest text-muted-foreground mb-6">How it works</h2>
+        <div class="space-y-4 text-muted-foreground">
+          <p>
+            <span class="text-foreground font-medium">Claude is your teacher, not a shortcut.</span> Every course is designed so you understand what you're building and why — not just accepting whatever Claude produces.
+          </p>
+          <p>
+            <span class="text-foreground font-medium">Always open, always free.</span> No enrolment windows, no waitlists. Start any course today. Every lesson is open-source — fork it, remix it, share it.
+          </p>
+          <p>
+            <span class="text-foreground font-medium">Built for where the market is heading.</span> These courses teach you to work alongside AI the way real teams already do — with intention and control.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</LandingLayout>
+
+<script>
+  // ── Tag filtering ─────────────────────────────────────
+  const buttons = document.querySelectorAll<HTMLButtonElement>(".tag-btn");
+  const cards   = document.querySelectorAll<HTMLElement>(".course-card");
+  const empty   = document.getElementById("no-courses");
+
+  if (buttons.length > 0) {
+    const activeClasses   = ["border-primary", "bg-primary/10", "text-primary"];
+    const inactiveClasses = ["border-border", "text-muted-foreground", "hover:border-primary/50", "hover:text-foreground"];
+
+    function setActive(btn: HTMLButtonElement) {
+      buttons.forEach((b) => {
+        b.classList.remove(...activeClasses);
+        b.classList.add(...inactiveClasses);
+      });
+      btn.classList.remove(...inactiveClasses);
+      btn.classList.add(...activeClasses);
+    }
+
+    function filterCourses(tag: string) {
+      let visible = 0;
+      cards.forEach((card) => {
+        const tags = card.dataset.tags?.split(",") ?? [];
+        const show = tag === "all" || tags.includes(tag);
+        card.style.display = show ? "" : "none";
+        if (show) visible++;
+      });
+      if (empty) empty.classList.toggle("hidden", visible > 0);
+    }
+
+    buttons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const tag = btn.dataset.tag!;
+        setActive(btn);
+        filterCourses(tag);
+      });
+    });
+  }
+
+  // ── Newsletter ────────────────────────────────────────
+  const form    = document.getElementById("academy-newsletter-form") as HTMLFormElement;
+  const message = document.getElementById("academy-newsletter-message") as HTMLElement;
+
+  form?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const email  = new FormData(form).get("email") as string;
+    const button = form.querySelector("button") as HTMLButtonElement;
+
+    button.disabled    = true;
+    button.textContent = "Subscribing...";
+    message.classList.add("hidden");
+
+    try {
+      const res  = await fetch("/api/newsletter", {
+        method:  "POST",
+        headers: { "Content-Type": "application/json" },
+        body:    JSON.stringify({ email }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        message.textContent = "You're subscribed! We'll let you know when the next course drops.";
+        message.className   = "mt-3 text-sm text-primary";
+        form.reset();
+      } else {
+        message.textContent = data.error || "Something went wrong. Try again.";
+        message.className   = "mt-3 text-sm text-red-500";
+      }
+    } catch {
+      message.textContent = "Network error. Please try again.";
+      message.className   = "mt-3 text-sm text-red-500";
+    } finally {
+      button.disabled    = false;
+      button.textContent = "Subscribe";
+    }
+  });
+</script>

@@ -1,0 +1,145 @@
+---
+interface Props {
+  class?: string;
+}
+const { class: className = "" } = Astro.props;
+---
+
+<div class={`inline-block ${className}`}>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 100 100"
+    class="w-full h-auto"
+    aria-hidden="true"
+  >
+    <defs>
+
+      <radialGradient id="bulb-lg" cx="38%" cy="28%" r="72%" gradientUnits="objectBoundingBox">
+        <stop offset="0%"   stop-color="#FFFDE7"/>
+        <stop offset="28%"  stop-color="#FFD600"/>
+        <stop offset="72%"  stop-color="#FFA000"/>
+        <stop offset="100%" stop-color="#E65100"/>
+      </radialGradient>
+
+      <radialGradient id="bulb-glow-lg" cx="50%" cy="50%" r="50%" gradientUnits="objectBoundingBox">
+        <stop offset="0%"   stop-color="#FFFFFF" stop-opacity="0.45"/>
+        <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+      </radialGradient>
+
+      <filter id="bulb-bolt-glow" x="-80%" y="-50%" width="260%" height="200%">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="3.2" result="blur"/>
+        <feMerge>
+          <feMergeNode in="blur"/>
+          <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+      </filter>
+
+      <filter id="bulb-shadow" x="-14%" y="-10%" width="128%" height="128%">
+        <feDropShadow dx="0" dy="2.5" stdDeviation="3" flood-color="#7C3A00" flood-opacity="0.26"/>
+      </filter>
+
+    </defs>
+
+    <!--
+      .bulb-char   — whole icon floats up/down
+      .bulb-inner  — ambient glow pulses (makes it look "on")
+      .bulb-bolt   — filament flickers occasionally
+      .bulb-sp-*   — each sparkle twinkles independently
+    -->
+    <g class="bulb-char" filter="url(#bulb-shadow)">
+
+      <!-- ── Glass ──────────────────────────────────── -->
+      <path
+        d="M50,12 C68,12 84,24 84,42 C84,55 76,65 68,70 L32,70 C24,65 16,55 16,42 C16,24 32,12 50,12 Z"
+        fill="url(#bulb-lg)"
+      />
+
+      <!-- Ambient inner glow (pulses) -->
+      <ellipse class="bulb-inner" cx="50" cy="44" rx="26" ry="24" fill="url(#bulb-glow-lg)"/>
+
+      <!-- Shine highlight (static) -->
+      <ellipse cx="36" cy="28" rx="11" ry="6.5" fill="white" opacity="0.22"
+               transform="rotate(-25 36 28)"/>
+
+      <!-- ── Lightning bolt filament (flickers) ─────── -->
+      <g class="bulb-bolt">
+        <polygon
+          points="53,30 59,48 53,48 46,64 42,50 47,50"
+          fill="white" opacity="0.95"
+          filter="url(#bulb-bolt-glow)"
+        />
+      </g>
+
+      <!-- ── Sparkles ────────────────────────────────── -->
+      <g class="bulb-sp-a">
+        <path d="M67,21 L68.5,24.5 L72,26 L68.5,27.5 L67,31 L65.5,27.5 L62,26 L65.5,24.5 Z"
+              fill="white" opacity="0.88"/>
+      </g>
+      <g class="bulb-sp-b">
+        <path d="M28,40 L29,43 L32,44 L29,45 L28,48 L27,45 L24,44 L27,43 Z"
+              fill="white" opacity="0.72"/>
+      </g>
+      <g class="bulb-sp-c">
+        <path d="M57,24 L57.8,26.3 L60,27 L57.8,27.7 L57,30 L56.2,27.7 L54,27 L56.2,26.3 Z"
+              fill="white" opacity="0.90"/>
+      </g>
+
+      <!-- ── Base / socket ───────────────────────────── -->
+      <rect x="32" y="70" width="36" height="7"  fill="#CFD8DC"/>
+      <rect x="33" y="77" width="34" height="5"  fill="#B0BEC5"/>
+      <rect x="35" y="82" width="30" height="5"  fill="#90A4AE"/>
+      <path d="M37,87 Q37,93 50,93 Q63,93 63,87 Z" fill="#78909C"/>
+
+    </g>
+  </svg>
+</div>
+
+<style>
+  /* ── Float (whole icon) ─────────────────────────────── */
+  .bulb-char {
+    animation: bulb-float 3.5s ease-in-out infinite;
+  }
+  @keyframes bulb-float {
+    0%, 100% { transform: translateY(0px);  }
+    50%       { transform: translateY(-8px); }
+  }
+
+  /* ── Inner glow pulse ───────────────────────────────── */
+  .bulb-inner {
+    animation: bulb-pulse 2.8s ease-in-out infinite;
+  }
+  @keyframes bulb-pulse {
+    0%, 100% { opacity: 1;   }
+    50%       { opacity: 0.3; }
+  }
+
+  /* ── Bolt flicker ───────────────────────────────────── */
+  .bulb-bolt {
+    transform-box:    fill-box;
+    transform-origin: 50% 50%;
+    animation:        bulb-flicker 4s ease-in-out infinite;
+  }
+  @keyframes bulb-flicker {
+    0%, 80%, 100% { opacity: 0.95; }
+    83%            { opacity: 0.45; }
+    86%            { opacity: 0.90; }
+    89%            { opacity: 0.25; }
+    92%            { opacity: 0.95; }
+  }
+
+  /* ── Sparkle twinkle ────────────────────────────────── */
+  .bulb-sp-a,
+  .bulb-sp-b,
+  .bulb-sp-c {
+    transform-box:    fill-box;
+    transform-origin: 50% 50%;
+    animation:        bulb-twinkle 2.6s ease-in-out infinite;
+  }
+  .bulb-sp-b { animation-delay: -0.9s;  }
+  .bulb-sp-c { animation-delay: -1.7s;  }
+
+  @keyframes bulb-twinkle {
+    0%, 100% { opacity: 1;   transform: scale(1);   }
+    50%       { opacity: 0.1; transform: scale(0.6); }
+  }
+</style>

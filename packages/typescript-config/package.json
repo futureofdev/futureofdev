@@ -1,0 +1,11 @@
+{
+  "name": "@futureofdev/typescript-config",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "files": [
+    "base.json",
+    "react.json",
+    "astro.json"
+  ]
+}

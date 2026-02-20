@@ -1,0 +1,11 @@
+{
+  "extends": "@futureofdev/typescript-config/astro.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["src", ".astro/types.d.ts"],
+  "exclude": ["node_modules", "dist"]
+}
