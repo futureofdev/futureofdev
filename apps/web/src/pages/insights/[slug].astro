@@ -112,6 +112,26 @@ const ogImageURL = post.mainImage
     <meta name="twitter:description" content={postDescription} />
     <meta name="twitter:image" content={ogImageURL} />
 
+    <!-- JSON-LD BlogPosting -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": post.title,
+      "description": postDescription,
+      "image": ogImageURL,
+      "url": canonicalURL,
+      "datePublished": post.publishedAt || undefined,
+      "author": post.author?.name ? {
+        "@type": "Person",
+        "name": post.author.name,
+      } : undefined,
+      "publisher": {
+        "@type": "Organization",
+        "name": "Future of Dev",
+        "logo": { "@type": "ImageObject", "url": "https://futureofdev.com/favicon.svg" },
+      },
+    })} />
+
     <!-- Preconnect to external origins -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -336,6 +356,9 @@ const ogImageURL = post.mainImage
         <p>&copy; {new Date().getFullYear()} Future of Dev. All rights reserved.</p>
       </div>
     </footer>
+
+    <!-- Cloudflare Web Analytics -->
+    <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "YOUR_CF_ANALYTICS_TOKEN"}'></script>
   </body>
 </html>
 
