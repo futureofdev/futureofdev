@@ -3,7 +3,7 @@ import react from "@astrojs/react";
 import tailwindcss from "@tailwindcss/vite";
 import sitemap from "@astrojs/sitemap";
 import sanity from "@sanity/astro";
-import vercel from "@astrojs/vercel";
+import cloudflare from "@astrojs/cloudflare";
 import dotenv from "dotenv";
 
 // Load env vars from monorepo root
@@ -21,7 +21,7 @@ export default defineConfig({
       useCdn: true,
     }),
   ],
-  adapter: vercel(),
+  adapter: cloudflare(),
   vite: {
     plugins: [tailwindcss()],
     optimizeDeps: {

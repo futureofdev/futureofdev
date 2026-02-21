@@ -1,4 +1,4 @@
-name: Deploy to Vercel
+name: Deploy to Cloudflare Pages
 
 on:
   push:
@@ -26,8 +26,16 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Deploy to Vercel
-        run: pnpm dlx vercel --prod --yes --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Build
+        run: pnpm build --filter=@futureofdev/web
         env:
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          SANITY_PROJECT_ID: ${{ secrets.SANITY_PROJECT_ID }}
+          SANITY_DATASET: ${{ secrets.SANITY_DATASET }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy apps/web/dist --project-name=futureofdev
