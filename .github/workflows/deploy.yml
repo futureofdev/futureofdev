@@ -33,8 +33,13 @@ jobs:
           SANITY_DATASET: ${{ secrets.SANITY_DATASET }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
 
-      - name: Deploy to Cloudflare Pages
+      - name: Deploy web to Cloudflare Pages
         run: npx wrangler pages deploy apps/web/dist --project-name=futureofdev
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+      - name: Deploy Sanity Studio
+        run: pnpm --filter=@futureofdev/studio run deploy
+        env:
+          SANITY_AUTH_TOKEN: ${{ secrets.SANITY_DEPLOY_TOKEN }}
