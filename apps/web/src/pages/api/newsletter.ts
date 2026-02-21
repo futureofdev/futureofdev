@@ -60,7 +60,7 @@ function buildWelcomeEmail(email: string): string {
 </html>`;
 }
 
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, locals }) => {
   try {
     const body = await request.json();
     const { email } = body;
@@ -79,7 +79,8 @@ export const POST: APIRoute = async ({ request }) => {
       );
     }
 
-    const apiKey = import.meta.env.RESEND_API_KEY;
+    const runtime = (locals as any).runtime;
+    const apiKey = runtime?.env?.RESEND_API_KEY ?? import.meta.env.RESEND_API_KEY;
     if (!apiKey) {
       return new Response(
         JSON.stringify({ error: "Newsletter service not configured" }),
@@ -87,11 +88,12 @@ export const POST: APIRoute = async ({ request }) => {
       );
     }
 
+    const audienceId = runtime?.env?.RESEND_AUDIENCE_ID ?? import.meta.env.RESEND_AUDIENCE_ID ?? "";
     const resend = new Resend(apiKey);
 
     await resend.contacts.create({
       email,
-      audienceId: import.meta.env.RESEND_AUDIENCE_ID ?? "",
+      audienceId,
     });
 
     // Send branded welcome email
