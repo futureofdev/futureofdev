@@ -30,6 +30,7 @@ export const postBySlugQuery = groq`
     publishedAt,
     "author": author->{name, bio, image},
     mainImage,
+    ogImage,
     categories[]->{title, slug}
   }
 `;

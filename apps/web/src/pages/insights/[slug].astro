@@ -68,10 +68,11 @@ const readingTime = calculateReadingTime(post.body);
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const fullTitle = `${post.title} | Future of Dev`;
 const postDescription = post.excerpt || `Read ${post.title} on Future of Dev`;
-const ogImageURL = post.mainImage
-  ? urlFor(post.mainImage).width(1200).height(630).format("jpg").url()
+const ogImageSource = post.ogImage ?? post.mainImage;
+const ogImageURL = ogImageSource
+  ? urlFor(ogImageSource).width(1200).height(630).format("jpg").url()
   : new URL("/og-default.png", Astro.site).href;
-const ogImageType = post.mainImage ? "image/jpeg" : "image/png";
+const ogImageType = ogImageSource ? "image/jpeg" : "image/png";
 ---
 
 <!doctype html>

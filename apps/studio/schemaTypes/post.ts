@@ -68,6 +68,16 @@ export const post = defineType({
       initialValue: false,
     }),
     defineField({
+      name: "ogImage",
+      title: "Social Share Image",
+      type: "image",
+      description: "Custom image for LinkedIn, Twitter/X, etc. (1200×630px recommended). Falls back to Main Image if not set.",
+      options: { hotspot: true },
+      fields: [
+        defineField({ name: "alt", type: "string", title: "Alt Text" }),
+      ],
+    }),
+    defineField({
       name: "body",
       title: "Body",
       type: "array",
