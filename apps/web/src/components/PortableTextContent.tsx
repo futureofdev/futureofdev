@@ -90,6 +90,49 @@ const components = {
         </pre>
       </div>
     ),
+    table: ({ value }: { value: { rows?: Array<{ _key: string; cells?: string[] }>; hasHeaderRow?: boolean; caption?: string } }) => {
+      const rows = value.rows ?? [];
+      const hasHeaderRow = value.hasHeaderRow ?? true;
+      const [headerRow, ...bodyRows] = hasHeaderRow ? rows : [null, ...rows];
+      const dataRows = hasHeaderRow ? bodyRows : rows;
+
+      return (
+        <figure className="my-8 -mx-4 md:mx-0 overflow-x-auto">
+          <table className="w-full border-collapse text-sm">
+            {hasHeaderRow && headerRow && (
+              <thead>
+                <tr className="border-b border-border">
+                  {(headerRow.cells ?? []).map((cell, i) => (
+                    <th
+                      key={i}
+                      className="px-4 py-2.5 text-left font-semibold text-foreground bg-foreground/[0.03] dark:bg-foreground/[0.06]"
+                    >
+                      {cell}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+            )}
+            <tbody>
+              {dataRows.map((row) => (
+                <tr key={row._key} className="border-b border-border/50 last:border-0 hover:bg-foreground/[0.02] transition-colors">
+                  {(row.cells ?? []).map((cell, i) => (
+                    <td key={i} className="px-4 py-2.5 text-foreground/85">
+                      {cell}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          {value.caption && (
+            <figcaption className="text-sm text-muted-foreground mt-3 px-4 md:px-0 font-mono">
+              {value.caption}
+            </figcaption>
+          )}
+        </figure>
+      );
+    },
   },
   list: {
     bullet: ({ children, value }: { children: React.ReactNode; value: { level?: number } }) => (

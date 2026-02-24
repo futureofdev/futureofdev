@@ -150,6 +150,7 @@ export const course = defineType({
             defineField({ name: "caption", type: "string", title: "Caption" }),
           ],
         }),
+        defineArrayMember({ type: "table" }),
       ],
     }),
   ],

@@ -33,6 +33,7 @@ export const page = defineType({
             defineField({ name: "alt", type: "string", title: "Alt Text" }),
           ],
         }),
+        defineArrayMember({ type: "table" }),
       ],
     }),
     defineField({
