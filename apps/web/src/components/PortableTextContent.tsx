@@ -50,6 +50,23 @@ const components = {
         {children}
       </a>
     ),
+    internalLink: ({
+      value,
+      children,
+    }: {
+      value?: { slug?: string; docType?: string };
+      children: React.ReactNode;
+    }) => {
+      const slug = value?.slug;
+      const docType = value?.docType;
+      if (!slug) return <>{children}</>;
+      const href = docType === "course" ? `/claude-academy/${slug}` : `/insights/${slug}`;
+      return (
+        <a href={href} className="underline underline-offset-4 decoration-foreground/25 hover:decoration-foreground/60 transition-all duration-200">
+          {children}
+        </a>
+      );
+    },
     strong: ({ children }: { children: React.ReactNode }) => (
       <strong className="font-semibold text-foreground">{children}</strong>
     ),

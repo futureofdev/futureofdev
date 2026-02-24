@@ -1,13 +1,17 @@
 ---
 import LandingLayout from "../layouts/LandingLayout.astro";
 import AnimatedClawd from "../components/AnimatedClawd.astro";
-import { sanityClient, allCoursesQuery } from "@futureofdev/sanity-client";
+import { sanityClient } from "../lib/sanity";
+import { allCoursesQuery } from "@futureofdev/sanity-client";
 
 let courses: any[] = [];
 try {
   courses = await sanityClient.fetch(allCoursesQuery);
+  console.log('[debug] SANITY_PREVIEW:', process.env.SANITY_PREVIEW);
+  console.log('[debug] TOKEN defined:', !!process.env.SANITY_API_TOKEN, '| length:', process.env.SANITY_API_TOKEN?.length);
+  console.log('[debug] courses returned:', courses.map((c: any) => c.title));
 } catch (e) {
-  // Sanity not configured or no courses yet
+  console.error('[debug] fetch error:', e);
 }
 
 const allTags = [...new Set(courses.flatMap((c: any) => c.tags ?? []))];

@@ -2,7 +2,8 @@
 import { ThemeToggle } from "../../components/ThemeToggle";
 import { ReadingProgress } from "../../components/ReadingProgress";
 import { PortableTextContent } from "../../components/PortableTextContent";
-import { sanityClient, postBySlugQuery, postsQuery, nextUpcomingWebinarQuery } from "@futureofdev/sanity-client";
+import { sanityClient } from "../../lib/sanity";
+import { postBySlugQuery, postsQuery, nextUpcomingWebinarQuery } from "@futureofdev/sanity-client";
 import imageUrlBuilder from "@sanity/image-url";
 
 // For static site generation - generate paths for all posts

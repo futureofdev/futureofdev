@@ -17,7 +17,16 @@ export const postBySlugQuery = groq`
     _id,
     title,
     slug,
-    body,
+    body[]{
+      ...,
+      markDefs[]{
+        ...,
+        _type == "internalLink" => {
+          "slug": reference->slug.current,
+          "docType": reference->_type
+        }
+      }
+    },
     publishedAt,
     "author": author->{name, bio, image},
     mainImage,

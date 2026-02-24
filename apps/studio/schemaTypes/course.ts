@@ -122,7 +122,7 @@ export const course = defineType({
               {
                 name: "link",
                 type: "object",
-                title: "Link",
+                title: "External Link",
                 fields: [
                   defineField({
                     name: "href",
@@ -130,6 +130,19 @@ export const course = defineType({
                     title: "URL",
                     validation: (rule) =>
                       rule.uri({ scheme: ["http", "https", "mailto", "tel"] }),
+                  }),
+                ],
+              },
+              {
+                name: "internalLink",
+                type: "object",
+                title: "Internal Link",
+                fields: [
+                  defineField({
+                    name: "reference",
+                    type: "reference",
+                    title: "Page",
+                    to: [{ type: "post" }, { type: "course" }],
                   }),
                 ],
               },
@@ -150,6 +163,7 @@ export const course = defineType({
             defineField({ name: "caption", type: "string", title: "Caption" }),
           ],
         }),
+        defineArrayMember({ type: "code" }),
         defineArrayMember({ type: "table" }),
       ],
     }),

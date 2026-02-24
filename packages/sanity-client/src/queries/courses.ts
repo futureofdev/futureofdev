@@ -25,7 +25,16 @@ export const courseBySlugQuery = groq`
     tags,
     comingSoon,
     thumbnail,
-    body,
+    body[]{
+      ...,
+      markDefs[]{
+        ...,
+        _type == "internalLink" => {
+          "slug": reference->slug.current,
+          "docType": reference->_type
+        }
+      }
+    },
     attachments[] {
       _key,
       label,

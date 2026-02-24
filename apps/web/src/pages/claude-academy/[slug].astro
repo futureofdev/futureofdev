@@ -2,7 +2,8 @@
 import LandingLayout from "../../layouts/LandingLayout.astro";
 import { PortableTextContent } from "../../components/PortableTextContent";
 import AnimatedClawd from "../../components/AnimatedClawd.astro";
-import { sanityClient, allCoursesQuery, courseBySlugQuery } from "@futureofdev/sanity-client";
+import { sanityClient } from "../../lib/sanity";
+import { allCoursesQuery, courseBySlugQuery } from "@futureofdev/sanity-client";
 
 export async function getStaticPaths() {
   let courses: any[] = [];

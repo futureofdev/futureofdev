@@ -84,7 +84,7 @@ export const post = defineType({
               {
                 name: "link",
                 type: "object",
-                title: "Link",
+                title: "External Link",
                 fields: [
                   defineField({
                     name: "href",
@@ -94,6 +94,19 @@ export const post = defineType({
                       rule.uri({
                         scheme: ["http", "https", "mailto", "tel"],
                       }),
+                  }),
+                ],
+              },
+              {
+                name: "internalLink",
+                type: "object",
+                title: "Internal Link",
+                fields: [
+                  defineField({
+                    name: "reference",
+                    type: "reference",
+                    title: "Page",
+                    to: [{ type: "post" }, { type: "course" }],
                   }),
                 ],
               },
@@ -114,6 +127,7 @@ export const post = defineType({
             defineField({ name: "caption", type: "string", title: "Caption" }),
           ],
         }),
+        defineArrayMember({ type: "code" }),
         defineArrayMember({ type: "table" }),
       ],
     }),
