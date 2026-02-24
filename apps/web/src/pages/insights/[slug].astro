@@ -3,7 +3,7 @@ import { ThemeToggle } from "../../components/ThemeToggle";
 import { ReadingProgress } from "../../components/ReadingProgress";
 import { PortableTextContent } from "../../components/PortableTextContent";
 import { sanityClient } from "../../lib/sanity";
-import { postBySlugQuery, postsQuery, nextUpcomingWebinarQuery } from "@futureofdev/sanity-client";
+import { postBySlugQuery, postsQuery } from "@futureofdev/sanity-client";
 import imageUrlBuilder from "@sanity/image-url";
 
 // For static site generation - generate paths for all posts
@@ -24,7 +24,6 @@ export async function getStaticPaths() {
 const { slug } = Astro.params;
 
 let post: any = null;
-let upcomingWebinar: any = null;
 
 try {
   post = await sanityClient.fetch(postBySlugQuery, { slug });
@@ -35,18 +34,6 @@ try {
 if (!post) {
   return Astro.redirect("/404");
 }
-
-// Fetch next upcoming webinar for CTA
-try {
-  upcomingWebinar = await sanityClient.fetch(nextUpcomingWebinarQuery);
-} catch (e) {
-  console.log("Could not fetch upcoming webinar");
-}
-
-// Check if webinar is still upcoming (expiration logic)
-const isWebinarUpcoming = upcomingWebinar?.scheduledAt
-  ? new Date(upcomingWebinar.scheduledAt) > new Date()
-  : false;
 
 // Image URL builder
 const builder = imageUrlBuilder(sanityClient);
@@ -277,54 +264,6 @@ const ogImageType = post.mainImage ? "image/jpeg" : "image/png";
             </div>
           )
         }
-
-        <!-- Webinar CTA -->
-        {isWebinarUpcoming && upcomingWebinar && (
-          <div class="mt-12 md:mt-16 pt-8 border-t border-border">
-            <a
-              href={`/webinars/${upcomingWebinar.slug.current}`}
-              class="block group rounded-lg border border-border bg-card p-6 hover:border-primary/50 hover:bg-muted/30 transition-all"
-            >
-              <div class="flex items-start gap-4">
-                {upcomingWebinar.thumbnail && (
-                  <img
-                    src={urlFor(upcomingWebinar.thumbnail).width(192).height(192).url()}
-                    alt={upcomingWebinar.title}
-                    class="w-24 h-24 rounded-lg object-cover flex-shrink-0 hidden sm:block"
-                  />
-                )}
-                <div class="flex-1 min-w-0">
-                  <p class={`text-xs font-mono uppercase tracking-wide mb-2 ${upcomingWebinar.isLive ? "text-red-500" : "text-muted-foreground"}`}>
-                    {upcomingWebinar.isLive ? "Live Now" : "Upcoming Webinar"}
-                  </p>
-                  <h3 class="font-semibold text-lg mb-2 group-hover:text-primary transition-colors">{upcomingWebinar.title}</h3>
-                  <div class="flex items-center gap-2 text-sm text-muted-foreground">
-                    <time datetime={upcomingWebinar.scheduledAt}>
-                      {new Date(upcomingWebinar.scheduledAt).toLocaleDateString("en-US", {
-                        weekday: "long",
-                        month: "long",
-                        day: "numeric",
-                      })}
-                    </time>
-                    <span>·</span>
-                    <span>
-                      {new Date(upcomingWebinar.scheduledAt).toLocaleTimeString("en-US", {
-                        hour: "numeric",
-                        minute: "2-digit",
-                        timeZoneName: "short",
-                      })}
-                    </span>
-                  </div>
-                </div>
-                <div class="flex-shrink-0 self-center text-muted-foreground group-hover:text-primary transition-colors">
-                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                  </svg>
-                </div>
-              </div>
-            </a>
-          </div>
-        )}
 
         <!-- Back to Insights -->
         <div class="mt-12 md:mt-16 pt-8 border-t border-border">
