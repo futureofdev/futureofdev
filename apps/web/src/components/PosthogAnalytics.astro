@@ -1,0 +1,25 @@
+---
+// Cookieless / GDPR-friendly PostHog analytics.
+// Uses persistence: 'memory' — no cookies, no localStorage, no consent banner needed.
+// Requires PUBLIC_POSTHOG_KEY env var; silently no-ops if absent.
+---
+
+<script>
+  import posthog from "posthog-js";
+
+  const key = import.meta.env.PUBLIC_POSTHOG_KEY as string | undefined;
+  const host = (import.meta.env.PUBLIC_POSTHOG_HOST as string | undefined) ?? "https://eu.i.posthog.com";
+
+  if (key) {
+    posthog.init(key, {
+      api_host: host,
+      // Cookieless — all state lives in memory only, never persisted to
+      // cookies or localStorage. No consent banner required under GDPR.
+      persistence: "memory",
+      capture_pageview: true,
+      capture_pageleave: true,
+      autocapture: false,
+      disable_session_recording: true,
+    });
+  }
+</script>

@@ -171,6 +171,10 @@ function formatFileSize(bytes: number): string {
                     <a
                       href={url}
                       download={filename}
+                      data-track-download
+                      data-course-title={course.title}
+                      data-course-slug={slug}
+                      data-filename={attachment.label}
                       class="flex items-center gap-3 group py-3 px-4 rounded-lg border border-border hover:border-primary/40 hover:bg-muted/30 transition-all"
                     >
                       <span class="flex-shrink-0 w-8 h-8 rounded-md bg-muted flex items-center justify-center text-muted-foreground group-hover:text-primary transition-colors">
@@ -251,7 +255,20 @@ function formatFileSize(bytes: number): string {
 </LandingLayout>
 
 <script>
-  function setupForm(formId: string, buttonLabel: string, successMessage: string) {
+  import posthog from "posthog-js";
+
+  // Track course material downloads
+  document.querySelectorAll<HTMLAnchorElement>("[data-track-download]").forEach((link) => {
+    link.addEventListener("click", () => {
+      posthog.capture("course_material_download", {
+        course_title: link.dataset.courseTitle,
+        course_slug: link.dataset.courseSlug,
+        filename: link.dataset.filename,
+      });
+    });
+  });
+
+  function setupForm(formId: string, buttonLabel: string, successMessage: string, eventName: string, extraProps?: Record<string, string>) {
     const form = document.getElementById(formId) as HTMLFormElement | null;
     const message = document.getElementById(`${formId.replace("-form", "-message")}`) as HTMLElement | null;
 
@@ -272,6 +289,7 @@ function formatFileSize(bytes: number): string {
         });
         const data = await res.json();
         if (res.ok) {
+          posthog.capture(eventName, extraProps);
           message!.textContent = successMessage;
           message!.className = "mt-3 text-sm text-primary";
           form.reset();
@@ -289,8 +307,10 @@ function formatFileSize(bytes: number): string {
     });
   }
 
-  setupForm("notify-form", "Notify me", "You're on the list — we'll email you when this launches.");
-  setupForm("newsletter-form", "Subscribe", "Thanks for subscribing — welcome to the community!");
+  const courseSlug = window.location.pathname.split("/").filter(Boolean).pop() ?? "";
+
+  setupForm("notify-form", "Notify me", "You're on the list — we'll email you when this launches.", "course_notify_signup", { course_slug: courseSlug });
+  setupForm("newsletter-form", "Subscribe", "Thanks for subscribing — welcome to the community!", "newsletter_signup", { source: "course_page", course_slug: courseSlug });
 </script>
 
 <style>

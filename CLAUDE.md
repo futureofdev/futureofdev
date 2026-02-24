@@ -73,6 +73,8 @@ Resend API <- /api/newsletter <- newsletter signup form
 Copy `.env.example` to `.env` and fill in:
 - `SANITY_PROJECT_ID`, `SANITY_DATASET` - From sanity.io project
 - `RESEND_API_KEY` - From resend.com for newsletter signups
+- `PUBLIC_POSTHOG_KEY` - PostHog project API key (cookieless analytics)
+- `PUBLIC_POSTHOG_HOST` - Optional, defaults to `https://eu.i.posthog.com`
 
 ## Key Patterns
 

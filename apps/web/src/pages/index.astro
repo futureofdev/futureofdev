@@ -197,6 +197,8 @@ const sections = homepage?.sections ?? [
 </LandingLayout>
 
 <script>
+  import posthog from "posthog-js";
+
   const form = document.getElementById("newsletter-form") as HTMLFormElement;
   const message = document.getElementById("newsletter-message") as HTMLElement;
 
@@ -217,6 +219,7 @@ const sections = homepage?.sections ?? [
       });
       const data = await res.json();
       if (res.ok) {
+        posthog.capture("newsletter_signup", { source: "homepage" });
         message.textContent = "Thanks for subscribing — welcome to the community!";
         message.className = "mt-3 text-sm text-primary";
         form.reset();

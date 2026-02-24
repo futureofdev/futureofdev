@@ -2,6 +2,7 @@
 import { ThemeToggle } from "../../components/ThemeToggle";
 import { ReadingProgress } from "../../components/ReadingProgress";
 import { PortableTextContent } from "../../components/PortableTextContent";
+import PosthogAnalytics from "../../components/PosthogAnalytics.astro";
 import { sanityClient } from "../../lib/sanity";
 import { postBySlugQuery, postsQuery } from "@futureofdev/sanity-client";
 import imageUrlBuilder from "@sanity/image-url";
@@ -310,6 +311,7 @@ const ogImageType = ogImageSource ? "image/jpeg" : "image/png";
 
     <!-- Cloudflare Web Analytics -->
     <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "YOUR_CF_ANALYTICS_TOKEN"}'></script>
+    <PosthogAnalytics />
   </body>
 </html>
 
