@@ -75,6 +75,13 @@ export const course = defineType({
       ],
     }),
     defineField({
+      name: "ogImage",
+      title: "OG Image",
+      type: "image",
+      description: "Social sharing image (1200×630). Falls back to thumbnail if not set.",
+      options: { hotspot: true },
+    }),
+    defineField({
       name: "attachments",
       title: "Attachments",
       description: "Files learners can download — shown at the top of the course page",

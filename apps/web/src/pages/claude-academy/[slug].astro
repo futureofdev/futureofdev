@@ -4,6 +4,7 @@ import { PortableTextContent } from "../../components/PortableTextContent";
 import AnimatedClawd from "../../components/AnimatedClawd.astro";
 import { sanityClient } from "../../lib/sanity";
 import { allCoursesQuery, courseBySlugQuery } from "@futureofdev/sanity-client";
+import imageUrlBuilder from "@sanity/image-url";
 
 export async function getStaticPaths() {
   let courses: any[] = [];
@@ -31,6 +32,12 @@ if (!course) {
   return Astro.redirect("/claude-academy");
 }
 
+const builder = imageUrlBuilder(sanityClient);
+const ogImageSource = course.ogImage ?? course.thumbnail;
+const ogImageURL = ogImageSource
+  ? builder.image(ogImageSource).width(1200).height(630).format("jpg").url()
+  : undefined;
+
 const attachments: any[] = course.attachments ?? [];
 const hasAttachments = attachments.length > 0;
 
@@ -56,6 +63,7 @@ function formatFileSize(bytes: number): string {
   title={`${course.title} — Claude Academy`}
   description={course.description ?? `${course.title} — a free course on Claude Academy.`}
   favicon="/claude-academy.svg"
+  ogImage={ogImageURL}
 >
   <!-- Back Navigation -->
   <nav class="fixed top-4 left-4 z-40">

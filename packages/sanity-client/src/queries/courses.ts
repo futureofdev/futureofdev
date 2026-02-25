@@ -25,6 +25,7 @@ export const courseBySlugQuery = groq`
     tags,
     comingSoon,
     thumbnail,
+    ogImage,
     body[]{
       ...,
       markDefs[]{

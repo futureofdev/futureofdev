@@ -1,6 +1,7 @@
 ---
-// Cookieless / GDPR-friendly PostHog analytics.
-// Uses persistence: 'memory' — no cookies, no localStorage, no consent banner needed.
+// PostHog analytics with GDPR consent management.
+// Always inits with persistence: 'memory' (no consent needed).
+// Upgrades to localStorage+cookie persistence after explicit user consent.
 // Requires PUBLIC_POSTHOG_KEY env var; silently no-ops if absent.
 ---
 
@@ -13,13 +14,24 @@
   if (key) {
     posthog.init(key, {
       api_host: host,
-      // Cookieless — all state lives in memory only, never persisted to
-      // cookies or localStorage. No consent banner required under GDPR.
+      // Start cookieless — safe without consent. Upgraded after opt-in.
       persistence: "memory",
       capture_pageview: true,
       capture_pageleave: true,
       autocapture: false,
       disable_session_recording: true,
     });
+
+    // Upgrade immediately if consent was already given in a previous visit
+    if (localStorage.getItem("ph_consent") === "true") {
+      posthog.set_config({ persistence: "localStorage+cookie" });
+    }
   }
+
+  // Listen for consent granted from the banner
+  window.addEventListener("ph:consent-granted", () => {
+    if (key) {
+      posthog.set_config({ persistence: "localStorage+cookie" });
+    }
+  });
 </script>
