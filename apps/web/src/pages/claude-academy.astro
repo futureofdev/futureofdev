@@ -129,6 +129,10 @@ const allTags = [...new Set(courses.flatMap((c: any) => c.tags ?? []))];
                   href={`/claude-academy/${course.slug.current}`}
                   class="course-card block group rounded-xl border border-border bg-card/50 p-4 md:p-6 transition-all opacity-70 hover:opacity-90"
                   data-tags={(course.tags ?? []).join(",")}
+                  data-track-course
+                  data-course-slug={course.slug.current}
+                  data-course-title={course.title}
+                  data-course-status="coming_soon"
                 >
                   <div class="flex items-start justify-between gap-4">
                     <div class="flex-1 min-w-0">
@@ -163,6 +167,10 @@ const allTags = [...new Set(courses.flatMap((c: any) => c.tags ?? []))];
                   href={`/claude-academy/${course.slug.current}`}
                   class="course-card block group rounded-xl border border-border bg-card p-4 md:p-6 hover:border-primary/50 hover:bg-muted/30 transition-all"
                   data-tags={(course.tags ?? []).join(",")}
+                  data-track-course
+                  data-course-slug={course.slug.current}
+                  data-course-title={course.title}
+                  data-course-status="live"
                 >
                   <div class="flex items-start justify-between gap-4">
                     <div class="flex-1 min-w-0">
@@ -273,6 +281,8 @@ const allTags = [...new Set(courses.flatMap((c: any) => c.tags ?? []))];
 </LandingLayout>
 
 <script>
+  import posthog from "posthog-js";
+
   // ── Tag filtering ─────────────────────────────────────
   const buttons = document.querySelectorAll<HTMLButtonElement>(".tag-btn");
   const cards   = document.querySelectorAll<HTMLElement>(".course-card");
@@ -307,9 +317,21 @@ const allTags = [...new Set(courses.flatMap((c: any) => c.tags ?? []))];
         const tag = btn.dataset.tag!;
         setActive(btn);
         filterCourses(tag);
+        posthog.capture("course_tag_filter_applied", { tag });
       });
     });
   }
+
+  // ── Course card click tracking ────────────────────────
+  document.querySelectorAll<HTMLAnchorElement>("[data-track-course]").forEach((card) => {
+    card.addEventListener("click", () => {
+      posthog.capture("course_card_clicked", {
+        course_slug: card.dataset.courseSlug,
+        course_title: card.dataset.courseTitle,
+        course_status: card.dataset.courseStatus,
+      });
+    });
+  });
 
   // ── Newsletter ────────────────────────────────────────
   const form    = document.getElementById("academy-newsletter-form") as HTMLFormElement;
@@ -332,14 +354,18 @@ const allTags = [...new Set(courses.flatMap((c: any) => c.tags ?? []))];
       });
       const data = await res.json();
       if (res.ok) {
+        posthog.identify(email, { email });
+        posthog.capture("newsletter_signup", { source: "academy" });
         message.textContent = "You're subscribed! We'll let you know when the next course drops.";
         message.className   = "mt-3 text-sm text-primary";
         form.reset();
       } else {
+        posthog.capture("newsletter_signup_error", { source: "academy", error: data.error ?? "unknown" });
         message.textContent = data.error || "Something went wrong. Try again.";
         message.className   = "mt-3 text-sm text-red-500";
       }
-    } catch {
+    } catch (err) {
+      posthog.captureException(err instanceof Error ? err : new Error(String(err)));
       message.textContent = "Network error. Please try again.";
       message.className   = "mt-3 text-sm text-red-500";
     } finally {

@@ -5,7 +5,19 @@ export const prerender = false;
 
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
+const ALLOWED_ORIGINS = ["https://futureofdev.com", "https://www.futureofdev.com"];
+
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 function buildWelcomeEmail(email: string): string {
+  const safeEmail = escapeHtml(email);
   return `
 <!DOCTYPE html>
 <html lang="en">
@@ -47,7 +59,7 @@ function buildWelcomeEmail(email: string): string {
           <tr>
             <td style="padding:24px 32px;border-top:1px solid #e2e8f0;">
               <p style="margin:0;font-size:12px;color:#94a3b8;line-height:1.5;">
-                You're receiving this because ${email} signed up at futureofdev.com.<br/>
+                You're receiving this because ${safeEmail} signed up at futureofdev.com.<br/>
                 <a href="https://futureofdev.com" style="color:#64748b;text-decoration:underline;">futureofdev.com</a>
               </p>
             </td>
@@ -62,6 +74,14 @@ function buildWelcomeEmail(email: string): string {
 
 export const POST: APIRoute = async ({ request, locals }) => {
   try {
+    const origin = request.headers.get("origin") ?? "";
+    if (!ALLOWED_ORIGINS.includes(origin) && !origin.startsWith("http://localhost")) {
+      return new Response(
+        JSON.stringify({ error: "Forbidden" }),
+        { status: 403, headers: { "Content-Type": "application/json" } },
+      );
+    }
+
     const body = await request.json();
     const { email } = body;
 
@@ -79,7 +99,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
       );
     }
 
-    const runtime = (locals as any).runtime;
+    const runtime = (locals as { runtime?: { env?: Record<string, string> } }).runtime;
     const apiKey = runtime?.env?.RESEND_API_KEY ?? import.meta.env.RESEND_API_KEY;
     if (!apiKey) {
       return new Response(

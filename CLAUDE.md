@@ -75,6 +75,8 @@ Copy `.env.example` to `.env` and fill in:
 - `RESEND_API_KEY` - From resend.com for newsletter signups
 - `PUBLIC_POSTHOG_KEY` - PostHog project API key (cookieless analytics)
 - `PUBLIC_POSTHOG_HOST` - Optional, defaults to `https://eu.i.posthog.com`
+- `SUPABASE_URL` - From supabase.com project settings (e.g. `https://xyz.supabase.co`)
+- `SUPABASE_PUBLISHABLE_KEY` - Publishable (anon) key; used by `/api/course-progress` to insert anonymous lesson completions. The `lesson_completions` table has an RLS policy permitting anon inserts.
 
 ## Key Patterns
 

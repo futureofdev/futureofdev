@@ -23,12 +23,11 @@ export default defineConfig({
   ],
   adapter: cloudflare(),
   vite: {
+    envDir: "../../",
     plugins: [tailwindcss()],
     optimizeDeps: {
       include: ["react", "react-dom"],
     },
-    server: {
-      allowedHosts: ["43f6-82-1-92-161.ngrok-free.app"],
-    },
+    ...(process.env.NGROK_HOST ? { server: { allowedHosts: [process.env.NGROK_HOST] } } : {}),
   },
 });

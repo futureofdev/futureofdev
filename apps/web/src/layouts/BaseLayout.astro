@@ -68,8 +68,6 @@ const ogImageURL = ogImage ?? new URL("/og-default.png", Astro.site).href;
         <p>&copy; {new Date().getFullYear()} Future of Dev. All rights reserved.</p>
       </div>
     </footer>
-    <!-- Cloudflare Web Analytics -->
-    <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "YOUR_CF_ANALYTICS_TOKEN"}'></script>
     <PosthogAnalytics />
   </body>
 </html>

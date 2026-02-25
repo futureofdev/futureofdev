@@ -289,15 +289,18 @@ function formatFileSize(bytes: number): string {
         });
         const data = await res.json();
         if (res.ok) {
+          posthog.identify(email, { email });
           posthog.capture(eventName, extraProps);
           message!.textContent = successMessage;
           message!.className = "mt-3 text-sm text-primary";
           form.reset();
         } else {
+          posthog.capture("newsletter_signup_error", { source: "course_page", course_slug: courseSlug, error: data.error ?? "unknown" });
           message!.textContent = data.error || "Something went wrong. Try again.";
           message!.className = "mt-3 text-sm text-red-500";
         }
-      } catch {
+      } catch (err) {
+        posthog.captureException(err instanceof Error ? err : new Error(String(err)));
         message!.textContent = "Network error. Please try again.";
         message!.className = "mt-3 text-sm text-red-500";
       } finally {
