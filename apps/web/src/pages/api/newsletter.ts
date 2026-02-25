@@ -18,6 +18,7 @@ function escapeHtml(str: string): string {
 
 function buildWelcomeEmail(email: string): string {
   const safeEmail = escapeHtml(email);
+  const unsubscribeUrl = `https://futureofdev.com/api/unsubscribe?e=${btoa(email)}`;
   return `
 <!DOCTYPE html>
 <html lang="en">
@@ -61,6 +62,8 @@ function buildWelcomeEmail(email: string): string {
               <p style="margin:0;font-size:12px;color:#94a3b8;line-height:1.5;">
                 You're receiving this because ${safeEmail} signed up at futureofdev.com.<br/>
                 <a href="https://futureofdev.com" style="color:#64748b;text-decoration:underline;">futureofdev.com</a>
+                &nbsp;·&nbsp;
+                <a href="${unsubscribeUrl}" style="color:#64748b;text-decoration:underline;">Unsubscribe</a>
               </p>
             </td>
           </tr>
