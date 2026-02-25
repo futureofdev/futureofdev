@@ -32,6 +32,8 @@ jobs:
           SANITY_PROJECT_ID: ${{ secrets.SANITY_PROJECT_ID }}
           SANITY_DATASET: ${{ secrets.SANITY_DATASET }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          PUBLIC_POSTHOG_KEY: ${{ secrets.PUBLIC_POSTHOG_KEY }}
+          PUBLIC_POSTHOG_HOST: ${{ secrets.PUBLIC_POSTHOG_HOST }}
 
       - name: Deploy web to Cloudflare Pages
         run: npx wrangler pages deploy apps/web/dist --project-name=futureofdev
