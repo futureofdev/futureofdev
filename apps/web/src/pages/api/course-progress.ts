@@ -21,7 +21,7 @@ function isValidPayload(body: unknown): body is ProgressPayload {
   return (
     typeof b.phase === "number" &&
     Number.isInteger(b.phase) &&
-    b.phase >= 1 &&
+    b.phase >= 0 &&
     b.phase <= MAX_PHASE &&
     typeof b.lesson === "number" &&
     Number.isInteger(b.lesson) &&
