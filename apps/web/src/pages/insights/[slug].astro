@@ -1,26 +1,13 @@
 ---
+export const prerender = false;
+
 import { ThemeToggle } from "../../components/ThemeToggle";
 import { ReadingProgress } from "../../components/ReadingProgress";
 import { PortableTextContent } from "../../components/PortableTextContent";
 import PosthogAnalytics from "../../components/PosthogAnalytics.astro";
 import { sanityClient } from "../../lib/sanity";
-import { postBySlugQuery, postsQuery } from "@futureofdev/sanity-client";
+import { postBySlugQuery } from "@futureofdev/sanity-client";
 import imageUrlBuilder from "@sanity/image-url";
-
-// For static site generation - generate paths for all posts
-export async function getStaticPaths() {
-  let posts: any[] = [];
-  try {
-    posts = await sanityClient.fetch(postsQuery);
-  } catch (e) {
-    console.log("Could not fetch posts for static paths");
-    return [];
-  }
-
-  return posts.map((post: any) => ({
-    params: { slug: post.slug.current },
-  }));
-}
 
 const { slug } = Astro.params;
 

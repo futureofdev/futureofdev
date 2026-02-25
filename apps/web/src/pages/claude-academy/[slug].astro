@@ -1,23 +1,12 @@
 ---
+export const prerender = false;
+
 import LandingLayout from "../../layouts/LandingLayout.astro";
 import { PortableTextContent } from "../../components/PortableTextContent";
 import AnimatedClawd from "../../components/AnimatedClawd.astro";
 import { sanityClient } from "../../lib/sanity";
-import { allCoursesQuery, courseBySlugQuery } from "@futureofdev/sanity-client";
+import { courseBySlugQuery } from "@futureofdev/sanity-client";
 import imageUrlBuilder from "@sanity/image-url";
-
-export async function getStaticPaths() {
-  let courses: any[] = [];
-  try {
-    courses = await sanityClient.fetch(allCoursesQuery);
-  } catch (e) {
-    console.log("Could not fetch courses for static paths");
-    return [];
-  }
-  return courses.map((course: any) => ({
-    params: { slug: course.slug.current },
-  }));
-}
 
 const { slug } = Astro.params;
 
