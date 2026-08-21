@@ -1,77 +1,33 @@
----
-// GDPR cookie consent banner.
-// Hidden if consent has already been recorded in localStorage (ph_consent = 'true' | 'false').
-// On accept: upgrades PostHog persistence and stores choice.
-// On decline: stores choice, PostHog stays in memory-only mode.
----
-
-<div
-  id="cookie-banner"
-  class="fixed bottom-0 left-0 right-0 z-50 hidden border-t border-border bg-background/95 backdrop-blur-sm"
-  role="dialog"
-  aria-label="Cookie consent"
->
-  <div class="max-w-4xl mx-auto px-6 py-4 flex flex-col sm:flex-row items-start sm:items-center gap-4">
-    <p class="flex-1 text-sm text-muted-foreground leading-relaxed">
-      We use cookies to understand how people use this site — helping us improve it for everyone.
-      <a href="/privacy" class="underline underline-offset-2 hover:text-foreground transition-colors">Privacy policy</a>.
-    </p>
-    <div class="flex items-center gap-3 flex-shrink-0">
-      <button
-        id="cookie-decline"
-        class="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
-      >
-        Decline
-      </button>
-      <button
-        id="cookie-accept"
-        class="px-4 py-2 text-sm font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
-      >
-        Accept
-      </button>
-    </div>
+<aside id="cookie-banner" class="cookie-banner" role="dialog" aria-labelledby="cookie-title" hidden>
+  <p id="cookie-title"><strong>Optional analytics</strong></p>
+  <p>
+    With your permission, PostHog measures which pages and actions are useful. Newsletter signup works without it.
+    <a href="/privacy">Read the privacy notice</a>.
+  </p>
+  <div class="cookie-actions">
+    <button id="cookie-decline" class="button button-secondary" type="button">Decline</button>
+    <button id="cookie-accept" class="button" type="button">Allow analytics</button>
   </div>
-</div>
+</aside>
 
 <script>
   const banner = document.getElementById("cookie-banner");
-  const acceptBtn = document.getElementById("cookie-accept");
-  const declineBtn = document.getElementById("cookie-decline");
+  const accept = document.getElementById("cookie-accept");
+  const decline = document.getElementById("cookie-decline");
 
-  function showBanner() {
-    banner?.classList.remove("hidden");
-    if (banner) {
-      document.body.style.paddingBottom = `${banner.offsetHeight}px`;
-    }
-  }
-
-  function hideBanner() {
-    banner?.classList.add("hidden");
-    document.body.style.paddingBottom = "";
-  }
-
-  // Show banner only if no choice has been recorded
   if (localStorage.getItem("ph_consent") === null) {
-    showBanner();
+    banner?.removeAttribute("hidden");
   }
 
-  // Keep padding in sync if banner height changes (e.g. text reflow on resize)
-  if (banner) {
-    new ResizeObserver(() => {
-      if (!banner.classList.contains("hidden")) {
-        document.body.style.paddingBottom = `${banner.offsetHeight}px`;
-      }
-    }).observe(banner);
-  }
-
-  acceptBtn?.addEventListener("click", () => {
+  accept?.addEventListener("click", () => {
     localStorage.setItem("ph_consent", "true");
-    hideBanner();
+    banner?.setAttribute("hidden", "");
     window.dispatchEvent(new Event("ph:consent-granted"));
   });
 
-  declineBtn?.addEventListener("click", () => {
+  decline?.addEventListener("click", () => {
     localStorage.setItem("ph_consent", "false");
-    hideBanner();
+    banner?.setAttribute("hidden", "");
+    window.dispatchEvent(new Event("ph:consent-denied"));
   });
 </script>

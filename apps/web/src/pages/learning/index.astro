@@ -1,0 +1,80 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import NewsletterForm from "../../components/NewsletterForm.astro";
+import { courseStats, courseHours } from "../../lib/course-content";
+
+const courses = (await getCollection("courses")).sort((a, b) =>
+  Number(b.data.featured) - Number(a.data.featured),
+);
+---
+
+<BaseLayout
+  title="Learn"
+  description="Practical Future of Dev courses built around useful skills, real projects and evidence of capability."
+>
+  <header class="hero">
+    <div class="wrap">
+      <p class="eyebrow">Learn</p>
+      <h1 class="display-xl">Learn by building.</h1>
+      <p class="lede">Structured learning that turns understanding into something you can make, explain and demonstrate.</p>
+    </div>
+  </header>
+
+  <section class="section section-cloud" aria-labelledby="courses-heading">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Courses</p>
+        <h2 id="courses-heading" class="display-lg">Open courses you keep.</h2>
+        <p class="lede">
+          Every course is a folder of markdown you download and own, taught by a coding agent
+          you already have. Nothing is locked behind a login.
+        </p>
+      </div>
+      <div class="course-list">
+        {courses.map((course) => (
+          <article class="course-card">
+            <div class="course-card-body">
+              <p class="eyebrow">{course.data.eyebrow}</p>
+              <h3 class="display-md">{course.data.headline}</h3>
+              <p class="lede">{course.data.summary}</p>
+              <div class="compatibility">
+                {course.data.compatibility.map((agent) => (
+                  <span data-status={agent.status}>{agent.name} · {agent.status}</span>
+                ))}
+              </div>
+              <a class="button" href={`/learning/${course.data.slug}`} data-analytics-cta="view-course" data-analytics-placement="learning-index" data-analytics-content-slug={course.data.slug}>View the course</a>
+            </div>
+            <div class="course-card-aside">
+              <p class="meta">At a glance</p>
+              <dl class="stat-list">
+                <div><dt>Lessons</dt><dd>{courseStats.lessonCount}</dd></div>
+                <div><dt>Phases</dt><dd>{courseStats.phaseCount}</dd></div>
+                <div><dt>Course time</dt><dd>{courseHours}h</dd></div>
+                <div><dt>Objectives</dt><dd>{courseStats.objectiveCount}</dd></div>
+              </dl>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="how-heading">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">How courses work</p>
+        <h2 id="how-heading" class="display-lg">Your tutor guides. You do the work.</h2>
+      </div>
+      <div class="grid-3">
+        <article class="panel"><p class="meta">Learn</p><h3>Understand the why</h3><p>Short explanations, checks and analogies build a working mental model.</p></article>
+        <article class="panel"><p class="meta">Build</p><h3>Practise in context</h3><p>Every phase moves a real project forward instead of ending at passive recall.</p></article>
+        <article class="panel"><p class="meta">Demonstrate</p><h3>Show the evidence</h3><p>Homework checks what runs, what you understand and what you can explain.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section build-focus">
+    <div class="wrap"><NewsletterForm placement="learning-footer" heading="Get new courses with the newsletter." /></div>
+  </section>
+</BaseLayout>

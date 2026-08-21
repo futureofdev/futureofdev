@@ -1,33 +1,19 @@
 import { defineConfig } from "astro/config";
-import react from "@astrojs/react";
-import tailwindcss from "@tailwindcss/vite";
-import sitemap from "@astrojs/sitemap";
-import sanity from "@sanity/astro";
 import cloudflare from "@astrojs/cloudflare";
 import dotenv from "dotenv";
 
-// Load env vars from monorepo root
-dotenv.config({ path: "../../.env" });
+dotenv.config({ path: "../../.env", quiet: true });
 
 export default defineConfig({
   site: "https://futureofdev.com",
-  integrations: [
-    react(),
-    sitemap(),
-    sanity({
-      projectId: process.env.SANITY_PROJECT_ID,
-      dataset: process.env.SANITY_DATASET || "production",
-      apiVersion: "2024-01-01",
-      useCdn: true,
-    }),
-  ],
+  // No route uses Astro sessions. The in-memory driver avoids requiring an
+  // otherwise-unused Cloudflare KV binding while preserving adapter defaults.
+  session: { driver: "memory" },
   adapter: cloudflare(),
   vite: {
     envDir: "../../",
-    plugins: [tailwindcss()],
-    optimizeDeps: {
-      include: ["react", "react-dom"],
-    },
-    ...(process.env.NGROK_HOST ? { server: { allowedHosts: [process.env.NGROK_HOST] } } : {}),
+    ...(process.env.NGROK_HOST
+      ? { server: { allowedHosts: [process.env.NGROK_HOST] } }
+      : {}),
   },
 });

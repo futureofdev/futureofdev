@@ -1,73 +1,121 @@
 ---
+import CookieConsent from "../components/CookieConsent.astro";
 import PosthogAnalytics from "../components/PosthogAnalytics.astro";
+import { siteNavigation } from "../content/site";
 
 interface Props {
-  title: string;
+  title?: string;
   description?: string;
+  canonicalPath?: string;
   ogImage?: string;
+  ogType?: "website" | "article";
+  publishedAt?: string;
+  noindex?: boolean;
+  structuredData?: Record<string, unknown> | Array<Record<string, unknown>>;
 }
 
-const { title, description = "The Future of Developer Experience", ogImage } = Astro.props;
-const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-const fullTitle = `${title} | Future of Dev`;
-const ogImageURL = ogImage ?? new URL("/og-default.png", Astro.site).href;
+const {
+  title = "Learn and build the AI-native way",
+  description = "The practical newsletter for people evolving with AI and entering the industry.",
+  canonicalPath = Astro.url.pathname,
+  ogImage = "/og-default.png",
+  ogType = "website",
+  publishedAt,
+  noindex = false,
+  structuredData,
+} = Astro.props;
+
+const canonicalURL = new URL(canonicalPath, Astro.site);
+const ogImageURL = new URL(ogImage, Astro.site);
+const fullTitle = title === "Future of Dev" ? title : `${title} | Future of Dev`;
+const organisation = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "Future of Dev",
+  url: "https://futureofdev.com",
+  logo: "https://futureofdev.com/brand/fod-symbol.svg",
+  description:
+    "A newsletter-led learning brand helping people understand change, develop useful skills and build real things in the AI-native era.",
+  sameAs: [
+    "https://x.com/futureofdev",
+    "https://www.linkedin.com/company/futureofdev",
+  ],
+};
+const jsonLd = structuredData
+  ? Array.isArray(structuredData)
+    ? [organisation, ...structuredData]
+    : [organisation, structuredData]
+  : [organisation];
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en-GB">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    <title>{fullTitle}</title>
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" href="/favicon-32.png" sizes="32x32" />
+    <link rel="alternate" type="application/rss+xml" title="Future of Dev Insights" href="/rss.xml" />
     <link rel="canonical" href={canonicalURL} />
+    <title>{fullTitle}</title>
 
-    <!-- Open Graph -->
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content="Future of Dev" />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImageURL} />
-    <meta property="og:image:secure_url" content={ogImageURL} />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta property="og:image:type" content="image/png" />
-    <meta property="og:site_name" content="Future of Dev" />
-
-    <!-- Twitter / X -->
+    {publishedAt && <meta property="article:published_time" content={publishedAt} />}
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={fullTitle} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageURL} />
+
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   </head>
-  <body class="min-h-screen flex flex-col">
-    <header class="border-b">
-      <nav class="container mx-auto px-4 py-4 flex items-center justify-between">
-        <a href="/" class="text-xl font-bold">Future of Dev</a>
-        <div class="flex items-center gap-6">
-          <a href="/blog" class="hover:text-primary/80">Blog</a>
-          <a href="/about" class="hover:text-primary/80">About</a>
-          <a
-            href="https://app.futureofdev.com"
-            class="bg-primary text-primary-foreground px-4 py-2 rounded-md hover:bg-primary/90"
-          >
-            Sign In
-          </a>
-        </div>
-      </nav>
+  <body>
+    <a class="skip-link" href="#content">Skip to content</a>
+    <header class="site-header">
+      <div class="wrap header-inner">
+        <a class="brand-link" href="/" aria-label="Future of Dev home">
+          <img src="/brand/fod-lockup-horizontal.svg" width="186" height="32" alt="Future of Dev" />
+        </a>
+        <nav class="site-nav" aria-label="Primary navigation">
+          {siteNavigation.map((item) => <a href={item.href}>{item.label}</a>)}
+          <a class="nav-join" href="/#join" data-analytics-cta="join" data-analytics-placement="navigation">Join</a>
+        </nav>
+      </div>
     </header>
 
-    <main class="flex-1">
+    <main id="content">
       <slot />
     </main>
 
-    <footer class="border-t py-8">
-      <div class="container mx-auto px-4 text-center text-muted-foreground">
-        <p>&copy; {new Date().getFullYear()} Future of Dev. All rights reserved.</p>
+    <footer class="site-footer">
+      <div class="wrap footer-grid">
+        <div>
+          <img src="/brand/fod-lockup-horizontal-mono-white.svg" width="186" height="32" alt="Future of Dev" />
+          <p>Learn and build the AI-native way.</p>
+        </div>
+        <nav aria-label="Footer navigation">
+          {siteNavigation.filter((item) => item.href !== "/").map((item) => (
+            <a href={item.href}>{item.label}</a>
+          ))}
+          <a href="/privacy">Privacy</a>
+          <a href="/rss.xml">RSS</a>
+        </nav>
+        <div class="footer-meta">
+          <a href="https://x.com/futureofdev" rel="me noopener noreferrer">X</a>
+          <a href="https://www.linkedin.com/company/futureofdev" rel="noopener noreferrer">LinkedIn</a>
+          <p>&copy; {new Date().getFullYear()} Future of Dev.</p>
+        </div>
       </div>
     </footer>
+
+    <CookieConsent />
     <PosthogAnalytics />
   </body>
 </html>

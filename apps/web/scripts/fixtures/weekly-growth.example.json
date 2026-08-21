@@ -1,0 +1,19 @@
+{
+  "current": {
+    "period": { "start": "2026-08-10", "end": "2026-08-16" },
+    "sources": ["posthog", "beehiiv", "search-console", "linkedin"],
+    "metrics": {
+      "qualifiedVisits": 120,
+      "newsletterSignups": 14,
+      "newsletterSignupRate": 0.1167,
+      "beehiivVerifiedClicks": 31,
+      "courseDownloads": 8,
+      "searchClicks": 22,
+      "searchImpressions": 940,
+      "searchCtr": 0.0234,
+      "linkedinImpressions": 4200,
+      "linkedinClicks": 58
+    },
+    "notes": ["Fixture data only. No subscriber-level fields are present."]
+  }
+}

@@ -1,3 +1,49 @@
 ---
-return Astro.redirect("/");
+export const prerender = false;
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import NewsletterForm from "../../components/NewsletterForm.astro";
+import { listPublishedInsights } from "../../lib/insights";
+
+const posts = await listPublishedInsights(Astro.locals, 100);
+Astro.response.headers.set(
+  "Cache-Control",
+  "public, max-age=300, stale-while-revalidate=86400, stale-if-error=604800",
+);
 ---
+
+<BaseLayout
+  title="Insights"
+  description="Future of Dev editions and practical insight for learning, working and building in the AI-native era."
+>
+  <header class="hero">
+    <div class="wrap">
+      <p class="eyebrow">Insights</p>
+      <h1 class="display-xl">Understand the shift.</h1>
+      <p class="lede">Interpretation, practical learning and things worth building. No daily noise.</p>
+    </div>
+  </header>
+
+  <section class="section" aria-label="Published insights">
+    <div class="wrap">
+      {posts.map((post) => (
+        <a class="issue-card" href={`/insights/${post.slug}`}>
+          <span class="meta">
+            {new Date(post.publishedAt).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}
+          </span>
+          <span>
+            <h2>{post.title}</h2>
+            <p>{post.excerpt}</p>
+          </span>
+          <span class="issue-arrow" aria-hidden="true">→</span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="section build-focus">
+    <div class="wrap">
+      <NewsletterForm placement="insights-index" />
+    </div>
+  </section>
+</BaseLayout>

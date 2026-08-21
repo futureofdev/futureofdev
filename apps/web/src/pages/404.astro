@@ -1,31 +1,14 @@
 ---
-import LandingLayout from "../layouts/LandingLayout.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
-<LandingLayout title="Page Not Found" description="The page you're looking for doesn't exist.">
-  <section class="py-24 md:py-40 px-4">
-    <div class="container mx-auto max-w-2xl text-center">
-      <p class="text-xs font-mono uppercase tracking-widest text-muted-foreground mb-4">404</p>
-      <h1 class="text-4xl md:text-5xl font-bold tracking-tight font-mono mb-4">
-        Page not found
-      </h1>
-      <p class="text-lg text-muted-foreground mb-8">
-        The page you're looking for doesn't exist or has been moved.
-      </p>
-      <div class="flex items-center justify-center gap-4">
-        <a
-          href="/"
-          class="px-5 py-2.5 rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors text-sm"
-        >
-          Go home
-        </a>
-        <a
-          href="/claude-academy"
-          class="px-5 py-2.5 rounded-lg border border-border text-foreground font-medium hover:bg-muted/30 transition-colors text-sm"
-        >
-          Claude Academy
-        </a>
-      </div>
+<BaseLayout title="Page not found" description="The requested Future of Dev page was not found." noindex>
+  <section class="hero">
+    <div class="narrow">
+      <p class="eyebrow">404</p>
+      <h1 class="display-xl">That path ends here.</h1>
+      <p class="lede">The page may have moved, or the address may be incomplete.</p>
+      <p><a class="button" href="/">Go home</a> <a class="button button-secondary" href="/insights">Read insights</a></p>
     </div>
   </section>
-</LandingLayout>
+</BaseLayout>

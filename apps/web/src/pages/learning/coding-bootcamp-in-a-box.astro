@@ -1,0 +1,207 @@
+---
+import { getCollection, render } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import NewsletterForm from "../../components/NewsletterForm.astro";
+import { courseManifest } from "../../lib/course";
+import { COURSE_OFFER } from "../../lib/course-token";
+import { courseStats, courseHours, phaseContent } from "../../lib/course-content";
+
+const courses = await getCollection("courses");
+const entry = courses.find((course) => course.data.slug === "coding-bootcamp-in-a-box");
+if (!entry) throw new Error("Missing course content for coding-bootcamp-in-a-box");
+const copy = entry.data;
+const { Content } = await render(entry);
+
+const supported = copy.compatibility.filter((agent) => agent.status === "supported");
+
+const courseSchema = {
+  "@context": "https://schema.org",
+  "@type": "Course",
+  name: courseManifest.title,
+  description: courseManifest.description,
+  provider: { "@type": "Organization", name: "Future of Dev", url: "https://futureofdev.com" },
+  isAccessibleForFree: true,
+  educationalLevel: "Beginner",
+  inLanguage: courseManifest.language,
+  license: courseManifest.license,
+  url: "https://futureofdev.com/learning/coding-bootcamp-in-a-box",
+  numberOfCredits: courseStats.lessonCount,
+  timeRequired: `PT${Math.round(courseStats.durationMinutes / 60)}H`,
+};
+
+function hours(minutes: number): string {
+  return `${Math.round((minutes / 60) * 10) / 10}h`;
+}
+---
+
+<BaseLayout
+  title={courseManifest.title}
+  description={copy.seoDescription}
+  structuredData={courseSchema}
+>
+  <header class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow">{copy.eyebrow} · v{courseManifest.version}</p>
+        <h1 class="display-xl">{copy.headline}</h1>
+        <p class="lede">{courseManifest.description}</p>
+        <div class="compatibility">
+          {copy.compatibility.map((agent) => (
+            <span data-status={agent.status}>{agent.name} · {agent.status}</span>
+          ))}
+        </div>
+      </div>
+      <div class="hero-aside">
+        <p class="meta">At a glance</p>
+        <dl class="stat-list">
+          <div><dt>Lessons</dt><dd>{courseStats.lessonCount}</dd></div>
+          <div><dt>Phases</dt><dd>{courseStats.phaseCount}</dd></div>
+          <div><dt>Course time</dt><dd>{courseHours}h</dd></div>
+          <div><dt>Homework</dt><dd>{courseStats.homeworkCount}</dd></div>
+        </dl>
+        <p class="stat-note">Free · self-paced · {courseManifest.license}</p>
+        <a class="button" href="#download" data-analytics-cta="get-course" data-analytics-placement="course-hero">Get the course</a>
+      </div>
+    </div>
+  </header>
+
+  <section id="getting-started" class="section" aria-labelledby="quickstart-heading">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">How to use it</p>
+        <h2 id="quickstart-heading" class="display-lg">{copy.quickstart.heading}</h2>
+        <p class="lede">{copy.quickstart.lede}</p>
+      </div>
+      <ol class="steps">
+        {copy.quickstart.steps.map((step) => (
+          <li class="step">
+            <div class="step-body">
+              <b>{step.label}</b>
+              <p set:html={step.body.replace(/`([^`]+)`/g, "<code>$1</code>")} />
+            </div>
+          </li>
+        ))}
+      </ol>
+      {copy.quickstart.footnote && <p class="step-footnote">{copy.quickstart.footnote}</p>}
+    </div>
+  </section>
+
+  <section class="section section-cloud" aria-labelledby="outcomes-heading">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Outcomes</p>
+        <h2 id="outcomes-heading" class="display-lg">Finish with a real portfolio online.</h2>
+      </div>
+      <div class="grid-3">
+        {copy.outcomes.map((outcome) => (
+          <article class="panel">
+            <p class="meta">{outcome.label}</p>
+            <h3>{outcome.title}</h3>
+            <p>{outcome.body}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="objectives-heading">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">What you will be able to do</p>
+        <h2 id="objectives-heading" class="display-lg">
+          {courseStats.objectiveCount} objectives, and most of them are practice.
+        </h2>
+        <p class="lede">
+          Every lesson declares what you should be able to do when it ends, and
+          {" "}{courseStats.practiceCount} of the {courseStats.objectiveCount} ask you to do
+          something rather than know something. Those are the ones your tutor checks against
+          your actual work.
+        </p>
+      </div>
+      <div class="split-measure">
+        <div class="measure practice">
+          <p class="meta">Practice</p>
+          <p class="measure-value">{courseStats.practiceCount}</p>
+          <p>Settled by inspecting what you built or ran.</p>
+        </div>
+        <div class="measure">
+          <p class="meta">Knowledge</p>
+          <p class="measure-value">{courseStats.knowledgeCount}</p>
+          <p>Settled by explaining the idea in your own words.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-cloud" aria-labelledby="outline-heading">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Full course outline</p>
+        <h2 id="outline-heading" class="display-lg">
+          {courseStats.phaseCount} phases. One connected build.
+        </h2>
+        <p class="lede">
+          {courseStats.lessonCount} lessons and about {courseHours} hours of course time. Every
+          phase ends with homework your tutor reviews before the next one opens.
+        </p>
+      </div>
+      <div class="course-outline">
+        {phaseContent.map((phase) => (
+          <section class="phase">
+            <div class="phase-head">
+              <p class="meta">Phase {phase.number.toString().padStart(2, "0")}</p>
+              <h3>{phase.name}</h3>
+              <p class="phase-meta">
+                {phase.lessons.length} lessons · {hours(phase.durationMinutes)} · {phase.objectives.length} objectives
+              </p>
+              {phase.highlight && <p class="phase-highlight">You {phase.highlight}.</p>}
+            </div>
+            <ol>
+              {phase.lessonsWithDetail.map((lesson) => (
+                <li>
+                  {lesson.title}
+                  {lesson.homework && <span class="homework-flag">Homework</span>}
+                </li>
+              ))}
+            </ol>
+          </section>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="prerequisites-heading">
+    <div class="wrap split">
+      <div>
+        <p class="eyebrow">Prerequisites</p>
+        <h2 id="prerequisites-heading" class="display-lg">{copy.prerequisites.heading}</h2>
+      </div>
+      <div>
+        <p class="lede">{copy.prerequisites.body}</p>
+        <div class="prose-note"><Content /></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="download" class="section build-focus" aria-labelledby="download-heading">
+    <div class="wrap">
+      <p class="eyebrow">Download</p>
+      <h2 id="download-heading" class="display-lg">{copy.download.heading}</h2>
+      <p class="lede">{copy.download.lede}</p>
+      <div class="download-form">
+        <NewsletterForm
+          placement="course-download"
+          offer={COURSE_OFFER}
+          heading={copy.download.formHeading}
+          copy={copy.download.formCopy}
+          buttonLabel="Subscribe and get the course"
+          downloadLabel={`Download ${courseManifest.title}`}
+        />
+      </div>
+      <p class="download-note">
+        Once it downloads, open the folder in {supported.map((agent) => agent.name).join(" or ")}.
+        Run <code>$learn</code> in Codex or <code>/learn</code> in Claude Code.
+      </p>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,1643 @@
+{
+  "_id": "9a2fcff6-17e0-45cb-a145-86ebcd807320",
+  "author": {
+    "bio": "Founder of Future of Dev. Passionate about helping developers navigate the AI-driven future of software careers with practical guidance and community support.",
+    "image": null,
+    "name": "Luke Hennerley"
+  },
+  "body": [
+    {
+      "_key": "224cacd21c0b",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "7f696639b97e",
+          "_type": "span",
+          "marks": [],
+          "text": "The golden ticket is gone."
+        }
+      ],
+      "markDefs": [],
+      "style": "normal"
+    },
+    {
+      "_key": "1f75d05b5ff4",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "a8bd89069b04",
+          "_type": "span",
+          "marks": [],
+          "text": "For the better part of a decade, the advice was simple: learn to code. The jobs were there, the salaries were real, and the path was clear enough. Study computer science, do a bootcamp, and you'd come out the other side employable. It was one of the few careers where a motivated person without a traditional background could genuinely compete."
+        }
+      ],
+      "markDefs": [],
+      "style": "normal"
+    },
+    {
+      "_key": "3687d0382336",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "7a59f1c2670e",
+          "_type": "span",
+          "marks": [],
+          "text": "That path is closing, and the data is unambiguous."
+        }
+      ],
+      "markDefs": [],
+      "style": "normal"
+    },
+    {
+      "_key": "69577670ce11",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "ddc3968422bf",
+          "_type": "span",
+          "marks": [
+            "9a75870f021d"
+          ],
+          "text": "Stanford's economic research shows employment for software developers aged 22–25 declined nearly 20% from its 2022 peak"
+        },
+        {
+          "_key": "64b27cc13973",
+          "_type": "span",
+          "marks": [],
+          "text": ". Stack Overflow put it more plainly: "
+        },
+        {
+          "_key": "16902cfb575d",
+          "_type": "span",
+          "marks": [
+            "em",
+            "9f6c119b012f"
+          ],
+          "text": "for promising Gen Z students, the career promise of software development is gone"
+        },
+        {
+          "_key": "c039b30d9261",
+          "_type": "span",
+          "marks": [
+            "em"
+          ],
+          "text": "."
+        }
+      ],
+      "markDefs": [
+        {
+          "_key": "9a75870f021d",
+          "_type": "link",
+          "href": "https://digitaleconomy.stanford.edu/app/uploads/2025/11/CanariesintheCoalMine_Nov25.pdf"
+        },
+        {
+          "_key": "9f6c119b012f",
+          "_type": "link",
+          "href": "https://stackoverflow.blog/2025/12/26/ai-vs-gen-z/"
+        }
+      ],
+      "style": "normal"
+    },
+    {
+      "_key": "5964719a50e7",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "d2e78fa50557",
+          "_type": "span",
+          "marks": [],
+          "text": "The timing couldn't be worse for anyone mid-journey on the traditional path."
+        }
+      ],
+      "markDefs": [],
+      "style": "normal"
+    },
+    {
+      "_key": "a87390589451",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "bddd3558f8d1",
+          "_type": "span",
+          "marks": [
+            "f228f7e2d37f"
+          ],
+          "text": "Oxford University still caps AI modules as an optional 50% of their Computer Science degree until year two"
+        },
+        {
+          "_key": "9555622f2ce6",
+          "_type": "span",
+          "marks": [],
+          "text": ". By which point you're in debt on a curriculum designed for a world that no longer exists. Three years. Tens of thousands of pounds."
+        }
+      ],
+      "markDefs": [
+        {
+          "_key": "f228f7e2d37f",
+          "_type": "link",
+          "href": "https://www.ox.ac.uk/sites/files/oxford/field/field_document/Computer%20Science%20CIS%202025.pdf"
+        }
+      ],
+      "style": "normal"
+    },
+    {
+      "_key": "e7ed3e75424b",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "bddd3558f8d1",
+          "_type": "span",
+          "marks": [],
+          "text": "And at the end of it, a degree calibrated to a job market that was in a completely different shape when you enrolled."
+        }
+      ],
+      "markDefs": [],
+      "style": "normal"
+    },
+    {
+      "_key": "e09d2cdd3b6d",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "bddd3558f8d1",
+          "_type": "span",
+          "marks": [],
+          "text": "Bootcamps are no better. It makes no sense to quit your job and spend thousands on four weeks of web fundamentals when the fundamentals themselves are being automated. The model was built for a stable target. The target is moving faster than any institution can follow."
+        }
+      ],
+      "markDefs": [],
+      "style": "normal"
+    },
+    {
+      "_key": "85ecdd48c50f",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "311b672a7b38",
+          "_type": "span",
+          "marks": [],
+          "text": "But here's what those headlines consistently miss."
+        }
+      ],
+      "markDefs": [],
+      "style": "normal"
+    },
+    {
+      "_key": "e53305bc243e",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "190ec692070a",
+          "_type": "span",
+          "marks": [],
+          "text": "The demand for "
+        },
+        {
+          "_key": "add8ec7946b0",
+          "_type": "span",
+          "marks": [
+            "em",
+            "strong"
+          ],
+          "text": "capable"
+        },
+        {
+          "_key": "7b04ab0598b5",
+          "_type": "span",
+          "marks": [],
+          "text": " people hasn't gone away. What's disappeared is tolerance for "
+        },
+        {
+          "_key": "5baa2d8477c8",
+          "_type": "span",
+          "marks": [
+            "em"
+          ],
+          "text": "slow"
+        },
+        {
+          "_key": "9e80993e30b7",
+          "_type": "span",
+          "marks": [],
+          "text": " people. The bar has shifted from knowing how to do something to knowing how to do it well, fast, and in genuine collaboration with AI systems that are handling the scaffolding."
+        }
+      ],
+      "markDefs": [],
+      "style": "normal"
+    },
+    {
+      "_key": "a3142f5c8459",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "9e80993e30b7",
+          "_type": "span",
+          "marks": [],
+          "text": "Junior roles aren't disappearing because the work doesn't exist. They're disappearing because the work that used to take a junior three days now takes a senior three hours with an AI co-pilot."
+        }
+      ],
+      "markDefs": [],
+      "style": "normal"
+    },
+    {
+      "_key": "469697da14f8",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "9e80993e30b7",
+          "_type": "span",
+          "marks": [],
+          "text": "The bottleneck has moved. And nobody has built a clear path to the new version of capable yet."
+        }
+      ],
+      "markDefs": [],
+      "style": "normal"
+    },
+    {
+      "_key": "005106049f8a",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "ce4983fe3302",
+          "_type": "span",
+          "marks": [],
+          "text": "That's the problem skill-based learning solves."
+        }
+      ],
+      "markDefs": [],
+      "style": "normal"
+    },
+    {
+      "_key": "f7cd2e5d6c33",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "e57cdc4ca6b9",
+          "_type": "span",
+          "marks": [],
+          "text": "Why the traditional models fail"
+        }
+      ],
+      "markDefs": [],
+      "style": "h2"
+    },
+    {
+      "_key": "454d0d7ba8af",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "1bc152216aa9",
+          "_type": "span",
+          "marks": [],
+          "text": "The core failure of both university and bootcamp models isn't cost or duration, although both are real problems. It's that they're built around "
+        },
+        {
+          "_key": "c250a92f87a5",
+          "_type": "span",
+          "marks": [
+            "em"
+          ],
+          "text": "topics"
+        },
+        {
+          "_key": "ad65d519d452",
+          "_type": "span",
+          "marks": [],
+          "text": ", not "
+        },
+        {
+          "_key": "a6a6c07b93c2",
+          "_type": "span",
+          "marks": [
+            "em"
+          ],
+          "text": "capability"
+        },
+        {
+          "_key": "1ca66891f169",
+          "_type": "span",
+          "marks": [],
+          "text": "."
+        }
+      ],
+      "markDefs": [],
+      "style": "normal"
+    },
+    {
+      "_key": "6ea84d55e37b",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "4e9efea69a37",
+          "_type": "span",
+          "marks": [],
+          "text": "A topic-ordered curriculum asks: what subject comes after the last one? A capability-ordered curriculum asks: what does a learner need to be able to do before the next thing becomes useful? These produce completely different sequences, and only one of them reflects how expertise is actually built."
+        }
+      ],
+      "markDefs": [],
+      "style": "normal"
+    },
+    {
+      "_key": "0466b01b6827",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "e5d772be1fb6",
+          "_type": "span",
+          "marks": [],
+          "text": "University curricula are designed by committees optimising for academic coherence. Bootcamps are designed around what can be taught in a fixed window. Neither starts from the question that actually matters: what does a motivated person need to be able to do to be genuinely useful, and what's the fastest, honest path to get them there?"
+        }
+      ],
+      "markDefs": [],
+      "style": "normal"
+    },
+    {
+      "_key": "291524dc8bf0",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "04ef4e3b0025",
+          "_type": "span",
+          "marks": [],
+          "text": "The result is graduates who understand theory but freeze in real environments. Bootcamp alumni who can follow a tutorial but can't debug something that wasn't in the syllabus. The gap between comprehension and capability is where most traditional learning falls apart — and it falls apart there because most traditional learning never puts you in contact with the real thing until it's too late to course-correct."
+        }
+      ],
+      "markDefs": [],
+      "style": "normal"
+    },
+    {
+      "_key": "189ca745862d",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "cdd930df1305",
+          "_type": "span",
+          "marks": [],
+          "text": "AI as a knowledge extractor"
+        }
+      ],
+      "markDefs": [],
+      "style": "h2"
+    },
+    {
+      "_key": "770f594b267d",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "f62a33f2c520",
+          "_type": "span",
+          "marks": [],
+          "text": "AI doesn't replace expert knowledge. It provides something equally valuable: "
+        },
+        {
+          "_key": "f72ef9ce244b",
+          "_type": "span",
+          "marks": [
+            "strong"
+          ],
+          "text": "a structured conversation partner that can help experts externalise, organise, and package what they know"
+        },
+        {
+          "_key": "fd0ec43e3256",
+          "_type": "span",
+          "marks": [],
+          "text": " into teachable, reusable form."
+        }
+      ],
+      "markDefs": [],
+      "style": "normal"
+    },
+    {
+      "_key": "e0233d0d6a5f",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "02069f1a2669",
+          "_type": "span",
+          "marks": [],
+          "text": "The process is fundamentally collaborative:"
+        }
+      ],
+      "markDefs": [],
+      "style": "normal"
+    },
+    {
+      "_key": "464fc9785cd0",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "a96fdaade235",
+          "_type": "span",
+          "marks": [],
+          "text": "The "
+        },
+        {
+          "_key": "af4cd87de3e9",
+          "_type": "span",
+          "marks": [
+            "strong"
+          ],
+          "text": "expert"
+        },
+        {
+          "_key": "01d4a473612a",
+          "_type": "span",
+          "marks": [],
+          "text": " provides the raw material — stories, examples, decisions, instincts, war stories"
+        }
+      ],
+      "level": 1,
+      "listItem": "bullet",
+      "markDefs": [],
+      "style": "normal"
+    },
+    {
+      "_key": "4c44324ee07c",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "c033c9169c26",
+          "_type": "span",
+          "marks": [
+            "strong"
+          ],
+          "text": "AI"
+        },
+        {
+          "_key": "460ca7af5fc6",
+          "_type": "span",
+          "marks": [],
+          "text": " provides structure — asking the right questions, identifying patterns, converting tacit knowledge into explicit frameworks"
+        }
+      ],
+      "level": 1,
+      "listItem": "bullet",
+      "markDefs": [],
+      "style": "normal"
+    },
+    {
+      "_key": "2082e147bfb2",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "b0b0fb89d079",
+          "_type": "span",
+          "marks": [],
+          "text": "The output is "
+        },
+        {
+          "_key": "a1c31320811a",
+          "_type": "span",
+          "marks": [
+            "strong"
+          ],
+          "text": "skills"
+        },
+        {
+          "_key": "83c485016c15",
+          "_type": "span",
+          "marks": [],
+          "text": " — discrete, learnable units that others can actually acquire"
+        }
+      ],
+      "level": 1,
+      "listItem": "bullet",
+      "markDefs": [],
+      "style": "normal"
+    },
+    {
+      "_key": "8067cad7565b",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "fa4fa87c8f01",
+          "_type": "span",
+          "marks": [],
+          "text": "This flips the traditional curriculum design process. Instead of starting with a syllabus and filling it with content, you start with what the expert actually does - and reverse-engineer the teaching from reality."
+        }
+      ],
+      "markDefs": [],
+      "style": "normal"
+    },
+    {
+      "_key": "d8adef6a498c",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "d2bc766a467b",
+          "_type": "span",
+          "marks": [],
+          "text": "Framework: From Expert to Skill"
+        }
+      ],
+      "markDefs": [],
+      "style": "h2"
+    },
+    {
+      "_key": "6d6a9ce94610",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "b14b32499dc5",
+          "_type": "span",
+          "marks": [],
+          "text": "Step 1 - Mine the real-world examples first"
+        }
+      ],
+      "markDefs": [],
+      "style": "h3"
+    },
+    {
+      "_key": "b41328b378c4",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "80887a2df07b",
+          "_type": "span",
+          "marks": [],
+          "text": "Before any curriculum design, before any lesson structure, before any system — "
+        },
+        {
+          "_key": "655954fe1615",
+          "_type": "span",
+          "marks": [
+            "strong"
+          ],
+          "text": "extract the actual examples"
+        },
+        {
+          "_key": "d647e3d10e98",
+          "_type": "span",
+          "marks": [],
+          "text": "."
+        }
+      ],
+      "markDefs": [],
+      "style": "normal"
+    },
+    {
+      "_key": "f678c62029b5",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "5d5285e6b973",
+          "_type": "span",
+          "marks": [],
+          "text": "Not theory. Not best practices. Specific situations that people have experienced firsthand."
+        }
+      ],
+      "markDefs": [],
+      "style": "normal"
+    },
+    {
+      "_key": "8efe30984173",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "a41459551ff2",
+          "_type": "span",
+          "marks": [],
+          "text": "The prompts that work best:"
+        }
+      ],
+      "markDefs": [],
+      "style": "normal"
+    },
+    {
+      "_key": "a2314ab1fd19",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "ebf9cf963efb",
+          "_type": "span",
+          "marks": [
+            "em"
+          ],
+          "text": "\"Tell me about a time this went badly wrong. What happened?\""
+        }
+      ],
+      "level": 1,
+      "listItem": "bullet",
+      "markDefs": [],
+      "style": "normal"
+    },
+    {
+      "_key": "22f6054da176",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "1858af259add",
+          "_type": "span",
+          "marks": [
+            "em"
+          ],
+          "text": "\"What's the most common mistake you see junior people make in this situation?\""
+        }
+      ],
+      "level": 1,
+      "listItem": "bullet",
+      "markDefs": [],
+      "style": "normal"
+    },
+    {
+      "_key": "f3315a862b6b",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "ee57bcee1af5",
+          "_type": "span",
+          "marks": [
+            "em"
+          ],
+          "text": "\"Walk me through the last time you had to make a really hard call on this. What were you weighing?\""
+        }
+      ],
+      "level": 1,
+      "listItem": "bullet",
+      "markDefs": [],
+      "style": "normal"
+    },
+    {
+      "_key": "76033a606959",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "75d8caab27ce",
+          "_type": "span",
+          "marks": [
+            "em"
+          ],
+          "text": "\"What do you know now that you wish someone had told you two years ago?\""
+        }
+      ],
+      "level": 1,
+      "listItem": "bullet",
+      "markDefs": [],
+      "style": "normal"
+    },
+    {
+      "_key": "d697b3d1d7a7",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "854f7ad4ac04",
+          "_type": "span",
+          "marks": [],
+          "text": "AI is exceptionally useful here as an active interviewer — asking follow-up questions, probing for specifics, and noticing when an expert has glossed over something actually important. The expert talks; the structure emerges from the conversation."
+        }
+      ],
+      "markDefs": [],
+      "style": "normal"
+    },
+    {
+      "_key": "be04b464abd6",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "bb340fd1d653",
+          "_type": "span",
+          "marks": [
+            "strong"
+          ],
+          "text": "Why examples first?"
+        },
+        {
+          "_key": "3ce7c3489133",
+          "_type": "span",
+          "marks": [],
+          "text": " Because the example "
+        },
+        {
+          "_key": "f9f0e30359b8",
+          "_type": "span",
+          "marks": [
+            "em"
+          ],
+          "text": "is"
+        },
+        {
+          "_key": "1ff5b55a2a22",
+          "_type": "span",
+          "marks": [],
+          "text": " the curriculum. Real-world cases contain the actual knowledge. Theory can be reverse-engineered from examples — it rarely works the other way around."
+        }
+      ],
+      "markDefs": [],
+      "style": "normal"
+    },
+    {
+      "_key": "290e17f27f81",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "b4ee54004059",
+          "_type": "span",
+          "marks": [],
+          "text": "Starting with an example portfolio site, built on some “best practices” in our first Bootcamp, "
+        },
+        {
+          "_key": "720890359dd6",
+          "_type": "span",
+          "marks": [
+            "61a1d41354f5"
+          ],
+          "text": "Zero-to-Portfolio"
+        },
+        {
+          "_key": "bbcd5d173c72",
+          "_type": "span",
+          "marks": [],
+          "text": " is a basic version of this. In theory, experts and senior engineers can build up real-world examples with AI easily."
+        }
+      ],
+      "markDefs": [
+        {
+          "_key": "61a1d41354f5",
+          "_type": "internalLink",
+          "reference": {
+            "_ref": "0038c147-d1dc-438d-b901-445ad0fa5695",
+            "_type": "reference"
+          }
+        }
+      ],
+      "style": "normal"
+    },
+    {
+      "_key": "a7a56e5de439",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "f53273694290",
+          "_type": "span",
+          "marks": [],
+          "text": "An expert can prompt AI to create a full-stack application with major security flaws in it, and then reverse engineer a curriculum."
+        }
+      ],
+      "markDefs": [],
+      "style": "normal"
+    },
+    {
+      "_key": "c35f9c35c7ce",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "f53273694290",
+          "_type": "span",
+          "marks": [],
+          "text": "It can be done on existing enterprise code bases too. This is a massive opportunity for helping juniors to diagnose issues in the future - this methodology isn’t just for pre-employment but post-employment too."
+        }
+      ],
+      "markDefs": [],
+      "style": "normal"
+    },
+    {
+      "_key": "950aa56c8836",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "b90833dfecf9",
+          "_type": "span",
+          "marks": [
+            "strong"
+          ],
+          "text": "In practice (software lifecycle):"
+        }
+      ],
+      "markDefs": [],
+      "style": "normal"
+    },
+    {
+      "_key": "0f33712da741",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "abf66eb18ea5",
+          "_type": "span",
+          "marks": [],
+          "text": "A senior engineer describes a production incident. A query that passed all tests in staging caused cascading timeouts in production under load. The fix took 72 hours. That single story contains: lessons about query planning, environment parity, on-call communication, incident management, post-mortems, and the limits of unit testing. One war story. Dozens of teachable moments. This is the raw material that most curricula never capture - because the people who have it are too busy to write documentation, and nobody has asked them the right questions."
+        }
+      ],
+      "markDefs": [],
+      "style": "blockquote"
+    },
+    {
+      "_key": "8375e85d0582",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "7c644a99fb57",
+          "_type": "span",
+          "marks": [],
+          "text": "Step 2: Structure knowledge as a curriculum"
+        }
+      ],
+      "markDefs": [],
+      "style": "h3"
+    },
+    {
+      "_key": "24f877011354",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "d8f2b891a795",
+          "_type": "span",
+          "marks": [],
+          "text": "Once you have the raw material, sequencing and structure determine whether learning actually happens."
+        }
+      ],
+      "markDefs": [],
+      "style": "normal"
+    },
+    {
+      "_key": "c9185530cf62",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "d0d4f0c20d2b",
+          "_type": "span",
+          "marks": [],
+          "text": "The curriculum is organised into "
+        },
+        {
+          "_key": "f855ca22a70f",
+          "_type": "span",
+          "marks": [
+            "strong"
+          ],
+          "text": "phases,"
+        },
+        {
+          "_key": "1ace3b4b75c5",
+          "_type": "span",
+          "marks": [],
+          "text": " each representing a competency level, and then "
+        },
+        {
+          "_key": "93f06948a0e6",
+          "_type": "span",
+          "marks": [
+            "strong"
+          ],
+          "text": "lessons"
+        },
+        {
+          "_key": "036ea469f154",
+          "_type": "span",
+          "marks": [],
+          "text": " within each phase. The sequencing question is: "
+        },
+        {
+          "_key": "03f483d8f90d",
+          "_type": "span",
+          "marks": [
+            "em"
+          ],
+          "text": "\"What does a learner need to be able to do before this is useful?\""
+        },
+        {
+          "_key": "d6f850265895",
+          "_type": "span",
+          "marks": [],
+          "text": " Not \"what subject comes next?\" — that's topic-ordering, which is how most curricula fail."
+        }
+      ],
+      "markDefs": [],
+      "style": "normal"
+    },
+    {
+      "_key": "05910b4137d7",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "fd2781f410e9",
+          "_type": "span",
+          "marks": [],
+          "text": "In "
+        },
+        {
+          "_key": "2db9f6f736e6",
+          "_type": "span",
+          "marks": [
+            "dd76202cb8ee"
+          ],
+          "text": "Zero-to-Portfolio"
+        },
+        {
+          "_key": "c5eb6cde3339",
+          "_type": "span",
+          "marks": [],
+          "text": ", this produces nine phases, 64 lessons, and one output. You can't do React until you understand JavaScript. You can't build the portfolio until you know the framework. The dependency graph "
+        },
+        {
+          "_key": "29ff9ec76a2a",
+          "_type": "span",
+          "marks": [
+            "em"
+          ],
+          "text": "is"
+        },
+        {
+          "_key": "864cf7ea4dca",
+          "_type": "span",
+          "marks": [],
+          "text": " the curriculum."
+        }
+      ],
+      "markDefs": [
+        {
+          "_key": "dd76202cb8ee",
+          "_type": "internalLink",
+          "reference": {
+            "_ref": "0038c147-d1dc-438d-b901-445ad0fa5695",
+            "_type": "reference"
+          }
+        }
+      ],
+      "style": "normal"
+    },
+    {
+      "_key": "a465dc28edc7",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "897cf45287cc",
+          "_type": "span",
+          "marks": [],
+          "text": "Each lesson follows a consistent structure that anchors concept to practice:"
+        }
+      ],
+      "markDefs": [],
+      "style": "normal"
+    },
+    {
+      "_key": "9935d7cbc3aa",
+      "_type": "table",
+      "hasHeaderRow": true,
+      "rows": [
+        {
+          "_key": "0f3c99d37014",
+          "_type": "tableRow",
+          "cells": [
+            "Section",
+            "What it does"
+          ]
+        },
+        {
+          "_key": "c9bf1e854efd",
+          "_type": "tableRow",
+          "cells": [
+            "Learning Objective",
+            "What the learner will be able to do by the end"
+          ]
+        },
+        {
+          "_key": "c9b82c6c3d94",
+          "_type": "tableRow",
+          "cells": [
+            "Concept",
+            "The idea, explained with analogy and context"
+          ]
+        },
+        {
+          "_key": "cd87b8c46205",
+          "_type": "tableRow",
+          "cells": [
+            "Hands-on exercise",
+            "The learner attempts it in their actual project"
+          ]
+        },
+        {
+          "_key": "d70268b52f60",
+          "_type": "tableRow",
+          "cells": [
+            "Quick quiz",
+            "Check understanding before moving on"
+          ]
+        }
+      ]
+    },
+    {
+      "_key": "985be4c944d1",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "cd90d350c10c",
+          "_type": "span",
+          "marks": [],
+          "text": "The keyword in \"hands-on exercise\" is "
+        },
+        {
+          "_key": "6c1566bfaa68",
+          "_type": "span",
+          "marks": [
+            "em"
+          ],
+          "text": "their actual project"
+        },
+        {
+          "_key": "2e79df7d64e6",
+          "_type": "span",
+          "marks": [],
+          "text": ". Every exercise is grounded in the real codebase the learner is building - not a toy example, not a sandbox, not a throwaway tutorial. The portfolio site is the foundation on which the whole curriculum is built. By Phase 8, the learner has a deployed site and a git history that shows their entire learning journey."
+        }
+      ],
+      "markDefs": [],
+      "style": "normal"
+    },
+    {
+      "_key": "4a7dcf637402",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "5e627d988d4a",
+          "_type": "span",
+          "marks": [],
+          "text": "Step 3 - Build the Teaching System (Skills)"
+        }
+      ],
+      "markDefs": [],
+      "style": "h3"
+    },
+    {
+      "_key": "645acdfcfc70",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "054eaf23f5c5",
+          "_type": "span",
+          "marks": [],
+          "text": "The curriculum is "
+        },
+        {
+          "_key": "5b6d628531e0",
+          "_type": "span",
+          "marks": [
+            "strong"
+          ],
+          "text": "what"
+        },
+        {
+          "_key": "7ae798a89e7f",
+          "_type": "span",
+          "marks": [],
+          "text": ". The teaching system is the "
+        },
+        {
+          "_key": "1e018cc68d14",
+          "_type": "span",
+          "marks": [
+            "strong"
+          ],
+          "text": "how"
+        },
+        {
+          "_key": "b9763f2a20a4",
+          "_type": "span",
+          "marks": [],
+          "text": ".\nThis is where AI moves from a knowledge extraction partner to an active tutor. "
+        }
+      ],
+      "markDefs": [],
+      "style": "normal"
+    },
+    {
+      "_key": "99cce0f0a334",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "b9763f2a20a4",
+          "_type": "span",
+          "marks": [],
+          "text": "In "
+        },
+        {
+          "_key": "bacaa1a361f7",
+          "_type": "span",
+          "marks": [
+            "afa316bed3e8"
+          ],
+          "text": "Zero-to-Portfolio"
+        },
+        {
+          "_key": "5066461aa5e3",
+          "_type": "span",
+          "marks": [],
+          "text": ", three Claude skills replicate the core functions of a structured programme — and between them, they constitute a bootcamp in a box."
+        }
+      ],
+      "markDefs": [
+        {
+          "_key": "afa316bed3e8",
+          "_type": "internalLink",
+          "reference": {
+            "_ref": "0038c147-d1dc-438d-b901-445ad0fa5695",
+            "_type": "reference"
+          }
+        }
+      ],
+      "style": "normal"
+    },
+    {
+      "_key": "3287e8f2e62d",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "b9763f2a20a4",
+          "_type": "span",
+          "marks": [],
+          "text": "\n"
+        },
+        {
+          "_key": "70978e543487",
+          "_type": "span",
+          "marks": [
+            "strong",
+            "code"
+          ],
+          "text": "/learn"
+        },
+        {
+          "_key": "f2e870ec7021",
+          "_type": "span",
+          "marks": [
+            "strong"
+          ],
+          "text": " - the tutor"
+        }
+      ],
+      "markDefs": [],
+      "style": "normal"
+    },
+    {
+      "_key": "2be0a800904e",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "744df7c45586",
+          "_type": "span",
+          "marks": [],
+          "text": "Reads the learner's current position, loads the next lesson from the curriculum, and delivers it interactively. It presents the concept, runs the exercise in real time within the learner's environment, asks quiz questions one at a time, waits for responses, and adapts when something isn't landing. When the lesson is done, it updates the learner's progress automatically and previews what's next. This isn't a chatbot answering questions - it's a structured instructional workflow, operating on the actual files in the learner's project."
+        }
+      ],
+      "markDefs": [],
+      "style": "normal"
+    },
+    {
+      "_key": "ff3e5d114f97",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "744df7c45586",
+          "_type": "span",
+          "marks": [],
+          "text": "\n"
+        },
+        {
+          "_key": "cc7dfc3caabd",
+          "_type": "span",
+          "marks": [
+            "strong",
+            "code"
+          ],
+          "text": "/progress"
+        },
+        {
+          "_key": "518816f8f559",
+          "_type": "span",
+          "marks": [
+            "strong"
+          ],
+          "text": " - the tracker"
+        }
+      ],
+      "markDefs": [],
+      "style": "normal"
+    },
+    {
+      "_key": "b2a6263c339d",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "81a64fe760b9",
+          "_type": "span",
+          "marks": [],
+          "text": "Displays completion percentage, per-phase breakdown, current streak, and next milestone. Keeps the learner oriented in the full arc. The data lives in a lightweight state file that the system maintains; the skill reads it and renders a dashboard. Consistency beats intensity — the streak mechanism reinforces daily practice."
+        }
+      ],
+      "markDefs": [],
+      "style": "normal"
+    },
+    {
+      "_key": "eea2e64ecfae",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "81a64fe760b9",
+          "_type": "span",
+          "marks": [],
+          "text": "\n"
+        },
+        {
+          "_key": "14be03117f99",
+          "_type": "span",
+          "marks": [
+            "strong",
+            "code"
+          ],
+          "text": "/homework"
+        },
+        {
+          "_key": "d88776dfb573",
+          "_type": "span",
+          "marks": [
+            "strong"
+          ],
+          "text": " - the accountability layer"
+        }
+      ],
+      "markDefs": [],
+      "style": "normal"
+    },
+    {
+      "_key": "a8996ff8c6ee",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "81a64fe760b9",
+          "_type": "span",
+          "marks": [],
+          "text": "At the end of each phase, an assignment is set — always something built, never a quiz. "
+        },
+        {
+          "_key": "1959969d5ae6",
+          "_type": "span",
+          "marks": [
+            "code"
+          ],
+          "text": "/homework"
+        },
+        {
+          "_key": "6725aa68c910",
+          "_type": "span",
+          "marks": [],
+          "text": " shows the brief. "
+        },
+        {
+          "_key": "380c34df7294",
+          "_type": "span",
+          "marks": [
+            "code"
+          ],
+          "text": "/homework check"
+        },
+        {
+          "_key": "9d1d1ca31351",
+          "_type": "span",
+          "marks": [],
+          "text": " gives feedback on each requirement. "
+        },
+        {
+          "_key": "66edcc87c0c3",
+          "_type": "span",
+          "marks": [
+            "code"
+          ],
+          "text": "/homework submit"
+        },
+        {
+          "_key": "b76caf93104a",
+          "_type": "span",
+          "marks": [],
+          "text": " marks it complete and archives it. The homework is what forces knowledge to become capability, not just comprehension."
+        }
+      ],
+      "markDefs": [],
+      "style": "normal"
+    },
+    {
+      "_key": "24942ff711f9",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "b76caf93104a",
+          "_type": "span",
+          "marks": [],
+          "text": "\nTogether, these three components deliver what a bootcamp provides: structure, accountability, feedback, a tangible output - without the constraints of a fixed cohort, a fixed schedule, or instructor availability."
+        }
+      ],
+      "markDefs": [],
+      "style": "normal"
+    },
+    {
+      "_key": "6e59e97bcd1e",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "be79d93362b1",
+          "_type": "span",
+          "marks": [],
+          "text": "Why does this disrupt traditional learning models?"
+        }
+      ],
+      "markDefs": [],
+      "style": "h2"
+    },
+    {
+      "_key": "fa8160bc8cd9",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "e9ec1c47c81f",
+          "_type": "span",
+          "marks": [],
+          "text": "Traditional bootcamps solve a real problem: structured learning with accountability. But they carry fixed costs that make them inaccessible."
+        }
+      ],
+      "markDefs": [],
+      "style": "normal"
+    },
+    {
+      "_key": "c3aeecc19187",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "e9ec1c47c81f",
+          "_type": "span",
+          "marks": [
+            "strong"
+          ],
+          "text": "Time:"
+        },
+        {
+          "_key": "a5b1977152bf",
+          "_type": "span",
+          "marks": [],
+          "text": " Most are 12–16 weeks, full-time or near-full-time"
+        }
+      ],
+      "level": 1,
+      "listItem": "bullet",
+      "markDefs": [],
+      "style": "normal"
+    },
+    {
+      "_key": "3c708d80c536",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "a5b1977152bf",
+          "_type": "span",
+          "marks": [
+            "strong"
+          ],
+          "text": "Money:"
+        },
+        {
+          "_key": "4e27b113cf9c",
+          "_type": "span",
+          "marks": [],
+          "text": " £5,000–£15,000 for a quality programme in the UK; more in the US"
+        }
+      ],
+      "level": 1,
+      "listItem": "bullet",
+      "markDefs": [],
+      "style": "normal"
+    },
+    {
+      "_key": "c4da66f3b496",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "4e27b113cf9c",
+          "_type": "span",
+          "marks": [
+            "strong"
+          ],
+          "text": "Cohort dependency:"
+        },
+        {
+          "_key": "a2407475330e",
+          "_type": "span",
+          "marks": [],
+          "text": " You're paced by the group, not yourself"
+        }
+      ],
+      "level": 1,
+      "listItem": "bullet",
+      "markDefs": [],
+      "style": "normal"
+    },
+    {
+      "_key": "f0b9e4360654",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "a2407475330e",
+          "_type": "span",
+          "marks": [
+            "strong"
+          ],
+          "text": "Instructor variance:"
+        },
+        {
+          "_key": "0d520ce2c356",
+          "_type": "span",
+          "marks": [],
+          "text": " The quality of your experience depends on who's available that day"
+        }
+      ],
+      "level": 1,
+      "listItem": "bullet",
+      "markDefs": [],
+      "style": "normal"
+    },
+    {
+      "_key": "b3953a2acc39",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "0d520ce2c356",
+          "_type": "span",
+          "marks": [],
+          "text": "University adds three years and tens of thousands in debt. Internal training at most companies is documentation that nobody reads or a lunch-and-learn that fades within a week."
+        }
+      ],
+      "markDefs": [],
+      "style": "normal"
+    },
+    {
+      "_key": "7ee7c7615569",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "0d520ce2c356",
+          "_type": "span",
+          "marks": [],
+          "text": "\nThe approach here addresses each of these:"
+        }
+      ],
+      "markDefs": [],
+      "style": "normal"
+    },
+    {
+      "_key": "7ec859e89ea4",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "0d520ce2c356",
+          "_type": "span",
+          "marks": [
+            "strong"
+          ],
+          "text": "Personalise Pacing:"
+        },
+        {
+          "_key": "9d4810aff9c3",
+          "_type": "span",
+          "marks": [],
+          "text": " The tutor waits for you, always"
+        }
+      ],
+      "level": 1,
+      "listItem": "bullet",
+      "markDefs": [],
+      "style": "normal"
+    },
+    {
+      "_key": "afc5d2186544",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "9d4810aff9c3",
+          "_type": "span",
+          "marks": [
+            "strong"
+          ],
+          "text": "No cohort dependency: S"
+        },
+        {
+          "_key": "4717eb43a274",
+          "_type": "span",
+          "marks": [],
+          "text": "tart today, pause for a month, resume without penalty"
+        }
+      ],
+      "level": 1,
+      "listItem": "bullet",
+      "markDefs": [],
+      "style": "normal"
+    },
+    {
+      "_key": "d84ca85243a9",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "4717eb43a274",
+          "_type": "span",
+          "marks": [
+            "strong"
+          ],
+          "text": "Consistent Quality:"
+        },
+        {
+          "_key": "8325e51b3409",
+          "_type": "span",
+          "marks": [],
+          "text": " Every learner gets the same rigour, not the version that depends on who's free"
+        }
+      ],
+      "level": 1,
+      "listItem": "bullet",
+      "markDefs": [],
+      "style": "normal"
+    },
+    {
+      "_key": "95dd366b6977",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "8325e51b3409",
+          "_type": "span",
+          "marks": [
+            "strong"
+          ],
+          "text": "Real-time feedback:"
+        },
+        {
+          "_key": "99ae3bd64b02",
+          "_type": "span",
+          "marks": [],
+          "text": " The system doesn't just present; it responds, corrects, and adapts"
+        }
+      ],
+      "level": 1,
+      "listItem": "bullet",
+      "markDefs": [],
+      "style": "normal"
+    },
+    {
+      "_key": "1310c76a498e",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "99ae3bd64b02",
+          "_type": "span",
+          "marks": [
+            "strong"
+          ],
+          "text": "Near-zero cost to replicate:"
+        },
+        {
+          "_key": "769548365ec3",
+          "_type": "span",
+          "marks": [],
+          "text": " Once the curriculum exists, it scales to any number of learners without scaling the cost"
+        }
+      ],
+      "level": 1,
+      "listItem": "bullet",
+      "markDefs": [],
+      "style": "normal"
+    },
+    {
+      "_key": "3c0c5582601f",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "769548365ec3",
+          "_type": "span",
+          "marks": [],
+          "text": "This isn't a replacement for community or mentorship. It's an answer to a different question: "
+        },
+        {
+          "_key": "064a85139613",
+          "_type": "span",
+          "marks": [
+            "strong",
+            "em"
+          ],
+          "text": "what does a motivated person with a laptop and a few hours a week actually need to go from zero to capable?"
+        }
+      ],
+      "markDefs": [],
+      "style": "normal"
+    }
+  ],
+  "categories": [
+    {
+      "slug": "insights",
+      "title": "Insights"
+    },
+    {
+      "slug": "skills",
+      "title": "Skills"
+    }
+  ],
+  "excerpt": "The path into Software Development is broken. Degrees, bootcamps, apprenticeships, courses - all are built for a world that no longer exists. Skill-based learning changes that.",
+  "mainImage": null,
+  "ogImage": null,
+  "publishedAt": "2026-02-22T17:00:00.000Z",
+  "slug": "skill-based-learning",
+  "title": "Skill-based Learning"
+}

@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en-GB" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Future of Dev — Brand Kit v1.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   FUTURE OF DEV — BRAND KIT
+   Core six palette is fixed by the strategy brief §14.
+   Everything marked SYSTEM is an extension added to make the
+   core six workable in production.
+   ============================================================ */
+
+:root{
+  /* --- CORE SIX (brief §14, do not alter) --- */
+  --ink:        #111827;
+  --signal:     #4355FF;
+  --build:      #C8FF3D;
+  --cloud:      #F3F5F8;
+  --accent:     #42D7FF;
+  --base:       #FFFFFF;
+
+  /* --- SYSTEM EXTENSIONS --- */
+  --graphite:   #6B7280;  /* secondary type, 4.83:1 on white */
+  --hairline:   #E2E6EC;  /* rules, card borders */
+  --signal-700: #2E3FE0;  /* pressed / hover */
+  --signal-300: #8B98FF;  /* signal as TEXT on dark surfaces */
+  --cyan-700:   #0E7490;  /* cyan as TEXT on light surfaces */
+  --signal-050: #EDEFFF;  /* wash, selected rows */
+  --void:       #0A0E17;  /* dark-mode canvas, deeper than ink */
+  --slate:      #1F2937;  /* dark-mode elevated surface */
+  --dark-line:  #2A3444;  /* dark-mode hairline */
+
+  /* semantic */
+  --bg:         var(--base);
+  --bg-alt:     var(--cloud);
+  --surface:    var(--base);
+  --fg:         var(--ink);
+  --fg-muted:   var(--graphite);
+  --line:       var(--hairline);
+  --band:       var(--ink);
+  --band-fg:    #FFFFFF;
+
+  --signal-text: var(--signal);
+
+  --mark-body:  var(--ink);
+  --mark-unit:  var(--signal);
+
+  /* type */
+  --display: 'Archivo', 'Helvetica Neue', Arial, sans-serif;
+  --body:    'Inter', -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+  --mono:    'JetBrains Mono', ui-monospace, 'SF Mono', Consolas, monospace;
+
+  /* rhythm: 4px base unit, same grid the mark is drawn on */
+  --u: 4px;
+  --gutter: clamp(20px, 5vw, 72px);
+  --maxw: 1180px;
+}
+
+[data-theme="dark"]{
+  --bg:       var(--void);
+  --bg-alt:   #0F1520;
+  --surface:  var(--slate);
+  --fg:       #F3F5F8;
+  --fg-muted: #97A1B2;
+  --line:     var(--dark-line);
+  --band:     var(--build);
+  --band-fg:  var(--ink);
+  --signal-text: var(--signal-300);
+  --mark-body:#FFFFFF;
+  --mark-unit:var(--build);
+}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
+body{
+  margin:0; background:var(--bg); color:var(--fg);
+  font-family:var(--body); font-size:16px; line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  transition:background .25s ease, color .25s ease;
+}
+img,svg{display:block;max-width:100%;}
+a{color:var(--signal-text);text-decoration:none;border-bottom:1px solid currentColor;}
+:focus-visible{outline:3px solid var(--signal);outline-offset:3px;}
+
+/* ---------- type primitives ---------- */
+.d1,.d2,.d3,.d4{
+  font-family:var(--display); font-weight:800;
+  font-variation-settings:'wdth' 112,'wght' 800; font-stretch:112%;
+  line-height:.94; letter-spacing:-.025em; margin:0;
+}
+.d1{font-size:clamp(52px,10.5vw,132px);}
+.d2{font-size:clamp(38px,6vw,76px);}
+.d3{font-size:clamp(26px,3.4vw,42px);}
+.d4{font-size:clamp(20px,2.2vw,27px);line-height:1.06;}
+.lede{font-size:clamp(17px,1.6vw,21px);line-height:1.55;color:var(--fg-muted);max-width:62ch;margin:0;}
+p{margin:0 0 1em;max-width:68ch;}
+p:last-child{margin-bottom:0;}
+
+.eyebrow{
+  font-family:var(--mono); font-size:11.5px; font-weight:500;
+  letter-spacing:.16em; text-transform:uppercase; color:var(--signal-text);
+  display:flex; align-items:center; gap:10px; margin:0 0 20px;
+}
+.eyebrow::after{content:"";flex:1;height:1px;background:var(--line);}
+.meta{font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;color:var(--fg-muted);text-transform:uppercase;}
+
+/* ---------- layout ---------- */
+.wrap{max-width:var(--maxw);margin:0 auto;padding-inline:var(--gutter);}
+section.sec{padding-block:clamp(64px,9vw,120px);border-top:1px solid var(--line);}
+.sec-head{margin-bottom:clamp(36px,5vw,56px);}
+.sec-head .d2{margin-bottom:18px;}
+.grid{display:grid;gap:var(--gutter);}
+.g2{grid-template-columns:repeat(2,1fr);}
+.g3{grid-template-columns:repeat(3,1fr);}
+.g4{grid-template-columns:repeat(4,1fr);}
+@media(max-width:900px){.g3,.g4{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:640px){.g2,.g3,.g4{grid-template-columns:1fr;}}
+
+.card{background:var(--surface);border:1px solid var(--line);padding:26px;}
+.card--flat{background:var(--bg-alt);border-color:transparent;}
+
+/* ---------- cover ---------- */
+.cover{padding-block:clamp(48px,7vw,84px) clamp(56px,8vw,96px);}
+.cover-top{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;margin-bottom:clamp(56px,10vw,110px);}
+.cover .d1{margin-bottom:28px;}
+.cover .d1 .of{
+  font-variation-settings:'wdth' 92,'wght' 500;font-stretch:92%;
+  font-size:.44em;letter-spacing:0;color:var(--fg-muted);
+  padding-inline:.12em;vertical-align:.16em;
+}
+.tagstrip{display:flex;flex-wrap:wrap;gap:0;margin-top:40px;border:1px solid var(--line);}
+.tagstrip div{flex:1 1 190px;padding:16px 18px;border-right:1px solid var(--line);}
+.tagstrip div:last-child{border-right:0;}
+.tagstrip b{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-muted);margin-bottom:6px;font-weight:500;}
+.tagstrip span{font-size:14.5px;font-weight:500;}
+
+/* ---------- theme toggle ---------- */
+.toggle{
+  display:inline-flex;align-items:center;gap:8px;cursor:pointer;
+  background:none;border:1px solid var(--line);color:var(--fg);
+  font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+  padding:9px 14px;
+}
+.toggle:hover{border-color:var(--signal);color:var(--signal);}
+
+/* ---------- band ---------- */
+.band{background:var(--band);color:var(--band-fg);}
+.band .eyebrow{color:var(--band-fg);opacity:.65;}
+.band .eyebrow::after{background:currentColor;opacity:.25;}
+.band .lede{color:var(--band-fg);opacity:.78;}
+.band .meta{color:var(--band-fg);opacity:.6;}
+
+/* ---------- principle list ---------- */
+.plist{border-top:1px solid var(--line);}
+.prow{display:grid;grid-template-columns:44px 1fr 1.4fr;gap:20px;padding:20px 0;border-bottom:1px solid var(--line);align-items:baseline;}
+.prow .n{font-family:var(--mono);font-size:11.5px;color:var(--signal-text);letter-spacing:.08em;}
+.prow .k{font-family:var(--display);font-variation-settings:'wdth' 108,'wght' 700;font-size:19px;letter-spacing:-.015em;}
+.prow .v{color:var(--fg-muted);font-size:15px;}
+@media(max-width:700px){.prow{grid-template-columns:32px 1fr;}.prow .v{grid-column:2;}}
+</style>
+</head>
+<body>
+
+<!-- ============ COVER ============ -->
+<header class="cover wrap">
+  <div class="cover-top">
+    <div class="lockup">
+      <svg width="30" height="30" viewBox="0 0 32 32" role="img" aria-label="Future of Dev">
+        <path d="M0 4 H14 V18 H28 V32 H0 Z" fill="var(--mark-body)"/>
+        <rect x="18" y="0" width="14" height="14" fill="var(--mark-unit)"/>
+      </svg>
+      <span class="wm" style="font-size:25px;">Future<span class="of">of</span>Dev</span>
+    </div>
+    <button class="toggle" id="themeBtn" type="button" aria-pressed="false">
+      <span id="themeLabel">Dark mode</span>
+    </button>
+  </div>
+
+  <p class="eyebrow">Brand kit v1.0 · August 2026</p>
+  <h1 class="d1">Future<span class="of">of</span>Dev</h1>
+  <p class="lede">The complete identity system for a newsletter-led learning brand — mark, wordmark, lockups, colour law, type scale, icon set and live components. Every value here is production-ready and derived from the strategy brief.</p>
+
+  <div class="tagstrip">
+    <div><b>Direction</b><span>Wordmark + geometric symbol</span></div>
+    <div><b>Register</b><span>High-energy builder</span></div>
+    <div><b>Display</b><span>Archivo</span></div>
+    <div><b>Primary surface</b><span>Beehiiv email</span></div>
+  </div>
+</header>
+
+<!-- ============ 01 FOUNDATION ============ -->
+<section class="sec" id="foundation">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">01 / Foundation</p>
+      <h2 class="d2">What the identity has to carry</h2>
+      <p class="lede">Three constraints shaped every decision below. They are not aesthetic preferences — they come straight out of the brief's own risk register.</p>
+    </div>
+
+    <div class="grid g3">
+      <div class="card">
+        <p class="meta" style="margin-bottom:12px;">Constraint 01</p>
+        <h3 class="d4" style="margin-bottom:12px;">It must not read developer-only</h3>
+        <p style="color:var(--fg-muted);font-size:15px;">Marketers, PMs, designers and analysts have to see themselves in it. That rules out terminal prompts, angle brackets and code-glyph marks — the obvious moves for a brand called <em>Dev</em>.</p>
+      </div>
+      <div class="card">
+        <p class="meta" style="margin-bottom:12px;">Constraint 02</p>
+        <h3 class="d4" style="margin-bottom:12px;">It lives in the inbox first</h3>
+        <p style="color:var(--fg-muted);font-size:15px;">Email is the primary brand experience. The mark must survive 24px height, dark-mode colour inversion, and clients that strip CSS. Anything that only works on a website is a failed design here.</p>
+      </div>
+      <div class="card">
+        <p class="meta" style="margin-bottom:12px;">Constraint 03</p>
+        <h3 class="d4" style="margin-bottom:12px;">Energy without noise</h3>
+        <p style="color:var(--fg-muted);font-size:15px;">High-energy builder, but credible to senior professionals. The resolution: energy comes from scale, density and hard edges. Acid lime stays rare and load-bearing.</p>
+      </div>
+    </div>
+
+    <div style="margin-top:clamp(44px,6vw,72px);">
+      <p class="eyebrow">Principles the visual system encodes</p>
+      <div class="plist">
+        <div class="prow"><span class="n">P1</span><span class="k">Agency over anxiety</span><span class="v">Forward motion is built into the mark itself. Nothing in the system depicts threat, replacement or loss.</span></div>
+        <div class="prow"><span class="n">P2</span><span class="k">Practice over performance</span><span class="v">Lime marks places where the reader does something. It is never applied decoratively.</span></div>
+        <div class="prow"><span class="n">P3</span><span class="k">Skills over completion</span><span class="v">Stage and lifecycle labels always pair an icon with a word — never colour alone.</span></div>
+        <div class="prow"><span class="n">P4</span><span class="k">Evidence over hype</span><span class="v">Geometry is on a visible 4px grid; contrast ratios are measured and published, not assumed.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+/* ---------- mark & lockups ---------- */
+.mark-hero{display:grid;grid-template-columns:1.05fr 1fr;gap:var(--gutter);align-items:center;}
+@media(max-width:820px){.mark-hero{grid-template-columns:1fr;}}
+.constructor{background:var(--bg-alt);padding:clamp(24px,4vw,44px);border:1px solid var(--line);}
+.gridline{stroke:var(--line);stroke-width:.25;}
+.gridline.major{stroke:var(--signal);stroke-opacity:.35;stroke-width:.4;}
+.dim{stroke:var(--signal);stroke-width:.3;}
+.origin{fill:none;stroke:var(--signal);stroke-width:.3;stroke-dasharray:1.1 1.1;stroke-opacity:.6;}
+.conscap{font-size:12.5px;color:var(--fg-muted);margin-top:16px;}
+.dimtext{font-family:'JetBrains Mono',monospace;font-size:2.4px;fill:var(--signal-text);letter-spacing:.02em;}
+
+.scalerow{display:flex;align-items:flex-end;gap:clamp(18px,3.5vw,40px);flex-wrap:wrap;padding:32px 0;border-block:1px solid var(--line);}
+.scaleitem{text-align:center;}
+.scaleitem .meta{display:block;margin-top:12px;font-size:10px;}
+
+.wm{font-family:var(--display);font-variation-settings:'wdth' 110,'wght' 800;font-stretch:110%;letter-spacing:-.032em;line-height:1;white-space:nowrap;}
+.wm .of{font-variation-settings:'wdth' 92,'wght' 500;font-stretch:92%;font-size:.5em;color:var(--fg-muted);padding-left:.2em;padding-right:.1em;vertical-align:.09em;letter-spacing:0;}
+.band .wm .of, .onink .wm .of{color:rgba(255,255,255,.55);}
+
+.lockup{display:flex;align-items:center;gap:.62em;}
+.lockup.stack{flex-direction:column;align-items:flex-start;gap:.4em;}
+.lockbox{border:1px solid var(--line);background:var(--surface);padding:clamp(22px,3.5vw,38px);display:flex;flex-direction:column;justify-content:space-between;gap:26px;min-height:180px;}
+.lockbox .meta{font-size:10.5px;}
+.onink{background:var(--ink);border-color:var(--ink);color:#fff;}
+.onink .meta{color:rgba(255,255,255,.6);}
+.onlime{background:var(--build);border-color:var(--build);color:var(--ink);}
+.onlime .meta{color:rgba(17,24,39,.62);}
+
+.appicon{display:flex;gap:16px;align-items:center;flex-wrap:wrap;}
+.appicon .tile{width:76px;height:76px;display:grid;place-items:center;}
+
+.misuse{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);}
+@media(max-width:760px){.misuse{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:460px){.misuse{grid-template-columns:1fr;}}
+.mis{background:var(--surface);padding:22px;}
+.mis .demo{height:66px;display:flex;align-items:center;margin-bottom:14px;overflow:hidden;}
+.mis .x{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:#C2313C;display:flex;gap:7px;align-items:center;}
+.mis p{font-size:13.5px;color:var(--fg-muted);margin:8px 0 0;}
+
+/* ---------- colour ---------- */
+.swatches{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);}
+@media(max-width:820px){.swatches{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:520px){.swatches{grid-template-columns:1fr;}}
+.sw{background:var(--surface);}
+.sw .chip{height:112px;display:flex;align-items:flex-end;padding:14px;}
+.sw .body{padding:16px 18px 20px;}
+.sw h4{font-family:var(--display);font-variation-settings:'wdth' 108,'wght' 700;font-size:17px;margin:0 0 4px;letter-spacing:-.01em;}
+.sw code{font-family:var(--mono);font-size:12px;color:var(--fg-muted);}
+.sw p{font-size:13px;color:var(--fg-muted);margin:10px 0 0;}
+.ratio{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;padding:3px 7px;border:1px solid var(--line);margin-top:12px;}
+.ratio.pass{color:#166534;border-color:#BBE5C6;background:#F0FBF3;}
+.ratio.fail{color:#9A2530;border-color:#F0C7CB;background:#FDF3F4;}
+
+.law{border:2px solid var(--ink);background:var(--build);color:var(--ink);padding:clamp(24px,4vw,38px);}
+[data-theme="dark"] .law{border-color:var(--build);}
+.law h3{font-family:var(--display);font-variation-settings:'wdth' 112,'wght' 800;font-size:clamp(22px,3vw,32px);margin:0 0 12px;letter-spacing:-.025em;line-height:1.05;}
+.law p{color:rgba(17,24,39,.78);margin:0;font-size:15.5px;max-width:60ch;}
+.law .meta{color:rgba(17,24,39,.6);margin-bottom:14px;display:block;}
+</style>
+
+<!-- ============ 02 THE MARK ============ -->
+<section class="sec" id="mark">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">02 / The symbol</p>
+      <h2 class="d2">The Shift</h2>
+      <p class="lede">A 28 × 28 square with its top-right quarter removed and re-placed four units up and to the right, leaving a constant four-unit channel on both axes. It is the brand's thesis reduced to two shapes: something moved, and you can see where it went.</p>
+    </div>
+
+    <div class="mark-hero">
+      <div class="constructor">
+        <svg viewBox="-3 -3 38 38" width="100%" role="img" aria-label="Construction grid for the Future of Dev symbol">
+          <g class="gridline">
+            <path d="M0 0V32M4 0V32M8 0V32M12 0V32M16 0V32M20 0V32M24 0V32M28 0V32M32 0V32"/>
+            <path d="M0 0H32M0 4H32M0 8H32M0 12H32M0 16H32M0 20H32M0 24H32M0 28H32M0 32H32"/>
+          </g>
+          <g class="origin">
+            <rect x="0" y="4" width="28" height="28"/>
+            <path d="M14 4V32M0 18H28"/>
+          </g>
+          <path d="M0 4 H14 V18 H28 V32 H0 Z" fill="var(--mark-body)"/>
+          <rect x="18" y="0" width="14" height="14" fill="var(--mark-unit)"/>
+          <g class="dim">
+            <path d="M14 9.8H18M14 9V10.6M18 9V10.6"/>
+            <path d="M24 14V18M23.2 14H24.8M23.2 18H24.8"/>
+          </g>
+          <text class="dimtext" x="16" y="7.8" text-anchor="middle">4</text>
+          <text class="dimtext" x="25.5" y="16.9">4</text>
+        </svg>
+        <p class="conscap">Dashed: the original 28 × 28 square and its quartering. Solid: what remains, plus the quarter in its new position.</p>
+      </div>
+
+      <div>
+        <h3 class="d4" style="margin-bottom:16px;">Why this and not a bracket</h3>
+        <p style="color:var(--fg-muted);">The obvious mark for a brand called <em>Dev</em> is a chevron, a slash or a blinking cursor. All three fail Constraint 01 — they tell a marketer or a product manager that the newsletter is not for them, which is the exact failure mode the brief lists as its second-biggest risk.</p>
+        <p style="color:var(--fg-muted);">So the symbol encodes the <em>thesis</em> instead of the audience. The mass is what you already have: your skills, your role, your working practice. The displaced quarter is the shift — part of your own work, moved ahead of you. The channel between them is constant, which is the optimistic reading: the gap is fixed and crossable, not widening.</p>
+        <p style="color:var(--fg-muted);">It also gives the newsletter its recurring opening block a native glyph. <strong style="color:var(--fg);">The Shift</strong> is the first section of every issue. The masthead and the section marker are the same geometry.</p>
+
+        <div style="margin-top:26px;padding-top:22px;border-top:1px solid var(--line);">
+          <p class="meta" style="margin-bottom:10px;">Geometry</p>
+          <p style="font-family:var(--mono);font-size:12.5px;color:var(--fg-muted);line-height:1.85;max-width:none;">
+            Canvas&nbsp;&nbsp;&nbsp;32 × 32<br>
+            Square&nbsp;&nbsp;&nbsp;28 × 28, quartered at 14<br>
+            Body&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;M0 4 H14 V18 H28 V32 H0 Z<br>
+            Quarter&nbsp;&nbsp;rect 18 0 14 14<br>
+            Channel&nbsp;&nbsp;4 on both axes, always
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- scale test -->
+    <h3 class="d4" style="margin:clamp(48px,6vw,76px) 0 6px;">Scale test</h3>
+    <p style="color:var(--fg-muted);font-size:15px;margin-bottom:8px;">Rendered live at production sizes. 16px is the favicon floor; 24px is the Beehiiv email masthead height.</p>
+    <div class="scalerow">
+      <div class="scaleitem"><svg width="96" height="96" viewBox="0 0 32 32"><path d="M0 4 H14 V18 H28 V32 H0 Z" fill="var(--mark-body)"/><rect x="18" y="0" width="14" height="14" fill="var(--mark-unit)"/></svg><span class="meta">96px</span></div>
+      <div class="scaleitem"><svg width="64" height="64" viewBox="0 0 32 32"><path d="M0 4 H14 V18 H28 V32 H0 Z" fill="var(--mark-body)"/><rect x="18" y="0" width="14" height="14" fill="var(--mark-unit)"/></svg><span class="meta">64px</span></div>
+      <div class="scaleitem"><svg width="48" height="48" viewBox="0 0 32 32"><path d="M0 4 H14 V18 H28 V32 H0 Z" fill="var(--mark-body)"/><rect x="18" y="0" width="14" height="14" fill="var(--mark-unit)"/></svg><span class="meta">48px</span></div>
+      <div class="scaleitem"><svg width="32" height="32" viewBox="0 0 32 32"><path d="M0 4 H14 V18 H28 V32 H0 Z" fill="var(--mark-body)"/><rect x="18" y="0" width="14" height="14" fill="var(--mark-unit)"/></svg><span class="meta">32px</span></div>
+      <div class="scaleitem"><svg width="24" height="24" viewBox="0 0 32 32"><path d="M0 4 H14 V18 H28 V32 H0 Z" fill="var(--mark-body)"/><rect x="18" y="0" width="14" height="14" fill="var(--mark-unit)"/></svg><span class="meta">24px · email</span></div>
+      <div class="scaleitem"><svg width="16" height="16" viewBox="0 0 32 32"><path d="M0 4 H14 V18 H28 V32 H0 Z" fill="var(--mark-body)"/><rect x="18" y="0" width="14" height="14" fill="var(--mark-unit)"/></svg><span class="meta">16px · floor</span></div>
+    </div>
+
+    <p style="color:var(--fg-muted);font-size:14.5px;margin-top:18px;">Clear space on all four sides is <strong style="color:var(--fg);">8</strong> on the 32 canvas — twice the channel width, so the mark's own negative space is never mistaken for padding. At 16px and below, drop the wordmark and use the symbol alone.</p>
+  </div>
+</section>
+
+<!-- ============ 03 WORDMARK & LOCKUPS ============ -->
+<section class="sec" id="wordmark">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">03 / Wordmark &amp; lockups</p>
+      <h2 class="d2">Three words, unequal weight</h2>
+      <p class="lede">"Future of Dev" has a structural problem: <em>of</em> is a connective that carries no meaning but takes up the optical centre. Setting all three words at one weight makes the name mushy. The fix is a weight and width drop on the connective, so the eye reads <strong style="color:var(--fg)">Future — Dev</strong> and treats <em>of</em> as a hinge.</p>
+    </div>
+
+    <div class="grid g2" style="margin-bottom:var(--gutter);">
+      <div class="lockbox">
+        <div class="lockup"><svg width="38" height="38" viewBox="0 0 32 32"><path d="M0 4 H14 V18 H28 V32 H0 Z" fill="var(--mark-body)"/><rect x="18" y="0" width="14" height="14" fill="var(--mark-unit)"/></svg>
+          <span class="wm" style="font-size:34px;">Future<span class="of">of</span>Dev</span></div>
+        <span class="meta">Primary horizontal · default everywhere</span>
+      </div>
+      <div class="lockbox">
+        <div class="lockup stack"><svg width="42" height="42" viewBox="0 0 32 32"><path d="M0 4 H14 V18 H28 V32 H0 Z" fill="var(--mark-body)"/><rect x="18" y="0" width="14" height="14" fill="var(--mark-unit)"/></svg>
+          <span class="wm" style="font-size:30px;">Future<span class="of">of</span>Dev</span></div>
+        <span class="meta">Stacked · narrow columns, social avatars, print</span>
+      </div>
+      <div class="lockbox onink">
+        <div class="lockup"><svg width="38" height="38" viewBox="0 0 32 32"><path d="M0 4 H14 V18 H28 V32 H0 Z" fill="#FFFFFF"/><rect x="18" y="0" width="14" height="14" fill="#C8FF3D"/></svg>
+          <span class="wm" style="font-size:34px;color:#fff;">Future<span class="of">of</span>Dev</span></div>
+        <span class="meta">Reversed · dark bands and email dark mode. The unit switches to Build lime, because Signal indigo loses too much contrast on ink.</span>
+      </div>
+      <div class="lockbox onlime">
+        <div class="lockup"><svg width="38" height="38" viewBox="0 0 32 32"><path d="M0 4 H14 V18 H28 V32 H0 Z" fill="#111827"/><rect x="18" y="0" width="14" height="14" fill="#4355FF"/></svg>
+          <span class="wm" style="font-size:34px;color:var(--ink);">Future<span class="of" style="color:rgba(17,24,39,.55);">of</span>Dev</span></div>
+        <span class="meta">On Build · campaign and launch surfaces. The mark does not change — Signal holds 4.48:1 against lime, which clears the 3:1 bar for graphic elements.</span>
+      </div>
+    </div>
+
+    <div class="grid g2">
+      <div class="lockbox">
+        <div>
+          <p class="meta" style="margin-bottom:16px;">Compact masthead · 24px cap height</p>
+          <div class="lockup" style="gap:.5em;"><svg width="24" height="24" viewBox="0 0 32 32"><path d="M0 4 H14 V18 H28 V32 H0 Z" fill="var(--mark-body)"/><rect x="18" y="0" width="14" height="14" fill="var(--mark-unit)"/></svg>
+            <span class="wm" style="font-size:19px;">Future<span class="of">of</span>Dev</span></div>
+        </div>
+        <span class="meta">Beehiiv header. Tracking opens to −0.02em below 22px so it stays readable after email client re-rendering.</span>
+      </div>
+      <div class="lockbox">
+        <div>
+          <p class="meta" style="margin-bottom:16px;">Symbol tiles · app, favicon, avatar</p>
+          <div class="appicon">
+            <div class="tile" style="background:var(--ink);"><svg width="40" height="40" viewBox="0 0 32 32"><path d="M0 4 H14 V18 H28 V32 H0 Z" fill="#fff"/><rect x="18" y="0" width="14" height="14" fill="#C8FF3D"/></svg></div>
+            <div class="tile" style="background:var(--build);"><svg width="40" height="40" viewBox="0 0 32 32"><path d="M0 4 H14 V18 H28 V32 H0 Z" fill="#111827"/><rect x="18" y="0" width="14" height="14" fill="#4355FF"/></svg></div>
+            <div class="tile" style="background:var(--signal);"><svg width="40" height="40" viewBox="0 0 32 32"><path d="M0 4 H14 V18 H28 V32 H0 Z" fill="#fff"/><rect x="18" y="0" width="14" height="14" fill="#C8FF3D"/></svg></div>
+            <div class="tile" style="background:var(--cloud);border:1px solid var(--line);"><svg width="40" height="40" viewBox="0 0 32 32"><path d="M0 4 H14 V18 H28 V32 H0 Z" fill="#111827"/><rect x="18" y="0" width="14" height="14" fill="#4355FF"/></svg></div>
+          </div>
+        </div>
+        <span class="meta">Square, never rounded. The mark's own corners are the brand's edge quality.</span>
+      </div>
+      <div class="lockbox">
+        <div>
+          <p class="meta" style="margin-bottom:16px;">Partnership lockup</p>
+          <div class="lockup" style="gap:0;">
+            <div class="lockup" style="gap:.5em;"><svg width="26" height="26" viewBox="0 0 32 32"><path d="M0 4 H14 V18 H28 V32 H0 Z" fill="var(--mark-body)"/><rect x="18" y="0" width="14" height="14" fill="var(--mark-unit)"/></svg>
+              <span class="wm" style="font-size:21px;">Future<span class="of">of</span>Dev</span></div>
+            <span style="display:inline-block;width:1px;height:30px;background:var(--line);margin-inline:20px;"></span>
+            <span class="wm" style="font-size:21px;font-variation-settings:'wdth' 100,'wght' 500;color:var(--fg-muted);letter-spacing:-.01em;">Partner</span>
+          </div>
+        </div>
+        <span class="meta">Hairline divider, never "×". Partner name sits at 500 weight so the master brand stays dominant.</span>
+      </div>
+      <div class="lockbox">
+        <div>
+          <p class="meta" style="margin-bottom:16px;">Single-colour · fax, embroidery, stamp</p>
+          <div class="lockup"><svg width="30" height="30" viewBox="0 0 32 32"><path d="M0 4 H14 V18 H28 V32 H0 Z" fill="var(--fg)"/><rect x="18" y="0" width="14" height="14" fill="var(--fg)"/></svg>
+            <span class="wm" style="font-size:26px;">Future<span class="of" style="color:var(--fg);opacity:.55;">of</span>Dev</span></div>
+        </div>
+        <span class="meta">The channel does all the work when colour is gone — which is the test the mark was designed to pass.</span>
+      </div>
+    </div>
+
+    <!-- misuse -->
+    <h3 class="d4" style="margin:clamp(48px,6vw,72px) 0 20px;">Never do this</h3>
+    <div class="misuse">
+      <div class="mis">
+        <div class="demo"><svg width="46" height="46" viewBox="0 0 32 32"><path d="M0 4 H14 V18 H28 V32 H0 Z" fill="var(--mark-body)"/><rect x="15" y="3" width="14" height="14" fill="var(--mark-unit)"/></svg></div>
+        <span class="x">✕ Closed channel</span>
+        <p>Touching or overlapping the unit destroys the entire concept. The gap is the idea.</p>
+      </div>
+      <div class="mis">
+        <div class="demo"><svg width="46" height="46" viewBox="0 0 32 32"><rect x="0" y="4" width="14" height="28" rx="4" fill="var(--mark-body)"/><rect x="0" y="18" width="28" height="14" rx="4" fill="var(--mark-body)"/><rect x="18" y="0" width="14" height="14" rx="4" fill="var(--mark-unit)"/></svg></div>
+        <span class="x">✕ Rounded corners</span>
+        <p>Softening the geometry pulls the brand towards friendly-SaaS and away from builder.</p>
+      </div>
+      <div class="mis">
+        <div class="demo"><span class="wm" style="font-size:22px;">Future <span style="font-variation-settings:'wdth' 110,'wght' 800;font-size:1em;color:var(--fg);">of</span> Dev</span></div>
+        <span class="x">✕ Equal-weight "of"</span>
+        <p>Three words at one weight. The name goes soft and the hinge disappears.</p>
+      </div>
+      <div class="mis">
+        <div class="demo"><span class="wm" style="font-size:22px;color:var(--build);">Future<span class="of" style="color:var(--build);">of</span>Dev</span></div>
+        <span class="x">✕ Lime as type colour</span>
+        <p>1.18:1 on white. Illegible, and it breaks the colour law in §04.</p>
+      </div>
+      <div class="mis">
+        <div class="demo"><span class="wm" style="font-size:22px;background:linear-gradient(90deg,#4355FF,#42D7FF);-webkit-background-clip:text;background-clip:text;color:transparent;">Future<span style="font-size:.5em;">of</span>Dev</span></div>
+        <span class="x">✕ Gradients</span>
+        <p>Named in the brief as the thing to avoid. It also fails in every email client.</p>
+      </div>
+      <div class="mis">
+        <div class="demo"><span class="wm" style="font-size:22px;font-variation-settings:'wdth' 62,'wght' 800;">Future<span class="of">of</span>Dev</span></div>
+        <span class="x">✕ Re-proportioning</span>
+        <p>Never change the width axis, condense, stretch or re-space the wordmark. Use a supplied lockup.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 04 COLOUR ============ -->
+<section class="sec" id="colour">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">04 / Colour</p>
+      <h2 class="d2">Six fixed, eight added</h2>
+      <p class="lede">The core six come from the brief and are not up for negotiation. The eight system extensions exist because a six-colour palette cannot express hover states, secondary type, hairlines, a dark canvas or accessible tints — every real interface needs them, and if they are not specified here someone will invent them badly later.</p>
+    </div>
+
+    <p class="meta" style="margin-bottom:14px;">Core six · fixed by strategy brief §14</p>
+    <div class="swatches" style="margin-bottom:44px;">
+      <div class="sw"><div class="chip" style="background:#111827;"></div><div class="body"><h4>Ink</h4><code>#111827</code><p>Type, dark bands, authority. The default text colour at every size.</p><span class="ratio pass">16.4:1 on white · AAA</span></div></div>
+      <div class="sw"><div class="chip" style="background:#4355FF;"></div><div class="body"><h4>Signal</h4><code>#4355FF</code><p>Links, actions, selected states, the advanced unit in the mark.</p><span class="ratio pass">5.27:1 on white · AA</span></div></div>
+      <div class="sw"><div class="chip" style="background:#C8FF3D;"></div><div class="body"><h4>Build</h4><code>#C8FF3D</code><p>Progress, build prompts, highlights. A surface colour only — see the law below.</p><span class="ratio fail">1.18:1 on white · unusable as type</span></div></div>
+      <div class="sw"><div class="chip" style="background:#F3F5F8;border-bottom:1px solid var(--line);"></div><div class="body"><h4>Cloud</h4><code>#F3F5F8</code><p>Backgrounds, cards, separation without a border.</p><span class="ratio pass">Ink on Cloud · 15.4:1</span></div></div>
+      <div class="sw"><div class="chip" style="background:#42D7FF;"></div><div class="body"><h4>Accent</h4><code>#42D7FF</code><p>Diagrams and secondary information. Never a call to action — that is Signal's job.</p><span class="ratio fail">1.69:1 on white · fills only</span></div></div>
+      <div class="sw"><div class="chip" style="background:#FFFFFF;border:1px solid var(--line);border-bottom:1px solid var(--line);"></div><div class="body"><h4>Base</h4><code>#FFFFFF</code><p>Editorial space and readability. The dominant surface across the whole brand.</p><span class="ratio pass">Default canvas</span></div></div>
+    </div>
+
+    <div class="law">
+      <span class="meta">The one colour rule that matters</span>
+      <h3>Build is a surface. Ink is what goes on it.</h3>
+      <p>Acid lime measures 1.18:1 against white — effectively invisible as text — but 15.1:1 against Ink. So it is never a text colour, a link colour or a border on light backgrounds. It is a filled block with #111827 type sitting on top. Applied that way it is loud, accessible and unmistakably yours. Applied any other way it is an accessibility failure and it makes the brand look like every other AI newsletter.</p>
+    </div>
+
+    <p class="meta" style="margin:44px 0 14px;">System extensions · added to make the core six shippable</p>
+    <div class="swatches">
+      <div class="sw"><div class="chip" style="background:#6B7280;"></div><div class="body"><h4>Graphite</h4><code>#6B7280</code><p>Secondary type, captions, metadata on light.</p><span class="ratio pass">4.83:1 on white · AA</span></div></div>
+      <div class="sw"><div class="chip" style="background:#E2E6EC;"></div><div class="body"><h4>Hairline</h4><code>#E2E6EC</code><p>Rules, card borders, table dividers.</p><span class="ratio pass">Non-text</span></div></div>
+      <div class="sw"><div class="chip" style="background:#2E3FE0;"></div><div class="body"><h4>Signal 700</h4><code>#2E3FE0</code><p>Hover and pressed states for anything Signal.</p><span class="ratio pass">7.0:1 on white · AAA</span></div></div>
+      <div class="sw"><div class="chip" style="background:#EDEFFF;"></div><div class="body"><h4>Signal 050</h4><code>#EDEFFF</code><p>Selected rows, quote washes, active nav.</p><span class="ratio pass">Non-text</span></div></div>
+      <div class="sw"><div class="chip" style="background:#0A0E17;"></div><div class="body"><h4>Void</h4><code>#0A0E17</code><p>Dark-mode canvas. Deeper than Ink so Ink can sit on top as an elevated card.</p><span class="ratio pass">18.8:1 with Cloud type</span></div></div>
+      <div class="sw"><div class="chip" style="background:#1F2937;"></div><div class="body"><h4>Slate</h4><code>#1F2937</code><p>Dark-mode elevated surfaces and card fills.</p><span class="ratio pass">Non-text</span></div></div>
+      <div class="sw"><div class="chip" style="background:#8B98FF;"></div><div class="body"><h4>Signal 300</h4><code>#8B98FF</code><p>Signal as <em>text</em> on dark surfaces. Signal itself measures 3.66:1 on Void and fails — this tint replaces it for every link, label and icon in dark mode.</p><span class="ratio pass">7.38:1 on Void · AAA</span></div></div>
+      <div class="sw"><div class="chip" style="background:#0E7490;"></div><div class="body"><h4>Cyan 700</h4><code>#0E7490</code><p>Accent as <em>text</em> on light surfaces, for the Enter stage label. Same problem in reverse.</p><span class="ratio pass">5.36:1 on white · AA</span></div></div>
+    </div>
+
+    <div class="grid g2" style="margin-top:44px;">
+      <div class="card card--flat">
+        <p class="meta" style="margin-bottom:12px;">Distribution target</p>
+        <div style="display:flex;height:52px;border:1px solid var(--ink);margin-bottom:8px;">
+          <div style="flex:60;background:#FFFFFF;border-right:1px solid var(--ink);"></div>
+          <div style="flex:22;background:#F3F5F8;border-right:1px solid var(--ink);"></div>
+          <div style="flex:11;background:#111827;"></div>
+          <div style="flex:5;background:#4355FF;"></div>
+          <div style="flex:2;background:#C8FF3D;"></div>
+        </div>
+        <div style="display:flex;margin-bottom:14px;">
+          <span class="meta" style="flex:60;font-size:9.5px;">Base 60</span>
+          <span class="meta" style="flex:22;font-size:9.5px;">Cloud 22</span>
+          <span class="meta" style="flex:18;font-size:9.5px;text-align:right;">Ink 11 · Signal 5 · Build 2</span>
+        </div>
+        <p style="font-size:14px;color:var(--fg-muted);">If lime exceeds roughly 2% of any layout, cut it back. Scarcity is what makes it read as "act here" rather than decoration.</p>
+      </div>
+      <div class="card card--flat">
+        <p class="meta" style="margin-bottom:12px;">Email dark mode</p>
+        <p style="font-size:14px;color:var(--fg-muted);">Gmail and Outlook invert colours without asking. Ink becomes near-white, so the Signal unit in the mark drops below usable contrast. Every email masthead therefore ships as a PNG with the lime unit baked in, at 2× density, with the wordmark in <code style="font-family:var(--mono);font-size:12.5px;">alt</code> text so a stripped image still says "Future of Dev".</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+/* ---------- typography section ---------- */
+.typerow{display:grid;grid-template-columns:150px 1fr;gap:24px;padding:26px 0;border-bottom:1px solid var(--line);align-items:baseline;}
+@media(max-width:720px){.typerow{grid-template-columns:1fr;gap:10px;}}
+.typerow .spec{font-family:var(--mono);font-size:11px;color:var(--fg-muted);line-height:1.9;letter-spacing:.03em;}
+.typerow .sample{overflow:hidden;}
+.specimen{border:1px solid var(--line);padding:clamp(22px,3.5vw,34px);}
+.specimen .glyphs{font-family:var(--display);font-variation-settings:'wdth' 112,'wght' 800;font-size:clamp(24px,3.6vw,40px);letter-spacing:-.02em;line-height:1.25;word-spacing:.1em;}
+
+/* ---------- icons ---------- */
+.iconset{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:var(--line);border:1px solid var(--line);}
+@media(max-width:900px){.iconset{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:480px){.iconset{grid-template-columns:repeat(2,1fr);}}
+.ic{background:var(--surface);padding:24px 14px 18px;text-align:center;}
+.ic svg{margin:0 auto 14px;stroke:var(--fg);stroke-width:2;fill:none;stroke-linecap:butt;stroke-linejoin:miter;}
+.ic svg .fill{fill:var(--fg);stroke:none;}
+.ic b{display:block;font-family:var(--display);font-variation-settings:'wdth' 106,'wght' 700;font-size:13.5px;letter-spacing:-.005em;}
+.ic span{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--fg-muted);margin-top:4px;}
+
+/* ---------- components ---------- */
+.comp{border:1px solid var(--line);background:var(--surface);}
+.comp-head{padding:12px 18px;border-bottom:1px solid var(--line);background:var(--bg-alt);}
+.comp-body{padding:clamp(20px,3vw,28px);}
+
+.tag{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;padding:5px 9px;border:1px solid var(--line);color:var(--fg-muted);}
+.tag svg{width:13px;height:13px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:butt;stroke-linejoin:miter;}
+.tag.is-evolve{border-color:var(--signal-text);color:var(--signal-text);}
+.tag.is-enter{border-color:var(--accent);color:var(--cyan-700);}
+.tag.is-lead{border-color:var(--ink);color:var(--fg);}
+[data-theme="dark"] .tag.is-enter{color:var(--accent);}
+[data-theme="dark"] .tag.is-lead{border-color:var(--fg);}
+
+.issue-title{font-family:var(--display);font-variation-settings:'wdth' 110,'wght' 800;font-size:clamp(22px,2.6vw,29px);letter-spacing:-.025em;line-height:1.05;margin:14px 0 10px;}
+.issue-foot{display:flex;gap:16px;flex-wrap:wrap;margin-top:18px;padding-top:14px;border-top:1px solid var(--line);}
+
+.buildblock{background:var(--build);color:var(--ink);padding:clamp(20px,3vw,26px);border:2px solid var(--ink);}
+[data-theme="dark"] .buildblock{border-color:var(--build);}
+.buildblock .lbl{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:12px;}
+.buildblock .lbl svg{width:15px;height:15px;stroke:var(--ink);stroke-width:2;fill:none;}
+.buildblock h4{font-family:var(--display);font-variation-settings:'wdth' 110,'wght' 800;font-size:clamp(19px,2.2vw,24px);margin:0 0 10px;letter-spacing:-.02em;line-height:1.1;}
+.buildblock p{color:rgba(17,24,39,.8);font-size:14.5px;margin:0;}
+.buildblock .effort{display:flex;gap:22px;margin-top:16px;padding-top:14px;border-top:1px solid rgba(17,24,39,.22);}
+.buildblock .effort div b{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:rgba(17,24,39,.6);font-weight:500;}
+.buildblock .effort div span{font-size:14px;font-weight:600;}
+
+.btn{display:inline-flex;align-items:center;gap:10px;background:var(--signal);color:#fff;border:0;padding:15px 24px;font-family:var(--body);font-size:15px;font-weight:600;cursor:pointer;}
+.btn:hover{background:var(--signal-700);}
+.btn--ghost{background:transparent;color:var(--fg);border:1px solid var(--line);}
+.btn--ghost:hover{background:transparent;border-color:var(--signal);color:var(--signal);}
+.field{display:flex;gap:0;flex-wrap:wrap;}
+.field input{flex:1 1 220px;border:1px solid var(--line);border-right:0;background:var(--bg);color:var(--fg);padding:15px 16px;font-family:var(--body);font-size:15px;min-width:0;}
+.field input::placeholder{color:var(--fg-muted);}
+@media(max-width:520px){.field input{border-right:1px solid var(--line);}}
+
+.tokens{background:var(--ink);color:#E8ECF3;padding:clamp(22px,3.5vw,32px);overflow-x:auto;font-family:var(--mono);font-size:12.5px;line-height:1.95;}
+[data-theme="dark"] .tokens{background:var(--slate);}
+.tokens .c{color:#7C8AA5;}
+.tokens .p{color:#C8FF3D;}
+.tokens .v{color:#8FB4FF;}
+
+footer.foot{border-top:1px solid var(--line);padding-block:clamp(48px,7vw,80px);}
+.foot-in{display:flex;justify-content:space-between;gap:30px;flex-wrap:wrap;align-items:flex-end;}
+
+@media (prefers-reduced-motion: no-preference){
+  .cover-top svg rect{animation:shift .85s cubic-bezier(.2,.85,.25,1) .3s both;}
+  @keyframes shift{from{transform:translate(-4px,4px);opacity:0;}to{transform:translate(0,0);opacity:1;}}
+}
+</style>
+
+<!-- ============ 05 TYPOGRAPHY ============ -->
+<section class="sec" id="type">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">05 / Typography</p>
+      <h2 class="d2">Archivo, Inter, JetBrains Mono</h2>
+      <p class="lede">All three are open-licence, which matters more than it sounds: Beehiiv, Gmail and every partner deck can use them without a licence conversation. You get a distinctive display face with zero legal friction.</p>
+    </div>
+
+    <div class="grid g3" style="margin-bottom:44px;">
+      <div class="card">
+        <p class="meta" style="margin-bottom:10px;">Display</p>
+        <p style="font-family:var(--display);font-variation-settings:'wdth' 118,'wght' 800;font-size:44px;line-height:1;letter-spacing:-.03em;margin:0 0 14px;">Archivo</p>
+        <p style="font-size:14px;color:var(--fg-muted);">A grotesk drawn for headlines and small print at once, with a real width axis. It has editorial muscle without the tech-startup fingerprint of Space Grotesk, which is now on roughly every AI landing page. Use the width axis at 108–118 for display; never below 100.</p>
+      </div>
+      <div class="card">
+        <p class="meta" style="margin-bottom:10px;">Body &amp; UI</p>
+        <p style="font-family:var(--body);font-weight:600;font-size:44px;line-height:1;letter-spacing:-.03em;margin:0 0 14px;">Inter</p>
+        <p style="font-size:14px;color:var(--fg-muted);">Named in the brief and correct: it is the most legible neutral sans at body sizes, ships everywhere, and disappears behind the content — which is what a publication needs its body face to do.</p>
+      </div>
+      <div class="card">
+        <p class="meta" style="margin-bottom:10px;">Mono · metadata only</p>
+        <p style="font-family:var(--mono);font-weight:700;font-size:34px;line-height:1.25;letter-spacing:-.02em;margin:0 0 14px;">JetBrains<br>Mono</p>
+        <p style="font-size:14px;color:var(--fg-muted);">Issue numbers, dates, reading time, stage labels, prompts and code. Never body copy. Mono is the brand's way of saying "this is data, not argument".</p>
+      </div>
+    </div>
+
+    <p class="eyebrow">Scale</p>
+    <div style="border-top:1px solid var(--line);margin-bottom:44px;">
+      <div class="typerow"><div class="spec">Masthead<br>Archivo 800 · wdth 112<br>132px / 0.94 / −0.025em</div><div class="sample"><span class="wm" style="font-size:clamp(40px,7vw,88px);">Future<span class="of">of</span>Dev</span></div></div>
+      <div class="typerow"><div class="spec">Display L<br>Archivo 800 · wdth 112<br>76px / 0.96 / −0.025em</div><div class="sample"><span style="font-family:var(--display);font-variation-settings:'wdth' 112,'wght' 800;font-size:clamp(32px,5vw,58px);line-height:.98;letter-spacing:-.025em;">Learn and build the AI-native way.</span></div></div>
+      <div class="typerow"><div class="spec">Display M<br>Archivo 800 · wdth 110<br>42px / 1.02 / −0.02em</div><div class="sample"><span style="font-family:var(--display);font-variation-settings:'wdth' 110,'wght' 800;font-size:clamp(24px,3.2vw,36px);line-height:1.04;letter-spacing:-.02em;">The shift nobody put in the job description</span></div></div>
+      <div class="typerow"><div class="spec">Lede<br>Inter 400<br>21px / 1.55</div><div class="sample"><span style="font-size:19px;line-height:1.55;color:var(--fg-muted);">Understand what is changing, develop useful skills and build something real — one edition at a time.</span></div></div>
+      <div class="typerow"><div class="spec">Body<br>Inter 400<br>16px / 1.6 · 68ch max</div><div class="sample"><span style="font-size:16px;line-height:1.6;">Every edition helps you understand what is changing, develop a useful skill or build something real. The measure is capped at 68 characters so a long issue stays readable on a phone at arm's length.</span></div></div>
+      <div class="typerow"><div class="spec">Label<br>JetBrains Mono 500<br>11.5px · 0.16em · upper</div><div class="sample"><span class="meta">Issue 014 · 6 min read · Evolve</span></div></div>
+    </div>
+
+    <div class="grid g2">
+      <div class="specimen">
+        <p class="meta" style="margin-bottom:16px;">Archivo · display character</p>
+        <p class="glyphs">AaGgRrKkQq 0123456789 &amp;?!—</p>
+      </div>
+      <div class="card card--flat">
+        <p class="meta" style="margin-bottom:12px;">Email-safe fallback stack</p>
+        <p style="font-family:var(--mono);font-size:12.5px;line-height:2;color:var(--fg-muted);max-width:none;">
+          display: Archivo, 'Helvetica Neue', Arial, sans-serif<br>
+          body:&nbsp;&nbsp;&nbsp; Inter, -apple-system, 'Segoe UI', Arial<br>
+          mono:&nbsp;&nbsp;&nbsp; 'JetBrains Mono', Consolas, monospace
+        </p>
+        <p style="font-size:14px;color:var(--fg-muted);margin-top:16px;">Outlook ignores webfonts entirely and will render Arial. That is fine — the issue stays recognisable because the <em>layout</em>, the mono labels and the lime build block carry the brand, not the typeface alone. Design every issue so it still looks like Future of Dev in Arial.</p>
+        <p style="font-size:14px;color:var(--fg-muted);margin-top:14px;">If you ever want to license: Söhne or GT America as a display upgrade. Neither is necessary — Archivo is genuinely holding its own here.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 06 ICONS ============ -->
+<section class="sec" id="icons">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">06 / Icon system</p>
+      <h2 class="d2">Fifteen icons, one grammar</h2>
+      <p class="lede">24 × 24 grid, 2px stroke, butt caps, mitred joins, zero corner radius — the same edge quality as the symbol. Where an icon means "something moved ahead", it reuses the mark's stepped geometry, so the family reads as one system rather than a purchased set.</p>
+    </div>
+
+    <p class="meta" style="margin-bottom:14px;">Lifecycle · Discover → Operate</p>
+    <div class="iconset" style="margin-bottom:40px;">
+      <div class="ic"><svg width="30" height="30" viewBox="0 0 24 24"><rect x="3" y="3" width="12" height="12"/><path d="M15 15L21 21"/></svg><b>Discover</b><span>discover</span></div>
+      <div class="ic"><svg width="30" height="30" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16"/><path d="M3 9H21"/><rect class="fill" x="7" y="13" width="5" height="4"/></svg><b>Design</b><span>design</span></div>
+      <div class="ic"><svg width="30" height="30" viewBox="0 0 24 24"><rect x="3" y="15" width="18" height="6"/><rect x="3" y="8" width="11" height="6"/><rect class="fill" x="16" y="2" width="5" height="5"/></svg><b>Build</b><span>build</span></div>
+      <div class="ic"><svg width="30" height="30" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18"/><path d="M7.5 12L11 15.5L16.5 8.5"/></svg><b>Test</b><span>test</span></div>
+      <div class="ic"><svg width="30" height="30" viewBox="0 0 24 24"><path d="M13 3H21V11"/><path d="M21 3L12 12"/><path d="M18 14V21H3V6H10"/></svg><b>Ship</b><span>ship</span></div>
+      <div class="ic"><svg width="30" height="30" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18"/><rect x="9" y="9" width="6" height="6"/><path d="M12 3V9M12 15V21M3 12H9M15 12H21"/></svg><b>Operate</b><span>operate</span></div>
+    </div>
+
+    <p class="meta" style="margin-bottom:14px;">Career stage · never colour-only, always icon + word</p>
+    <div class="iconset" style="margin-bottom:40px;">
+      <div class="ic"><svg width="30" height="30" viewBox="0 0 24 24"><rect class="fill" x="3" y="15" width="5" height="6"/><rect class="fill" x="9.5" y="10" width="5" height="11"/><rect class="fill" x="16" y="5" width="5" height="16"/></svg><b>Evolve</b><span>stage</span></div>
+      <div class="ic"><svg width="30" height="30" viewBox="0 0 24 24"><path d="M13 3H21V21H13"/><path d="M3 12H15"/><path d="M11 8L15 12L11 16"/></svg><b>Enter</b><span>stage</span></div>
+      <div class="ic"><svg width="30" height="30" viewBox="0 0 24 24"><path d="M5 21V3"/><path d="M5 3H19L15.5 8L19 13H5"/></svg><b>Lead</b><span>stage</span></div>
+      <div class="ic"><svg width="30" height="30" viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8"/><rect x="13" y="3" width="8" height="8"/><rect x="3" y="13" width="8" height="8"/><rect x="13" y="13" width="8" height="8"/></svg><b>Everyone</b><span>stage</span></div>
+      <div class="ic" style="background:var(--bg-alt);"><svg width="30" height="30" viewBox="0 0 24 24" style="opacity:.35;"><rect x="3" y="3" width="18" height="18" stroke-dasharray="3 3"/></svg><b style="color:var(--fg-muted);">Reserved</b><span>future stage</span></div>
+      <div class="ic" style="background:var(--bg-alt);"><svg width="30" height="30" viewBox="0 0 24 24" style="opacity:.35;"><rect x="3" y="3" width="18" height="18" stroke-dasharray="3 3"/></svg><b style="color:var(--fg-muted);">Reserved</b><span>future stage</span></div>
+    </div>
+
+    <p class="meta" style="margin-bottom:14px;">Issue anatomy · one glyph per block of the weekly edition</p>
+    <div class="iconset">
+      <div class="ic"><svg width="30" height="30" viewBox="0 0 24 24"><g class="fill" transform="translate(1,1) scale(0.6875)"><path d="M0 4 H14 V18 H28 V32 H0 Z"/><rect x="18" y="0" width="14" height="14"/></g></svg><b>The Shift</b><span>block 01</span></div>
+      <div class="ic"><svg width="30" height="30" viewBox="0 0 24 24"><path d="M3 3H21V17H12L8 21V17H3Z"/><path d="M8 8H16M8 12H13"/></svg><b>Why it Matters</b><span>block 02</span></div>
+      <div class="ic"><svg width="30" height="30" viewBox="0 0 24 24"><path d="M2 5H11V20H2Z"/><path d="M13 5H22V20H13Z"/></svg><b>Learn</b><span>block 03</span></div>
+      <div class="ic"><svg width="30" height="30" viewBox="0 0 24 24"><rect x="3" y="15" width="18" height="6"/><rect x="3" y="8" width="11" height="6"/><rect class="fill" x="16" y="2" width="5" height="5"/></svg><b>Build</b><span>block 04</span></div>
+      <div class="ic"><svg width="30" height="30" viewBox="0 0 24 24"><path d="M6 3H18V21L12 16L6 21Z"/></svg><b>Keep</b><span>block 05</span></div>
+      <div class="ic"><svg width="30" height="30" viewBox="0 0 24 24"><path d="M6 6L12 12L18 6"/><path d="M6 13L12 19L18 13"/></svg><b>Go Deeper</b><span>block 06</span></div>
+    </div>
+
+    <p style="color:var(--fg-muted);font-size:14.5px;margin-top:22px;">Build appears twice on purpose — the lifecycle stage and the issue block are the same idea, so they share a glyph. Resist the urge to draw a second one; a system earns trust by reusing, not by expanding.</p>
+  </div>
+</section>
+
+<!-- ============ 07 COMPONENTS ============ -->
+<section class="sec" id="components">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">07 / Components</p>
+      <h2 class="d2">The system, assembled</h2>
+      <p class="lede">Live and interactive — flip the theme at the top of the page to check every one of these in email dark mode.</p>
+    </div>
+
+    <div class="grid g2" style="margin-bottom:var(--gutter);">
+      <div class="comp">
+        <div class="comp-head"><span class="meta">Issue card</span></div>
+        <div class="comp-body">
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <span class="tag is-evolve"><svg viewBox="0 0 24 24"><rect fill="currentColor" stroke="none" x="3" y="15" width="5" height="6"/><rect fill="currentColor" stroke="none" x="9.5" y="10" width="5" height="11"/><rect fill="currentColor" stroke="none" x="16" y="5" width="5" height="16"/></svg>Evolve</span>
+            <span class="tag"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16"/><path d="M3 9H21"/></svg>Workflows</span>
+          </div>
+          <h3 class="issue-title">The review step you can stop doing by hand</h3>
+          <p style="color:var(--fg-muted);font-size:15px;">Most teams have automated the wrong half of code review. Here is the half that actually pays back, and the judgement you must keep.</p>
+          <div class="issue-foot"><span class="meta">Issue 014</span><span class="meta">14 Aug 2026</span><span class="meta">6 min read</span></div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-head"><span class="meta">Build block · the only place lime appears in an issue</span></div>
+        <div class="comp-body">
+          <div class="buildblock">
+            <span class="lbl"><svg viewBox="0 0 24 24"><rect x="3" y="15" width="18" height="6"/><rect x="3" y="8" width="11" height="6"/><rect fill="var(--ink)" stroke="none" x="16" y="2" width="5" height="5"/></svg>Build</span>
+            <h4>Write the review checklist you would hand a new joiner</h4>
+            <p>Take your last three pull requests. Extract every judgement you made that a model could not have made for you. That list is your checklist.</p>
+            <div class="effort">
+              <div><b>Effort</b><span>20 minutes</span></div>
+              <div><b>You end with</b><span>A one-page checklist</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid g2" style="margin-bottom:var(--gutter);">
+      <div class="comp">
+        <div class="comp-head"><span class="meta">Course card</span></div>
+        <div class="comp-body">
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;">
+            <span class="tag is-enter"><svg viewBox="0 0 24 24"><path d="M13 3H21V21H13"/><path d="M3 12H15"/><path d="M11 8L15 12L11 16"/></svg>Enter</span>
+            <span class="tag"><svg viewBox="0 0 24 24"><path d="M13 3H21V11"/><path d="M21 3L12 12"/><path d="M18 14V21H3V6H10"/></svg>Ship</span>
+          </div>
+          <h3 style="font-family:var(--display);font-variation-settings:'wdth' 110,'wght' 800;font-size:24px;letter-spacing:-.02em;line-height:1.08;margin:0 0 12px;">Ship an AI-assisted feature end to end</h3>
+          <p style="font-size:14.5px;color:var(--fg-muted);margin-bottom:16px;">You will develop <strong style="color:var(--fg);">product judgement under AI assistance</strong> by building <strong style="color:var(--fg);">a working feature with a written decision log</strong>, and demonstrate it against <strong style="color:var(--fg);">a six-point review rubric</strong>.</p>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;padding-top:14px;border-top:1px solid var(--line);">
+            <div><b class="meta" style="display:block;margin-bottom:3px;">Effort</b><span style="font-size:14px;font-weight:600;">4 × 45 min</span></div>
+            <div><b class="meta" style="display:block;margin-bottom:3px;">Format</b><span style="font-size:14px;font-weight:600;">Email-led</span></div>
+            <div><b class="meta" style="display:block;margin-bottom:3px;">Updated</b><span style="font-size:14px;font-weight:600;">Jul 2026</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-head"><span class="meta">Signup · one field, specific promise</span></div>
+        <div class="comp-body">
+          <h3 style="font-family:var(--display);font-variation-settings:'wdth' 112,'wght' 800;font-size:clamp(24px,3vw,32px);letter-spacing:-.028em;line-height:1;margin:0 0 12px;">Learn and build the AI-native way.</h3>
+          <p style="font-size:15px;color:var(--fg-muted);margin-bottom:20px;">One useful edition each week. Understand what changed, learn one method, build one thing.</p>
+          <div class="field">
+            <input type="email" placeholder="you@work.com" aria-label="Email address">
+            <button class="btn" type="button">Join Future of Dev</button>
+          </div>
+          <p class="meta" style="margin-top:14px;">No spam · unsubscribe in one click · 6,000+ readers</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="comp">
+      <div class="comp-head"><span class="meta">Label inventory · every tag in the system</span></div>
+      <div class="comp-body">
+        <p class="meta" style="margin-bottom:12px;">Career stage</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px;">
+          <span class="tag is-evolve"><svg viewBox="0 0 24 24"><rect fill="currentColor" stroke="none" x="3" y="15" width="5" height="6"/><rect fill="currentColor" stroke="none" x="9.5" y="10" width="5" height="11"/><rect fill="currentColor" stroke="none" x="16" y="5" width="5" height="16"/></svg>Evolve</span>
+          <span class="tag is-enter"><svg viewBox="0 0 24 24"><path d="M13 3H21V21H13"/><path d="M3 12H15"/><path d="M11 8L15 12L11 16"/></svg>Enter</span>
+          <span class="tag is-lead"><svg viewBox="0 0 24 24"><path d="M5 21V3"/><path d="M5 3H19L15.5 8L19 13H5"/></svg>Lead</span>
+          <span class="tag"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8"/><rect x="13" y="3" width="8" height="8"/><rect x="3" y="13" width="8" height="8"/><rect x="13" y="13" width="8" height="8"/></svg>Everyone</span>
+        </div>
+        <p class="meta" style="margin-bottom:12px;">Lifecycle</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <span class="tag"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="12" height="12"/><path d="M15 15L21 21"/></svg>Discover</span>
+          <span class="tag"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16"/><path d="M3 9H21"/></svg>Design</span>
+          <span class="tag"><svg viewBox="0 0 24 24"><rect x="3" y="15" width="18" height="6"/><rect x="3" y="8" width="11" height="6"/></svg>Build</span>
+          <span class="tag"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18"/><path d="M7.5 12L11 15.5L16.5 8.5"/></svg>Test</span>
+          <span class="tag"><svg viewBox="0 0 24 24"><path d="M13 3H21V11"/><path d="M21 3L12 12"/><path d="M18 14V21H3V6H10"/></svg>Ship</span>
+          <span class="tag"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18"/><rect x="9" y="9" width="6" height="6"/></svg>Operate</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 08 TOKENS ============ -->
+<section class="sec" id="tokens">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">08 / Tokens</p>
+      <h2 class="d2">Copy this into your stylesheet</h2>
+      <p class="lede">Everything above resolves to these variables. Nothing in the brand should use a hex value that is not on this list.</p>
+    </div>
+    <div class="tokens"><span class="c">/* Future of Dev — design tokens v1.0 */</span>
+<span class="v">:root</span> {
+  <span class="c">/* core six — fixed by strategy brief §14 */</span>
+  <span class="p">--fod-ink</span>:        #111827;
+  <span class="p">--fod-signal</span>:     #4355FF;
+  <span class="p">--fod-build</span>:      #C8FF3D;
+  <span class="p">--fod-cloud</span>:      #F3F5F8;
+  <span class="p">--fod-accent</span>:     #42D7FF;
+  <span class="p">--fod-base</span>:       #FFFFFF;
+
+  <span class="c">/* system extensions */</span>
+  <span class="p">--fod-graphite</span>:   #6B7280;
+  <span class="p">--fod-hairline</span>:   #E2E6EC;
+  <span class="p">--fod-signal-700</span>: #2E3FE0;
+  <span class="p">--fod-signal-300</span>: #8B98FF;  <span class="c">/* signal as text on dark */</span>
+  <span class="p">--fod-signal-050</span>: #EDEFFF;
+  <span class="p">--fod-cyan-700</span>:   #0E7490;  <span class="c">/* accent as text on light */</span>
+  <span class="p">--fod-void</span>:       #0A0E17;
+  <span class="p">--fod-slate</span>:      #1F2937;
+
+  <span class="c">/* type */</span>
+  <span class="p">--fod-display</span>: 'Archivo', 'Helvetica Neue', Arial, sans-serif;
+  <span class="p">--fod-body</span>:    'Inter', -apple-system, 'Segoe UI', Arial, sans-serif;
+  <span class="p">--fod-mono</span>:    'JetBrains Mono', Consolas, monospace;
+  <span class="p">--fod-display-vf</span>: 'wdth' 112, 'wght' 800;
+
+  <span class="c">/* geometry — 4px unit, same grid as the symbol */</span>
+  <span class="p">--fod-u</span>: 4px;
+  <span class="p">--fod-radius</span>: 0;
+  <span class="p">--fod-rule</span>: 1px solid var(--fod-hairline);
+  <span class="p">--fod-clearspace</span>: calc(var(--fod-u) * 2);  <span class="c">/* = mark channel × 2 */</span>
+}</div>
+
+    <div class="grid g2" style="margin-top:34px;">
+      <div class="card card--flat">
+        <p class="meta" style="margin-bottom:12px;">Symbol · production SVG</p>
+        <p style="font-family:var(--mono);font-size:12px;line-height:1.9;color:var(--fg-muted);max-width:none;word-break:break-word;">&lt;svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"&gt;<br>&nbsp;&nbsp;&lt;path d="M0 4 H14 V18 H28 V32 H0 Z" fill="#111827"/&gt;<br>&nbsp;&nbsp;&lt;rect x="18" y="0" width="14" height="14" fill="#4355FF"/&gt;<br>&lt;/svg&gt;</p>
+      </div>
+      <div class="card card--flat">
+        <p class="meta" style="margin-bottom:12px;">Non-negotiables</p>
+        <p style="font-size:14.5px;color:var(--fg-muted);">Border radius is zero everywhere. The channel in the symbol is always 1u. Lime never colours type. Stage labels always carry an icon and a word. The wordmark's <em>of</em> is always lighter and narrower than the words either side of it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="wrap foot-in">
+    <div>
+      <div class="lockup" style="margin-bottom:16px;"><svg width="30" height="30" viewBox="0 0 32 32"><path d="M0 4 H14 V18 H28 V32 H0 Z" fill="var(--mark-body)"/><rect x="18" y="0" width="14" height="14" fill="var(--mark-unit)"/></svg>
+        <span class="wm" style="font-size:26px;">Future<span class="of">of</span>Dev</span></div>
+      <p style="font-size:15px;color:var(--fg-muted);">Learn and build the AI-native way.</p>
+    </div>
+    <p class="meta" style="text-align:right;">Brand kit v1.0<br>futureofdev.com</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var btn = document.getElementById('themeBtn');
+  var lbl = document.getElementById('themeLabel');
+  if(!btn) return;
+  btn.addEventListener('click', function(){
+    var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+    document.documentElement.setAttribute('data-theme', dark ? 'light' : 'dark');
+    btn.setAttribute('aria-pressed', String(!dark));
+    lbl.textContent = dark ? 'Dark mode' : 'Light mode';
+  });
+})();
+</script>
+</body>
+</html>

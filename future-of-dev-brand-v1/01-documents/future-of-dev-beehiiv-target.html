@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en-GB" data-mode="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Future of Dev — Beehiiv target design</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#111827; --signal:#4355FF; --build:#C8FF3D; --cloud:#F3F5F8;
+  --accent:#42D7FF; --base:#FFFFFF; --graphite:#6B7280; --hairline:#E2E6EC;
+  --signal-700:#2E3FE0; --signal-300:#8B98FF; --signal-050:#EDEFFF;
+  --cyan-700:#0E7490; --void:#0A0E17; --slate:#1F2937;
+
+  --display:'Archivo','Helvetica Neue',Arial,sans-serif;
+  --body:'Inter',-apple-system,'Segoe UI',Roboto,Arial,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,Consolas,monospace;
+
+  /* what actually ships inside the inbox */
+  --mail-sans:'Helvetica Neue',Helvetica,Arial,sans-serif;
+  --mail-mono:'Courier New',Courier,monospace;
+
+  --page-bg:#E8EBF0;
+  --gutter:clamp(20px,5vw,64px);
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--page-bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+img,svg{display:block;max-width:100%;}
+:focus-visible{outline:3px solid var(--signal);outline-offset:3px;}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:var(--gutter);}
+
+.d1,.d2,.d3{font-family:var(--display);font-weight:800;font-variation-settings:'wdth' 112,'wght' 800;font-stretch:112%;line-height:.96;letter-spacing:-.025em;margin:0;}
+.d1{font-size:clamp(40px,7vw,80px);}
+.d2{font-size:clamp(28px,4vw,50px);}
+.d3{font-size:clamp(20px,2.3vw,28px);line-height:1.05;}
+.lede{font-size:clamp(16px,1.5vw,19px);line-height:1.55;color:var(--graphite);max-width:64ch;margin:0;}
+.eyebrow{font-family:var(--mono);font-size:11.5px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--signal);display:flex;align-items:center;gap:10px;margin:0 0 18px;}
+.eyebrow::after{content:"";flex:1;height:1px;background:var(--hairline);}
+.meta{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--graphite);}
+p{margin:0 0 1em;max-width:68ch;} p:last-child{margin-bottom:0;}
+
+header.top{background:var(--base);border-bottom:1px solid var(--hairline);padding-block:clamp(38px,6vw,64px) clamp(34px,5vw,54px);}
+.toprow{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;margin-bottom:clamp(34px,6vw,64px);}
+.wm{font-family:var(--display);font-variation-settings:'wdth' 110,'wght' 800;font-stretch:110%;letter-spacing:-.032em;line-height:1;white-space:nowrap;}
+.wm .of{font-variation-settings:'wdth' 92,'wght' 500;font-stretch:92%;font-size:.5em;color:var(--graphite);padding-left:.2em;padding-right:.1em;vertical-align:.09em;letter-spacing:0;}
+.lockup{display:flex;align-items:center;gap:.6em;}
+.toggle{display:inline-flex;align-items:center;gap:8px;cursor:pointer;background:none;border:1px solid var(--hairline);color:var(--ink);font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;padding:9px 14px;}
+.toggle:hover{border-color:var(--signal);color:var(--signal);}
+
+section.part{padding-block:clamp(50px,7vw,90px);}
+.part-head{margin-bottom:clamp(30px,4vw,46px);}
+.part-head .d2{margin-bottom:14px;}
+
+/* ---------- inbox chrome ---------- */
+.stage{display:flex;flex-direction:column;align-items:center;}
+.inbox{width:100%;max-width:600px;background:var(--base);border:1px solid #CDD3DC;border-bottom:0;padding:16px 18px;display:flex;gap:12px;align-items:flex-start;}
+.avatar{width:38px;height:38px;flex:0 0 38px;background:var(--ink);display:grid;place-items:center;}
+.inbox .who{font-size:14px;font-weight:600;line-height:1.35;}
+.inbox .subj{font-size:14px;font-weight:600;margin-top:3px;}
+.inbox .prev{font-size:13px;color:var(--graphite);margin-top:2px;line-height:1.4;}
+.inbox .when{margin-left:auto;font-size:11.5px;color:var(--graphite);white-space:nowrap;padding-top:2px;}
+
+/* ---------- the email ---------- */
+.mail{width:100%;max-width:600px;background:var(--cloud);border:1px solid #CDD3DC;font-family:var(--mail-sans);}
+.mail-inner{background:var(--base);}
+.mhead{display:flex;justify-content:space-between;align-items:center;padding:18px 28px;border-bottom:2px solid var(--ink);}
+.mhead .n{font-family:var(--mail-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--graphite);text-align:right;line-height:1.6;}
+.mwm{font-family:var(--mail-sans);font-weight:700;font-size:19px;letter-spacing:-.035em;line-height:1;}
+.mwm .of{font-weight:400;font-size:.55em;color:var(--graphite);padding-left:.18em;padding-right:.08em;vertical-align:.08em;letter-spacing:0;}
+
+.mbody{padding:30px 28px 34px;}
+.mtitle{font-family:var(--mail-sans);font-weight:700;font-size:30px;line-height:1.04;letter-spacing:-.032em;margin:0 0 14px;}
+.mdek{font-size:15.5px;line-height:1.55;color:#4A5568;margin:0 0 6px;}
+.mail p{font-size:15.5px;line-height:1.62;color:var(--ink);margin:0 0 15px;max-width:none;}
+.mail p:last-child{margin-bottom:0;}
+.mail strong{font-weight:700;}
+
+.blk{margin-top:34px;padding-top:26px;border-top:1px solid var(--hairline);}
+.blk:first-of-type{margin-top:26px;}
+.blbl{display:flex;align-items:center;gap:9px;font-family:var(--mail-mono);font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);margin-bottom:14px;}
+.blbl svg{width:15px;height:15px;stroke:var(--ink);stroke-width:2;fill:none;stroke-linecap:butt;stroke-linejoin:miter;flex:0 0 15px;}
+.blbl .num{margin-left:auto;font-weight:400;color:var(--graphite);letter-spacing:.1em;}
+.bh{font-family:var(--mail-sans);font-weight:700;font-size:20px;line-height:1.15;letter-spacing:-.025em;margin:0 0 12px;}
+
+.frame{border:1px solid var(--hairline);background:var(--cloud);padding:18px 20px;margin:18px 0 4px;}
+.frame .fr{display:flex;gap:14px;padding:10px 0;border-bottom:1px solid #DDE2E9;}
+.frame .fr:last-child{border-bottom:0;}
+.frame .fr b{font-family:var(--mail-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;flex:0 0 92px;padding-top:2px;}
+.frame .fr span{font-size:14.5px;line-height:1.5;}
+
+.buildblk{background:var(--build);border:2px solid var(--ink);padding:22px 22px 20px;margin-top:6px;}
+.buildblk .blbl{color:var(--ink);margin-bottom:12px;}
+.buildblk .blbl svg{stroke:var(--ink);}
+.buildblk .blbl .num{color:rgba(17,24,39,.6);}
+.buildblk h4{font-family:var(--mail-sans);font-weight:700;font-size:20px;line-height:1.12;letter-spacing:-.025em;margin:0 0 10px;}
+.buildblk p{font-size:15px;color:rgba(17,24,39,.82);margin:0 0 12px;}
+.effort{display:flex;gap:26px;flex-wrap:wrap;padding-top:13px;border-top:1px solid rgba(17,24,39,.24);}
+.effort b{display:block;font-family:var(--mail-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:rgba(17,24,39,.62);font-weight:400;margin-bottom:2px;}
+.effort span{font-size:14.5px;font-weight:700;}
+
+.keepbox{background:var(--cloud);border:1px solid var(--hairline);padding:20px;display:flex;gap:16px;align-items:center;flex-wrap:wrap;}
+.keepbox .kt{flex:1 1 220px;}
+.keepbox h4{font-family:var(--mail-sans);font-weight:700;font-size:16.5px;margin:0 0 5px;letter-spacing:-.015em;}
+.keepbox p{font-size:14px;color:#4A5568;margin:0;}
+
+.mbtn{display:inline-block;background:var(--signal);color:#fff;font-family:var(--mail-sans);font-weight:700;font-size:15px;padding:14px 24px;text-decoration:none;letter-spacing:-.005em;}
+.mbtn.alt{background:var(--ink);}
+.mbtn.ghost{background:transparent;color:var(--ink);border:1px solid var(--ink);}
+
+.mfoot{background:var(--ink);color:#fff;padding:26px 28px 30px;}
+.mfoot .fwm{font-family:var(--mail-sans);font-weight:700;font-size:17px;letter-spacing:-.03em;color:#fff;}
+.mfoot .fwm .of{font-weight:400;font-size:.55em;color:rgba(255,255,255,.55);padding-left:.18em;padding-right:.08em;vertical-align:.08em;}
+.mfoot p{color:rgba(255,255,255,.62);font-size:12.5px;line-height:1.65;margin:14px 0 0;}
+.mfoot a{color:rgba(255,255,255,.86);}
+.flinks{display:flex;gap:18px;flex-wrap:wrap;margin-top:16px;font-family:var(--mail-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;}
+.flinks a{color:rgba(255,255,255,.7);text-decoration:none;border-bottom:1px solid rgba(255,255,255,.28);}
+
+/* ---------- dark rendering of the email ---------- */
+[data-mode="dark"] .inbox{background:var(--void);border-color:#2A3444;}
+[data-mode="dark"] .inbox .who,[data-mode="dark"] .inbox .subj{color:#F3F5F8;}
+[data-mode="dark"] .inbox .prev{color:#97A1B2;}
+[data-mode="dark"] .inbox .when{color:#6B7280;}
+[data-mode="dark"] .inbox .avatar{background:#1F2937;}
+[data-mode="dark"] .mail{background:#05080D;border-color:#2A3444;}
+[data-mode="dark"] .mail-inner{background:var(--void);}
+[data-mode="dark"] .mhead{border-bottom-color:#F3F5F8;}
+[data-mode="dark"] .mhead svg path{fill:#FFFFFF;}
+[data-mode="dark"] .mhead svg rect{fill:#C8FF3D;}
+[data-mode="dark"] .mwm{color:#F3F5F8;}
+[data-mode="dark"] .mwm .of{color:rgba(243,245,248,.5);}
+[data-mode="dark"] .mhead .n{color:#97A1B2;}
+[data-mode="dark"] .mtitle{color:#F3F5F8;}
+[data-mode="dark"] .mdek{color:#97A1B2;}
+[data-mode="dark"] .mail p{color:#DDE3EC;}
+[data-mode="dark"] .blk{border-top-color:#2A3444;}
+[data-mode="dark"] .blbl{color:#F3F5F8;}
+[data-mode="dark"] .blbl svg{stroke:#F3F5F8;}
+[data-mode="dark"] .blbl .num{color:#6B7280;}
+[data-mode="dark"] .bh{color:#FFFFFF;}
+[data-mode="dark"] .frame{background:var(--slate);border-color:#2A3444;}
+[data-mode="dark"] .frame .fr{border-bottom-color:#2A3444;}
+[data-mode="dark"] .frame .fr span,[data-mode="dark"] .frame .fr b{color:#DDE3EC;}
+[data-mode="dark"] .buildblk{border-color:var(--build);}
+[data-mode="dark"] .buildblk .blbl{color:var(--ink);}
+[data-mode="dark"] .buildblk .blbl svg{stroke:var(--ink);}
+[data-mode="dark"] .buildblk .blbl .num{color:rgba(17,24,39,.6);}
+[data-mode="dark"] .buildblk h4{color:var(--ink);}
+[data-mode="dark"] .buildblk .effort b{color:rgba(17,24,39,.62);}
+[data-mode="dark"] .buildblk .effort span{color:var(--ink);}
+[data-mode="dark"] .buildblk p{color:rgba(17,24,39,.82);}
+[data-mode="dark"] .keepbox{background:var(--slate);border-color:#2A3444;}
+[data-mode="dark"] .keepbox h4{color:#F3F5F8;}
+[data-mode="dark"] .keepbox p{color:#97A1B2;}
+[data-mode="dark"] .mbtn.ghost{color:#F3F5F8;border-color:#F3F5F8;}
+[data-mode="dark"] .mfoot{background:var(--slate);}
+[data-mode="dark"] .darknote{display:block;}
+.darknote{display:none;max-width:600px;width:100%;background:var(--ink);color:#fff;padding:18px 22px;font-size:13.5px;line-height:1.65;margin-top:16px;}
+.darknote b{color:var(--build);}
+
+/* ---------- annotations ---------- */
+.notes{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--hairline);border:1px solid var(--hairline);margin-top:clamp(34px,5vw,56px);}
+@media(max-width:860px){.notes{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:560px){.notes{grid-template-columns:1fr;}}
+.note{background:var(--base);padding:22px;}
+.note b{display:block;font-family:var(--display);font-variation-settings:'wdth' 108,'wght' 700;font-stretch:108%;font-size:16px;letter-spacing:-.012em;margin:8px 0 8px;}
+.note p{font-size:14px;color:var(--graphite);margin:0;}
+.pill{display:inline-block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;padding:4px 8px;background:var(--signal-050);color:var(--signal-700);}
+.pill.warn{background:#FFF4D6;color:#8A5A00;}
+.pill.hard{background:#FDF0F1;color:#9A2530;}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <div class="toprow">
+      <div class="lockup">
+        <svg width="28" height="28" viewBox="0 0 32 32" role="img" aria-label="Future of Dev">
+          <path d="M0 4 H14 V18 H28 V32 H0 Z" fill="var(--ink)"/><rect x="18" y="0" width="14" height="14" fill="var(--signal)"/>
+        </svg>
+        <span class="wm" style="font-size:23px;">Future<span class="of">of</span>Dev</span>
+      </div>
+      <button class="toggle" id="modeBtn" type="button" aria-pressed="false"><span id="modeLabel">Dark mode</span></button>
+    </div>
+    <p class="eyebrow">Target design · Beehiiv implementation</p>
+    <h1 class="d1">What good<br>looks like</h1>
+    <p class="lede" style="margin-top:22px;">A complete sample issue and homepage, built in the identity system and constrained to what Beehiiv can actually do. Use it as the target to build against — not a moodboard.</p>
+
+    <div style="margin-top:32px;padding:20px 22px;border:2px solid var(--ink);background:var(--build);max-width:760px;">
+      <p style="margin:0;font-size:15.5px;color:var(--ink);"><strong>Read this first.</strong> Beehiiv treats your website and your email as two separate type systems. Custom fonts work on the site; the Post Builder is limited to a curated email-safe set and does not accept them. So Archivo will never render in the inbox. The sample issue below is therefore mocked in <strong>Helvetica/Arial</strong> — the truth of what ships — to prove the brand survives without its display face.</p>
+    </div>
+  </div>
+</header>
+
+<!-- ================= PART A — THE ISSUE ================= -->
+<section class="part">
+  <div class="wrap">
+    <div class="part-head">
+      <p class="eyebrow">Part A / The weekly issue</p>
+      <h2 class="d2">Issue 014</h2>
+      <p class="lede">Six blocks, single column, 600px. Every block from the brief's issue anatomy appears exactly once, in order, with a mono label so the reader learns the shape of an edition by the third week.</p>
+    </div>
+
+    <div class="stage">
+      <!-- inbox row -->
+      <div class="inbox">
+        <div class="avatar">
+          <svg width="19" height="19" viewBox="0 0 32 32"><path d="M0 4 H14 V18 H28 V32 H0 Z" fill="#fff"/><rect x="18" y="0" width="14" height="14" fill="#C8FF3D"/></svg>
+        </div>
+        <div>
+          <div class="who">Future of Dev</div>
+          <div class="subj">Your output tripled. Your review capacity didn't.</div>
+          <div class="prev">The bottleneck moved downstream. Here's the method that catches up — plus a 20-minute build.</div>
+        </div>
+        <div class="when">Thu 08:02</div>
+      </div>
+
+      <!-- the email -->
+      <div class="mail">
+        <div class="mail-inner">
+          <div class="mhead">
+            <div class="lockup" style="gap:9px;">
+              <svg width="22" height="22" viewBox="0 0 32 32"><path d="M0 4 H14 V18 H28 V32 H0 Z" fill="#111827"/><rect x="18" y="0" width="14" height="14" fill="#4355FF"/></svg>
+              <span class="mwm">Future<span class="of">of</span>Dev</span>
+            </div>
+            <div class="n">Issue 014<br>14 Aug 2026 · 6 min</div>
+          </div>
+
+          <div class="mbody">
+            <h1 class="mtitle">Your output tripled.<br>Your review capacity didn't.</h1>
+            <p class="mdek">The bottleneck in digital work moved one step downstream, into a role nobody has been trained for.</p>
+
+            <!-- 01 THE SHIFT -->
+            <div class="blk" style="border-top:0;padding-top:22px;">
+              <div class="blbl">
+                <svg viewBox="0 0 24 24"><g fill="#111827" stroke="none" transform="translate(1,1) scale(0.6875)"><path d="M0 4 H14 V18 H28 V32 H0 Z"/><rect x="18" y="0" width="14" height="14"/></g></svg>
+                The Shift <span class="num">01</span>
+              </div>
+              <p>Three years ago the bottleneck in most digital work was producing the first version — of the analysis, the campaign, the spec, the code. For a lot of teams that bottleneck has quietly gone. What replaced it is less discussed and considerably more awkward.</p>
+              <p>Somebody still has to decide whether the output is any good. That person is now working through three or four times the material with exactly the same amount of attention they had before.</p>
+              <p>The pattern is the same everywhere you look. A marketing team ships more variants than anyone can meaningfully test. An analyst produces models faster than the business can interrogate them. An engineer opens changes faster than a reviewer can hold the whole thing in their head. None of the work disappeared. It moved.</p>
+            </div>
+
+            <!-- 02 WHY IT MATTERS -->
+            <div class="blk">
+              <div class="blbl">
+                <svg viewBox="0 0 24 24"><path d="M3 3H21V17H12L8 21V17H3Z"/><path d="M8 8H16M8 12H13"/></svg>
+                Why it Matters <span class="num">02</span>
+              </div>
+              <p>The scarce skill is no longer producing a competent draft. It is being able to say <strong>precisely why something is wrong</strong>, quickly, and with enough authority that the team acts on it.</p>
+              <p>That is judgement, and judgement is built by having done the work rather than by having watched it be done. Which cuts two ways. If you are already in a role, the accumulated sense of what "wrong" looks like that you have been carrying around for years just became the scarce input. If you are entering the industry, the junior tasks that used to build that sense are the ones being automated first — so you will have to build it deliberately instead of picking it up by accident.</p>
+            </div>
+
+            <!-- 03 LEARN -->
+            <div class="blk">
+              <div class="blbl">
+                <svg viewBox="0 0 24 24"><path d="M2 5H11V20H2Z"/><path d="M13 5H22V20H13Z"/></svg>
+                Learn <span class="num">03</span>
+              </div>
+              <h3 class="bh">Write the rejection criteria before you look at the output</h3>
+              <p>Reviewing is a search problem. If you open a document, a dashboard or a diff without knowing what you are searching for, you will find whatever is most visually salient — an odd phrase, a badly named variable, a chart with the wrong colours — and you will miss the thing that actually matters.</p>
+              <p>So before you look, write down two things: the one failure that would make this unusable, and the one failure you would be most likely to miss. Two lines. It takes about ninety seconds and it changes what your eyes do.</p>
+              <p>Then run three passes, in this order. Most reviewers only ever run the first.</p>
+
+              <div class="frame">
+                <div class="fr"><b>Correctness</b><span>Is it true? Do the numbers, the claims and the logic hold up on their own terms?</span></div>
+                <div class="fr"><b>Fit</b><span>Is it the right thing for <em>this</em> audience, system or moment — not just a good thing in general?</span></div>
+                <div class="fr"><b>Consequence</b><span>What breaks in three months if this is wrong, and who finds out first?</span></div>
+              </div>
+
+              <p style="margin-top:16px;">AI output is disproportionately strong on the first pass and disproportionately weak on the third, because consequence depends on context the model was never given: your customers, your last outage, the promise someone made in a meeting it wasn't in. That asymmetry is the whole game.</p>
+              <p>None of this is new, and that is rather the point. It is how good editors, reviewers and analysts have always worked. What changed is that it used to be a small part of the job and is now most of it.</p>
+            </div>
+
+            <!-- 04 BUILD -->
+            <div class="blk">
+              <div class="buildblk">
+                <div class="blbl">
+                  <svg viewBox="0 0 24 24"><rect x="3" y="15" width="18" height="6"/><rect x="3" y="8" width="11" height="6"/><rect x="16" y="2" width="5" height="5" fill="#111827" stroke="none"/></svg>
+                  Build <span class="num">04</span>
+                </div>
+                <h4>Audit the last three things you accepted</h4>
+                <p>Find three outputs you accepted from an AI tool this week — a draft, a query, a summary, a block of code. For each one, write the rejection criteria you <em>should</em> have written first.</p>
+                <p>Then mark the ones you could genuinely have written in advance. The ones you couldn't are the tasks you are delegating without fully understanding them. That list is your reading list.</p>
+                <div class="effort">
+                  <div><b>Effort</b><span>20 minutes</span></div>
+                  <div><b>You end with</b><span>A named gap in your own judgement</span></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 05 KEEP -->
+            <div class="blk">
+              <div class="blbl">
+                <svg viewBox="0 0 24 24"><path d="M6 3H18V21L12 16L6 21Z"/></svg>
+                Keep <span class="num">05</span>
+              </div>
+              <div class="keepbox">
+                <div class="kt">
+                  <h4>The Three-Pass Review card</h4>
+                  <p>One page. Correctness, Fit, Consequence, with the prompts for each and space for your two rejection criteria.</p>
+                </div>
+                <a class="mbtn ghost" href="#">Get the card</a>
+              </div>
+            </div>
+
+            <!-- 06 GO DEEPER -->
+            <div class="blk">
+              <div class="blbl">
+                <svg viewBox="0 0 24 24"><path d="M6 6L12 12L18 6"/><path d="M6 13L12 19L18 13"/></svg>
+                Go Deeper <span class="num">06</span>
+              </div>
+              <p style="margin-bottom:18px;">If this landed, the four-part course goes further: how to review at volume without becoming the bottleneck yourself, and how to write criteria a whole team can apply consistently.</p>
+              <a class="mbtn" href="#">Reviewing AI output →</a>
+            </div>
+          </div>
+
+          <div class="mfoot">
+            <span class="fwm">Future<span class="of">of</span>Dev</span>
+            <div class="flinks">
+              <a href="#">Archive</a><a href="#">Courses</a><a href="#">Reply to this</a>
+            </div>
+            <p>You're getting this because you joined Future of Dev at futureofdev.com. One useful edition each week.<br><a href="#">Update preferences</a> · <a href="#">Unsubscribe</a></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="darknote">
+        <b>This is the target dark rendering, not a guarantee.</b> Apple Mail and iOS will respect a dark scheme if Beehiiv emits one. Gmail applies its own inversion that you cannot fully control, and Outlook desktop does something different again. Three things make the difference between this and a mess: the masthead ships as a PNG with the lime unit already baked in, the mark's unit switches from Signal indigo to Build lime (indigo drops to 3.66:1 on a dark canvas and fails), and the Build block is the one element that reads identically in both modes. Test every send in Gmail before you trust it.
+      </div>
+    </div>
+
+    <div class="notes">
+      <div class="note"><span class="pill">Type</span><b>Helvetica, not Archivo</b><p>The Post Builder can't take custom fonts. The issue still reads as Future of Dev because the layout, the mono labels, the 2px ink rule under the masthead and the lime block do the work — not the typeface.</p></div>
+      <div class="note"><span class="pill">Structure</span><b>Numbered blocks, every week</b><p>Each block carries its icon, its name and its position. By issue three the reader can skip to Build without reading anything else, which is the behaviour you want to measure.</p></div>
+      <div class="note"><span class="pill">Colour</span><b>Lime appears exactly once</b><p>One block per issue. That scarcity is what makes it mean "do something" rather than "we like green". If a second lime element appears, one of them is wrong.</p></div>
+      <div class="note"><span class="pill warn">Deliverability</span><b>One CTA per block, max</b><p>Keep, Go Deeper and the footer are the only links that matter. Resist adding a sponsor slot until the habit is established — the brief gates that behind audience scale.</p></div>
+      <div class="note"><span class="pill">Measurement</span><b>Build is the north-star event</b><p>Weekly Activated Readers depends on someone doing the exercise. The Keep download and the Build block are the two clicks worth instrumenting properly.</p></div>
+      <div class="note"><span class="pill hard">Non-negotiable</span><b>No image-only headlines</b><p>Tempting, since images would let you use Archivo. Don't — they break in dark mode, fail for screen readers and get stripped by corporate clients. Type stays as live text.</p></div>
+    </div>
+  </div>
+</section>
+
+<style>
+/* ---------- browser chrome + homepage ---------- */
+.chrome{border:1px solid #CDD3DC;background:var(--base);}
+.chrome-bar{background:#DDE2E9;padding:10px 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #CDD3DC;}
+.dot{width:10px;height:10px;background:#B6BEC9;}
+.chrome-url{flex:1;background:var(--base);font-family:var(--mono);font-size:11px;color:var(--graphite);padding:6px 12px;letter-spacing:.02em;}
+
+.site{font-family:var(--body);color:var(--ink);}
+.site .in{max-width:960px;margin:0 auto;padding-inline:clamp(20px,4vw,48px);}
+.snav{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:18px 0;border-bottom:1px solid var(--hairline);flex-wrap:wrap;}
+.snav .links{display:flex;gap:24px;flex-wrap:wrap;font-size:14.5px;font-weight:500;}
+.snav .links a{color:var(--ink);text-decoration:none;}
+.snav .links a:hover{color:var(--signal);}
+.sbtn{display:inline-flex;align-items:center;background:var(--signal);color:#fff;font-weight:600;font-size:14px;padding:11px 18px;text-decoration:none;border:0;cursor:pointer;}
+.sbtn:hover{background:var(--signal-700);}
+.sbtn.dark{background:var(--ink);}
+.sbtn.ghost{background:transparent;color:var(--ink);border:1px solid var(--hairline);}
+.sbtn.ghost:hover{border-color:var(--signal);color:var(--signal);}
+
+.ssec{padding-block:clamp(44px,6vw,80px);border-bottom:1px solid var(--hairline);}
+.ssec.tint{background:var(--cloud);}
+.ssec.ink{background:var(--ink);color:#fff;border-bottom-color:var(--ink);}
+.ssec.ink .slabel{color:var(--signal-300);}
+.ssec.ink .sh2{color:#fff;}
+.slabel{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--signal);margin:0 0 16px;}
+.sh1{font-family:var(--display);font-variation-settings:'wdth' 112,'wght' 800;font-stretch:112%;font-size:clamp(34px,5.2vw,62px);line-height:.97;letter-spacing:-.03em;margin:0 0 18px;}
+.sh2{font-family:var(--display);font-variation-settings:'wdth' 110,'wght' 800;font-stretch:110%;font-size:clamp(24px,3.2vw,38px);line-height:1.02;letter-spacing:-.026em;margin:0 0 16px;}
+.sh3{font-family:var(--display);font-variation-settings:'wdth' 108,'wght' 700;font-stretch:108%;font-size:19px;line-height:1.12;letter-spacing:-.018em;margin:0 0 8px;}
+.site p{font-size:16px;line-height:1.62;margin:0 0 1em;max-width:64ch;}
+.site .muted{color:var(--graphite);}
+.ssec.ink .muted{color:rgba(255,255,255,.68);}
+
+.sfield{display:flex;flex-wrap:wrap;gap:0;max-width:470px;margin-top:26px;}
+.sfield input{flex:1 1 210px;border:1px solid var(--ink);border-right:0;padding:15px 16px;font-family:var(--body);font-size:15px;min-width:0;background:#fff;color:var(--ink);}
+.sfield button{border:1px solid var(--signal);padding:15px 22px;font-size:15px;}
+@media(max-width:520px){.sfield input{border-right:1px solid var(--ink);}}
+
+.sgrid{display:grid;gap:22px;}
+.s2{grid-template-columns:repeat(2,1fr);}
+.s3{grid-template-columns:repeat(3,1fr);}
+.s4{grid-template-columns:repeat(4,1fr);}
+@media(max-width:800px){.s3,.s4{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:560px){.s2,.s3,.s4{grid-template-columns:1fr;}}
+
+.scard{border:1px solid var(--hairline);background:var(--base);padding:22px;}
+.ssec.tint .scard{border-color:#E0E5EC;}
+.scard p{font-size:14.5px;color:var(--graphite);margin:0;}
+.stag{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;padding:5px 9px;border:1px solid var(--hairline);color:var(--graphite);}
+.stag svg{width:13px;height:13px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:butt;stroke-linejoin:miter;}
+.stag.evolve{border-color:var(--signal);color:var(--signal);}
+.stag.enter{border-color:var(--accent);color:var(--cyan-700);}
+.stag.lead{border-color:var(--ink);color:var(--ink);}
+
+.stepno{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--signal);margin-bottom:12px;display:block;}
+.limebar{display:inline-block;background:var(--build);color:var(--ink);font-weight:700;font-size:14px;padding:7px 12px;}
+.proofcard{border:1px solid var(--hairline);background:var(--base);padding:20px;}
+.proofcard p{font-size:14.5px;margin:0 0 12px;}
+.proofcard .who{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--graphite);}
+.placeholder{border:1px dashed #C79A2E;background:#FFFBF0;padding:12px 14px;font-size:13px;color:#8A5A00;margin-bottom:18px;}
+</style>
+
+<!-- ================= PART B — THE HOMEPAGE ================= -->
+<section class="part" style="background:var(--base);border-top:1px solid var(--hairline);">
+  <div class="wrap">
+    <div class="part-head">
+      <p class="eyebrow">Part B / The homepage</p>
+      <h2 class="d2">futureofdev.com</h2>
+      <p class="lede">Nine sections in the order the brief specifies. The site is the one place Archivo <em>does</em> work, so the display type carries much more of the identity here than it can in the inbox.</p>
+    </div>
+
+    <div class="chrome">
+      <div class="chrome-bar">
+        <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+        <span class="chrome-url">futureofdev.com</span>
+      </div>
+
+      <div class="site">
+        <!-- nav -->
+        <div class="in">
+          <nav class="snav">
+            <div class="lockup">
+              <svg width="24" height="24" viewBox="0 0 32 32"><path d="M0 4 H14 V18 H28 V32 H0 Z" fill="#111827"/><rect x="18" y="0" width="14" height="14" fill="#4355FF"/></svg>
+              <span class="wm" style="font-size:20px;">Future<span class="of">of</span>Dev</span>
+            </div>
+            <div class="links"><a href="#">Latest</a><a href="#">Topics</a><a href="#">Learning</a><a href="#">About</a></div>
+            <a class="sbtn" href="#">Subscribe</a>
+          </nav>
+        </div>
+
+        <!-- 1. hero -->
+        <div class="ssec" style="padding-block:clamp(48px,7vw,90px);">
+          <div class="in">
+            <h1 class="sh1">Learn and build the<br>AI-native way.</h1>
+            <p style="font-size:clamp(17px,1.9vw,21px);line-height:1.5;max-width:56ch;">The practical newsletter for people evolving with AI and entering the industry.</p>
+            <p class="muted" style="max-width:58ch;">Understand what is changing, develop useful skills and build something real — one edition at a time.</p>
+            <div class="sfield">
+              <input type="email" placeholder="you@work.com" aria-label="Email address">
+              <button class="sbtn" type="button">Join Future of Dev</button>
+            </div>
+            <p class="muted" style="font-size:13px;margin-top:14px;">Free · one useful edition each week · <a href="#" style="color:var(--signal);">Read the latest edition</a></p>
+          </div>
+        </div>
+
+        <!-- 2. latest edition -->
+        <div class="ssec tint">
+          <div class="in">
+            <p class="slabel">Latest edition</p>
+            <div class="sgrid s2" style="align-items:start;">
+              <div>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;">
+                  <span class="stag evolve"><svg viewBox="0 0 24 24"><rect fill="currentColor" stroke="none" x="3" y="15" width="5" height="6"/><rect fill="currentColor" stroke="none" x="9.5" y="10" width="5" height="11"/><rect fill="currentColor" stroke="none" x="16" y="5" width="5" height="16"/></svg>Evolve</span>
+                  <span class="stag"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16"/><path d="M3 9H21"/></svg>Workflows</span>
+                </div>
+                <h2 class="sh2">Your output tripled. Your review capacity didn't.</h2>
+                <p class="muted">The bottleneck in digital work moved one step downstream, into a role nobody has been trained for. Plus a 20-minute build that names the gap in your own judgement.</p>
+                <p class="muted" style="font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;">Issue 014 · 14 Aug 2026 · 6 min read</p>
+                <a class="sbtn ghost" href="#" style="margin-top:6px;">Read edition 014</a>
+              </div>
+              <div class="scard" style="background:var(--ink);border-color:var(--ink);">
+                <p style="color:rgba(255,255,255,.6);font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px;">Previous</p>
+                <div style="border-bottom:1px solid rgba(255,255,255,.14);padding-bottom:13px;margin-bottom:13px;">
+                  <p style="color:#fff;font-weight:600;font-size:15px;margin:0 0 4px;">The skill your job description hasn't caught up with</p>
+                  <p style="color:rgba(255,255,255,.5);font-size:12.5px;margin:0;">Issue 013 · 7 Aug</p>
+                </div>
+                <div style="border-bottom:1px solid rgba(255,255,255,.14);padding-bottom:13px;margin-bottom:13px;">
+                  <p style="color:#fff;font-weight:600;font-size:15px;margin:0 0 4px;">What a good AI workflow actually looks like on a Tuesday</p>
+                  <p style="color:rgba(255,255,255,.5);font-size:12.5px;margin:0;">Issue 012 · 31 Jul</p>
+                </div>
+                <div>
+                  <p style="color:#fff;font-weight:600;font-size:15px;margin:0 0 4px;">Entering the industry when the junior rungs are moving</p>
+                  <p style="color:rgba(255,255,255,.5);font-size:12.5px;margin:0;">Issue 011 · 24 Jul</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. what you get -->
+        <div class="ssec">
+          <div class="in">
+            <p class="slabel">What you get</p>
+            <h2 class="sh2">Every edition moves you<br>through the same four steps</h2>
+            <div class="sgrid s4" style="margin-top:30px;">
+              <div class="scard"><span class="stepno">01</span><h3 class="sh3">Understand</h3><p>One change in tools, work or expectations, explained in plain terms with the reasoning shown.</p></div>
+              <div class="scard"><span class="stepno">02</span><h3 class="sh3">Learn</h3><p>One method, framework or decision you can apply on Monday — separated from the tool it happens to use.</p></div>
+              <div class="scard" style="border-color:var(--ink);border-width:2px;"><span class="stepno">03</span><h3 class="sh3">Build</h3><p>A focused exercise, 15–30 minutes, that ends in something you can point at.</p><span class="limebar" style="margin-top:12px;">This is the part that matters</span></div>
+              <div class="scard"><span class="stepno">04</span><h3 class="sh3">Demonstrate</h3><p>Criteria to check your own work against, so progress is observable rather than assumed.</p></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. who it's for -->
+        <div class="ssec tint">
+          <div class="in">
+            <p class="slabel">Who it is for</p>
+            <h2 class="sh2">Whether you are three years in<br>or three weeks in</h2>
+            <p class="muted" style="margin-bottom:28px;">Different starting points, same question: what should I learn and practise now to stay valuable?</p>
+            <div class="sgrid s3">
+              <div class="scard">
+                <span class="stag evolve" style="margin-bottom:14px;"><svg viewBox="0 0 24 24"><rect fill="currentColor" stroke="none" x="3" y="15" width="5" height="6"/><rect fill="currentColor" stroke="none" x="9.5" y="10" width="5" height="11"/><rect fill="currentColor" stroke="none" x="16" y="5" width="5" height="16"/></svg>Evolve</span>
+                <h3 class="sh3">You are already in the work</h3>
+                <p>Engineers, product managers, designers, analysts, marketers, operators and founders whose day job is being reshaped underneath them.</p>
+              </div>
+              <div class="scard">
+                <span class="stag enter" style="margin-bottom:14px;"><svg viewBox="0 0 24 24"><path d="M13 3H21V21H13"/><path d="M3 12H15"/><path d="M11 8L15 12L11 16"/></svg>Enter</span>
+                <h3 class="sh3">You are trying to get in</h3>
+                <p>Students, recent graduates and career changers building evidence of capability for roles whose expectations keep moving.</p>
+              </div>
+              <div class="scard">
+                <span class="stag lead" style="margin-bottom:14px;"><svg viewBox="0 0 24 24"><path d="M5 21V3"/><path d="M5 3H19L15.5 8L19 13H5"/></svg>Lead</span>
+                <h3 class="sh3">You are responsible for others</h3>
+                <p>Leaders and educators who have to set standards and build capability before the answers are settled.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. featured learning -->
+        <div class="ssec">
+          <div class="in">
+            <p class="slabel">Featured learning</p>
+            <div class="sgrid s2" style="align-items:center;">
+              <div>
+                <h2 class="sh2">Reviewing AI output<br>without becoming the bottleneck</h2>
+                <p class="muted">You will develop <strong style="color:var(--ink);">review judgement at volume</strong> by building <strong style="color:var(--ink);">a criteria set your team can apply consistently</strong>, and demonstrate it against <strong style="color:var(--ink);">a worked rubric on real output</strong>.</p>
+                <a class="sbtn dark" href="#">Join the waitlist</a>
+              </div>
+              <div class="scard" style="background:var(--cloud);">
+                <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:18px;">
+                  <div><p class="muted" style="font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:3px;">Effort</p><p style="font-weight:600;margin:0;">4 × 45 min</p></div>
+                  <div><p class="muted" style="font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:3px;">Format</p><p style="font-weight:600;margin:0;">Email-led</p></div>
+                  <div><p class="muted" style="font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:3px;">Stage</p><p style="font-weight:600;margin:0;">Evolve · Lead</p></div>
+                  <div><p class="muted" style="font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:3px;">Updated</p><p style="font-weight:600;margin:0;">Jul 2026</p></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 6. founder credibility -->
+        <div class="ssec ink">
+          <div class="in">
+            <p class="slabel">Who writes it</p>
+            <div class="sgrid s2" style="align-items:start;">
+              <div>
+                <h2 class="sh2">Written by someone shipping<br>this work, not describing it</h2>
+              </div>
+              <div>
+                <p class="muted">Luke leads AI operations at an enterprise software company, where he is responsible for putting autonomous agents into production against real financial workflows and real customers. Before that, a decade spent teaching people to build.</p>
+                <p class="muted">Future of Dev exists because those two things kept colliding: the gap between what AI can now do and what people have been trained to do with it is not an information problem. It is a practice problem.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 7. mission -->
+        <div class="ssec">
+          <div class="in" style="max-width:760px;">
+            <p class="slabel">Mission</p>
+            <h2 class="sh2">Give people the skills and confidence to thrive as AI changes work and product development.</h2>
+            <p class="muted">Not to predict the future, and not to frighten anyone about it. To make the next useful thing you could learn obvious, small enough to start, and real enough to show someone.</p>
+          </div>
+        </div>
+
+        <!-- 8. reader proof -->
+        <div class="ssec tint">
+          <div class="in">
+            <p class="slabel">Reader proof</p>
+            <div class="placeholder"><strong>Placeholder copy.</strong> Do not ship these. Replace with real reader replies, with permission, once you have them — the brief is explicit that proof comes from artefacts and outcomes, not adjectives.</div>
+            <div class="sgrid s3">
+              <div class="proofcard"><p>"I did the Build in twenty minutes and found two things in our workflow nobody could justify. That conversation was overdue."</p><span class="who">Placeholder · Ops lead</span></div>
+              <div class="proofcard"><p>"First newsletter I've read where I actually make something instead of adding another tab to read later."</p><span class="who">Placeholder · Product manager</span></div>
+              <div class="proofcard"><p>"I'm two months out of university. This is the only thing telling me what to practise rather than what to worry about."</p><span class="who">Placeholder · Graduate</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 9. final signup -->
+        <div class="ssec" style="border-bottom:0;">
+          <div class="in">
+            <h2 class="sh2">One useful edition each week.<br>Understand, learn, build.</h2>
+            <div class="sfield">
+              <input type="email" placeholder="you@work.com" aria-label="Email address">
+              <button class="sbtn" type="button">Join Future of Dev</button>
+            </div>
+            <p class="muted" style="font-size:13px;margin-top:14px;">No spam. Unsubscribe in one click. Your email is never sold or shared.</p>
+          </div>
+        </div>
+
+        <!-- footer -->
+        <div style="background:var(--ink);color:#fff;padding-block:36px;">
+          <div class="in" style="display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;align-items:flex-end;">
+            <div>
+              <div class="lockup" style="margin-bottom:12px;">
+                <svg width="24" height="24" viewBox="0 0 32 32"><path d="M0 4 H14 V18 H28 V32 H0 Z" fill="#fff"/><rect x="18" y="0" width="14" height="14" fill="#C8FF3D"/></svg>
+                <span class="wm" style="font-size:20px;color:#fff;">Future<span class="of" style="color:rgba(255,255,255,.55);">of</span>Dev</span>
+              </div>
+              <p style="color:rgba(255,255,255,.6);font-size:14px;margin:0;">Learn and build the AI-native way.</p>
+            </div>
+            <p style="color:rgba(255,255,255,.45);font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;margin:0;text-align:right;">futureofdev.com</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="notes">
+      <div class="note"><span class="pill">Hierarchy</span><b>Newsletter before courses</b><p>Featured learning sits at position five, after the reader has seen an actual edition. The brief is firm on this: the newsletter is the product, and course browsing must not compete with signup.</p></div>
+      <div class="note"><span class="pill">Type</span><b>Archivo works here</b><p>The Website Builder takes Google Fonts and custom uploads, so the display face lives on the site. This is the one surface where the identity can be expressed fully.</p></div>
+      <div class="note"><span class="pill">Conversion</span><b>One field, twice</b><p>Email only at the top and bottom. Career stage gets captured in the welcome survey instead, which is where the brief wants segmentation to happen.</p></div>
+      <div class="note"><span class="pill warn">Needs your input</span><b>The founder block</b><p>Written from what the brief calls for — real AI adoption plus a decade of education. Check the wording against what you actually want public and how much you want tied to your employer.</p></div>
+      <div class="note"><span class="pill">Restraint</span><b>Lime appears once</b><p>On the Build step in "What you get", because Build is the step that differentiates you from every other AI newsletter. Nowhere else on the page.</p></div>
+      <div class="note"><span class="pill hard">Do not ship</span><b>The testimonials</b><p>They are illustrative only, and marked as such in the mock so nobody copies them into production by accident.</p></div>
+    </div>
+  </div>
+</section>
+
+<style>
+.tbl{width:100%;border-collapse:collapse;background:var(--base);border:1px solid var(--hairline);font-size:14.5px;}
+.tbl th{text-align:left;font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--graphite);font-weight:500;padding:12px 14px;border-bottom:1px solid var(--hairline);background:var(--cloud);white-space:nowrap;}
+.tbl td{padding:12px 14px;border-bottom:1px solid var(--hairline);vertical-align:top;line-height:1.5;}
+.tbl tr:last-child td{border-bottom:0;}
+.tbl code{font-family:var(--mono);font-size:12.5px;background:var(--cloud);padding:2px 5px;}
+.tbl .k{font-weight:600;white-space:nowrap;}
+.scroller{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.scroller .tbl{min-width:600px;}
+.steps{counter-reset:s;border-top:1px solid var(--hairline);}
+.step{counter-increment:s;display:grid;grid-template-columns:38px 1fr;gap:18px;padding:18px 0;border-bottom:1px solid var(--hairline);}
+.step::before{content:counter(s,decimal-leading-zero);font-family:var(--mono);font-size:11.5px;color:var(--signal);padding-top:4px;}
+.step b{font-family:var(--display);font-variation-settings:'wdth' 108,'wght' 700;font-stretch:108%;font-size:17px;letter-spacing:-.015em;display:block;margin-bottom:5px;}
+.step p{font-size:14.5px;color:var(--graphite);margin:0;}
+.check{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--hairline);border:1px solid var(--hairline);}
+@media(max-width:640px){.check{grid-template-columns:1fr;}}
+.chk{background:var(--base);padding:16px 18px;display:flex;gap:12px;align-items:flex-start;font-size:14.5px;line-height:1.5;}
+.chk svg{width:17px;height:17px;flex:0 0 17px;stroke:var(--signal);stroke-width:2;fill:none;stroke-linecap:butt;stroke-linejoin:miter;margin-top:2px;}
+footer.foot{background:var(--ink);color:#fff;padding-block:clamp(44px,6vw,72px);}
+footer.foot .in{display:flex;justify-content:space-between;gap:26px;flex-wrap:wrap;align-items:flex-end;}
+</style>
+
+<!-- ================= PART C — THE BUILD SHEET ================= -->
+<section class="part" style="background:var(--cloud);border-top:1px solid var(--hairline);">
+  <div class="wrap">
+    <div class="part-head">
+      <p class="eyebrow">Part C / Build sheet</p>
+      <h2 class="d2">Where each decision<br>lives in Beehiiv</h2>
+      <p class="lede">The gap between a mock and a shipped publication is usually a list of fields nobody wrote down. This is that list, mapped to Beehiiv's actual named settings.</p>
+    </div>
+
+    <h3 class="d3" style="margin-bottom:14px;">Typography — two systems, not one</h3>
+    <p class="lede" style="margin-bottom:20px;">This is the single most important constraint. Beehiiv's Website Builder accepts Google Fonts and custom uploads; the Post Builder is restricted to a curated email-safe set and does not accept custom fonts at all — including in welcome and automation emails.</p>
+    <div class="scroller">
+      <table class="tbl" style="margin-bottom:44px;">
+        <thead><tr><th>Role</th><th>Website Builder</th><th>Post Builder (email)</th><th>Where to set it</th></tr></thead>
+        <tbody>
+          <tr><td class="k">Display</td><td>Archivo · wdth 110–112 · wght 800</td><td>Helvetica Neue / Arial, bold, tracking −0.03em</td><td>Site: Settings → Themes → Edit Theme → Header<br>Email: Style → Advanced → Body → H1/H2</td></tr>
+          <tr><td class="k">Body</td><td>Inter 400/600 · 16px · 1.62</td><td>Helvetica Neue / Arial · 15.5px · 1.62</td><td>Site: Theme → Body<br>Email: Style → Basic → Typography</td></tr>
+          <tr><td class="k">Mono / labels</td><td>JetBrains Mono 500 · 11px · 0.16em caps</td><td>Courier New, caps. If letter-spacing isn't exposed, use Arial caps instead — do not ship default Courier at normal tracking</td><td>Email: Style → Advanced → Body → H5/H6</td></tr>
+          <tr><td class="k">Masthead</td><td>Live text lockup</td><td><strong>PNG at 2×</strong>, lime unit baked in, wordmark in alt text</td><td>Email: Style → Advanced → Email Header → Image</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="d3" style="margin-bottom:14px;">Colour — mapped to Beehiiv's named slots</h3>
+    <p class="lede" style="margin-bottom:20px;">Beehiiv's Style panel doesn't use role names like "ink" or "signal". It uses six fixed slots, and one of them behaves awkwardly. Set these, then check the awkward one in preview before you trust it.</p>
+    <div class="scroller">
+      <table class="tbl" style="margin-bottom:20px;">
+        <thead><tr><th>Beehiiv slot</th><th>Set to</th><th>What it drives</th></tr></thead>
+        <tbody>
+          <tr><td class="k">Outside Background</td><td><code>#F3F5F8</code> Cloud</td><td>The canvas behind the email body</td></tr>
+          <tr><td class="k">Post Background</td><td><code>#FFFFFF</code> Base</td><td>The reading surface</td></tr>
+          <tr><td class="k">Text on Background</td><td><code>#111827</code> Ink</td><td>All body copy</td></tr>
+          <tr><td class="k">Primary</td><td><code>#111827</code> Ink</td><td>Footer background, buttons, blockquotes, table cells, byline</td></tr>
+          <tr><td class="k">Text on Primary</td><td><code>#FFFFFF</code> — <strong>verify</strong></td><td>Footer text <em>and</em> the post title. Because it colours both, a dark Primary can leave your title white on white. If preview shows that, set Primary to Cloud <code>#F3F5F8</code> and Text on Primary to Ink instead, and build the dark footer as its own block.</td></tr>
+          <tr><td class="k">Secondary</td><td><code>#E2E6EC</code> Hairline</td><td>Dividers, footer top border, blockquote borders</td></tr>
+          <tr><td class="k">Link colour</td><td><code>#4355FF</code> Signal</td><td>Inline links. 5.27:1 on white — passes AA.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="border:2px solid var(--ink);background:var(--build);padding:20px 22px;margin-bottom:44px;max-width:820px;">
+      <p style="margin:0;font-size:15px;color:var(--ink);"><strong>Build lime is not in that list on purpose.</strong> None of Beehiiv's six slots corresponds to an accent surface, so the Build block has to be built as a component — a styled blockquote or a code/HTML block with a background-filled table cell — and saved into the template once. Never set Primary to lime: it would turn every button and the whole footer green, and lime measures 1.18:1 against white.</p>
+    </div>
+
+    <h3 class="d3" style="margin-bottom:16px;">Build order</h3>
+    <div class="steps" style="margin-bottom:44px;">
+      <div class="step"><div><b>Fonts on the site first</b><p>Website Builder → Settings → Themes → Custom fonts. Upload Archivo, Inter and JetBrains Mono as WOFF2, or select them from the Google Fonts library. Assign to Header / Body / Button in Edit Theme.</p></div></div>
+      <div class="step"><div><b>Export the masthead PNG</b><p>Two versions at 2× — ink-on-white for light, white-and-lime for dark — plus a favicon at 32 and 16. The 16px symbol-only version is the floor.</p></div></div>
+      <div class="step"><div><b>Set the Post Builder style once</b><p>Colours and the H1–H6 scale in the Style panel. Then save it as a template post named <code>FoD Weekly v1</code> so the styling never has to be re-applied.</p></div></div>
+      <div class="step"><div><b>Put the six blocks into the template as placeholders</b><p>The Shift / Why it Matters / Learn / Build / Keep / Go Deeper, each with its label, icon and number already in place. Drafting becomes filling boxes, which is what protects the weekly cadence.</p></div></div>
+      <div class="step"><div><b>Mirror the colours on the web Post page</b><p>Background, text and link colours on the web version of a post are controlled by the Website Builder, not the Post Builder. Set them to match or your archive will drift from your inbox.</p></div></div>
+      <div class="step"><div><b>Wire the welcome survey</b><p>Career stage, work area, what they want AI to help with, confidence level, and what would make this valuable in 30 days. Stage becomes the segment everything else keys off.</p></div></div>
+    </div>
+
+    <h3 class="d3" style="margin-bottom:16px;">Verify on the first test send</h3>
+    <div class="check">
+      <div class="chk"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18"/><path d="M7.5 12L11 15.5L16.5 8.5"/></svg><span>Gmail dark mode: masthead still legible, Build block still lime, title not inverted into invisibility.</span></div>
+      <div class="chk"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18"/><path d="M7.5 12L11 15.5L16.5 8.5"/></svg><span>Outlook desktop: falls back to Arial without the layout collapsing. Block labels still readable.</span></div>
+      <div class="chk"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18"/><path d="M7.5 12L11 15.5L16.5 8.5"/></svg><span>Images off: the alt text on the masthead reads "Future of Dev", and no headline has disappeared.</span></div>
+      <div class="chk"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18"/><path d="M7.5 12L11 15.5L16.5 8.5"/></svg><span>Phone at 375px: single column intact, Build block padding not crushed, buttons still tappable.</span></div>
+      <div class="chk"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18"/><path d="M7.5 12L11 15.5L16.5 8.5"/></svg><span>Web version of the post matches the email — same background, link colour and type scale.</span></div>
+      <div class="chk"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18"/><path d="M7.5 12L11 15.5L16.5 8.5"/></svg><span>Lime appears exactly once in the whole email. If it appears twice, one of them is decoration.</span></div>
+    </div>
+
+    <p class="lede" style="margin-top:34px;font-size:14.5px;">Beehiiv's builders change often, and custom-CSS support in particular has moved more than once. Treat the field names above as current-as-of-now and confirm them in the app before handing this to anyone.</p>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="wrap in">
+    <div>
+      <div class="lockup" style="margin-bottom:14px;">
+        <svg width="26" height="26" viewBox="0 0 32 32"><path d="M0 4 H14 V18 H28 V32 H0 Z" fill="#fff"/><rect x="18" y="0" width="14" height="14" fill="#C8FF3D"/></svg>
+        <span class="wm" style="font-size:22px;color:#fff;">Future<span class="of" style="color:rgba(255,255,255,.55);">of</span>Dev</span>
+      </div>
+      <p style="color:rgba(255,255,255,.62);font-size:14.5px;margin:0;">Beehiiv target design · companion to Brand kit v1.0</p>
+    </div>
+    <p style="color:rgba(255,255,255,.45);font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;margin:0;text-align:right;">August 2026<br>futureofdev.com</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var b=document.getElementById('modeBtn'), l=document.getElementById('modeLabel');
+  if(!b) return;
+  b.addEventListener('click',function(){
+    var dark=document.documentElement.getAttribute('data-mode')==='dark';
+    document.documentElement.setAttribute('data-mode',dark?'light':'dark');
+    b.setAttribute('aria-pressed',String(!dark));
+    l.textContent=dark?'Dark mode':'Light mode';
+  });
+})();
+</script>
+</body>
+</html>

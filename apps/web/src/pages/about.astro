@@ -1,0 +1,63 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import NewsletterForm from "../components/NewsletterForm.astro";
+---
+
+<BaseLayout
+  title="About"
+  description="Future of Dev helps people learn, work and build with confidence as AI changes digital work."
+>
+  <header class="hero">
+    <div class="wrap">
+      <p class="eyebrow">About Future of Dev</p>
+      <h1 class="display-xl">Capability over hype.</h1>
+      <p class="lede">A practical publication with a teaching instinct for the AI-native era.</p>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="wrap split">
+      <div>
+        <p class="eyebrow">Purpose</p>
+        <h2 class="display-lg">Remain an active participant in the future of work.</h2>
+      </div>
+      <div>
+        <p class="lede">AI is changing tasks, workflows, teams and entry routes faster than conventional education can update.</p>
+        <p>Future of Dev sits between AI news, traditional education and vendor training. It interprets change, teaches practical skills and encourages readers to build.</p>
+        <p>The goal is not information alone. It is turning information into useful, demonstrable capability.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-cloud">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Principles</p>
+        <h2 class="display-lg">Independent. Practical. Agency-led.</h2>
+      </div>
+      <div class="grid-3">
+        <article class="panel"><p class="meta">01</p><h3>Adaptation over fear</h3><p>Urgency matters. Doom does not build capability.</p></article>
+        <article class="panel"><p class="meta">02</p><h3>Judgement over dependence</h3><p>Tools change. Transferable thinking and craft endure.</p></article>
+        <article class="panel"><p class="meta">03</p><h3>Evidence over certificates</h3><p>Build real things and learn to explain the choices behind them.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap split">
+      <div>
+        <p class="eyebrow">Founder</p>
+        <h2 class="display-lg">Luke Hennerley</h2>
+      </div>
+      <div>
+        <p class="lede">A product and technology practitioner with experience across software engineering, product development and digital delivery.</p>
+        <p>Future of Dev brings those disciplines together around a single question: what should people learn and practise now to remain capable, relevant and confident?</p>
+        <a href="https://www.linkedin.com/in/luke-hennerley-49204953/" rel="noopener noreferrer">Connect on LinkedIn →</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section build-focus">
+    <div class="wrap"><NewsletterForm placement="about-footer" /></div>
+  </section>
+</BaseLayout>

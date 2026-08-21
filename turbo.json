@@ -7,9 +7,10 @@
       "dependsOn": ["^build"],
       "outputs": ["dist/**", ".astro/**", ".output/**"],
       "env": [
-        "SANITY_PROJECT_ID",
-        "SANITY_DATASET",
-        "RESEND_API_KEY",
+        "BEEHIIV_API_KEY",
+        "BEEHIIV_PUBLICATION_ID",
+        "COURSE_DOWNLOAD_SECRET",
+        "ANALYTICS_ID_SECRET",
         "PUBLIC_*"
       ]
     },
@@ -23,6 +24,10 @@
       "outputs": []
     },
     "type-check": {
+      "dependsOn": ["^build"],
+      "outputs": []
+    },
+    "test": {
       "dependsOn": ["^build"],
       "outputs": []
     },
