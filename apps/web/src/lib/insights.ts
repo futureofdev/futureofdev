@@ -1,6 +1,4 @@
-import legacyPostData from "../content/legacy-insights/skill-based-learning.json";
 import { getBeehiivConfig, getPostBySlug, listPosts, type BeehiivPost } from "./beehiiv";
-import { portableBlocksToHtml, portableText, type PortableBlock } from "./portable-content";
 import { sanitizeArticleHtml } from "./sanitize";
 
 export interface InsightSummary {
@@ -11,25 +9,13 @@ export interface InsightSummary {
   author: string;
   tags: string[];
   image?: string;
-  source: "beehiiv" | "legacy";
+  source: "beehiiv";
 }
 
 export interface InsightDetail extends InsightSummary {
   html: string;
   readingMinutes: number;
 }
-
-interface LegacyPost {
-  slug: string;
-  title: string;
-  excerpt: string;
-  publishedAt: string;
-  author?: { name?: string };
-  categories?: Array<{ title?: string }>;
-  body?: PortableBlock[];
-}
-
-const legacyPost = legacyPostData as LegacyPost;
 
 function isoFromTimestamp(value?: number | null): string {
   const milliseconds = (value ?? 0) * 1000;
@@ -54,22 +40,6 @@ function summaryFromBeehiiv(post: BeehiivPost): InsightSummary {
   };
 }
 
-function summaryFromLegacy(post: LegacyPost): InsightSummary {
-  return {
-    slug: post.slug,
-    title: post.title,
-    excerpt: post.excerpt,
-    publishedAt: post.publishedAt,
-    author: post.author?.name || "Future of Dev",
-    tags: post.categories?.flatMap((category) => category.title ? [category.title] : []) ?? [],
-    source: "legacy",
-  };
-}
-
-export function listLegacyInsights(): InsightSummary[] {
-  return [summaryFromLegacy(legacyPost)];
-}
-
 export async function listPublishedInsights(locals: unknown, limit = 25): Promise<InsightSummary[]> {
   const config = getBeehiivConfig(locals);
   let beehiiv: InsightSummary[] = [];
@@ -84,28 +54,19 @@ export async function listPublishedInsights(locals: unknown, limit = 25): Promis
         .filter(isPublished)
         .map(summaryFromBeehiiv);
     } catch {
-      // Keep the repository-owned archive, sitemap and RSS available during an
-      // upstream outage. Do not log request details or upstream response text.
+      // Leave listings empty during an upstream outage. Historical exports are
+      // not public fallbacks. Never log request details or upstream response text.
       console.error("Beehiiv insight listing unavailable");
     }
   }
 
-  return [...beehiiv, ...listLegacyInsights()]
+  return beehiiv
     .filter((post, index, all) => all.findIndex((candidate) => candidate.slug === post.slug) === index)
     .sort((a, b) => Date.parse(b.publishedAt) - Date.parse(a.publishedAt))
     .slice(0, limit);
 }
 
 export async function getInsightBySlug(locals: unknown, slug: string): Promise<InsightDetail | null> {
-  if (slug === legacyPost.slug) {
-    const text = portableText(legacyPost.body);
-    return {
-      ...summaryFromLegacy(legacyPost),
-      html: portableBlocksToHtml(legacyPost.body),
-      readingMinutes: Math.max(1, Math.ceil(text.split(/\s+/).length / 220)),
-    };
-  }
-
   const config = getBeehiivConfig(locals);
   if (!config) return null;
   const post = await getPostBySlug(config, slug);

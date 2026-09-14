@@ -5,23 +5,18 @@ import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import NewsletterForm from "../components/NewsletterForm.astro";
 import StageTag from "../components/StageTag.astro";
-import { homepageCopy } from "../content/site";
+import { editionEmptyState, homepageCopy } from "../content/site";
 import { courseStats } from "../lib/course-content";
-import { listLegacyInsights, listPublishedInsights } from "../lib/insights";
+import { listPublishedInsights } from "../lib/insights";
 
-let latest = listLegacyInsights()[0]!;
-try {
-  latest = (await listPublishedInsights(Astro.locals, 1))[0] ?? latest;
-} catch {
-  // The repository-owned edition keeps the homepage useful during an upstream outage.
-}
+const latest = (await listPublishedInsights(Astro.locals, 1))[0];
 
 Astro.response.headers.set(
   "Cache-Control",
   "public, max-age=300, stale-while-revalidate=86400, stale-if-error=604800",
 );
 
-const date = new Date(latest.publishedAt).toLocaleDateString("en-GB", {
+const date = latest && new Date(latest.publishedAt).toLocaleDateString("en-GB", {
   day: "numeric",
   month: "short",
   year: "numeric",
@@ -48,14 +43,14 @@ if (!courseEntry) throw new Error("Missing course content for coding-bootcamp-in
         buttonLabel={homepageCopy.hero.joinLabel}
         note={homepageCopy.hero.note}
       />
-      <p class="home-hero-link">
+      {latest && <p class="home-hero-link">
         <a
           href={`/insights/${latest.slug}`}
           data-analytics-cta="latest-edition"
           data-analytics-placement="homepage-hero"
           data-analytics-content-slug={latest.slug}
         >{homepageCopy.hero.latestLabel}</a>
-      </p>
+      </p>}
     </div>
   </section>
 
@@ -85,16 +80,21 @@ if (!courseEntry) throw new Error("Missing course content for coding-bootcamp-in
       <p class="eyebrow">{homepageCopy.latest.eyebrow}</p>
       <div class="home-grid-2 home-latest">
         <div>
-          <div class="tag-row" aria-label="Edition topics">
-            <StageTag stage="evolve" />
-            <span class="tag">Skills</span>
-          </div>
-          <h2 id="latest-heading" class="display-lg">{latest.title}</h2>
-          <p class="lede">{latest.excerpt}</p>
-          <p class="meta home-edition-meta">{date} · {homepageCopy.latest.editionLabel}</p>
-          <a class="button button-secondary" href={`/insights/${latest.slug}`}>
-            {homepageCopy.latest.readLabel}
-          </a>
+          {latest ? <>
+            <div class="tag-row" aria-label="Edition topics">
+              <StageTag stage="evolve" />
+              <span class="tag">Skills</span>
+            </div>
+            <h2 id="latest-heading" class="display-lg">{latest.title}</h2>
+            <p class="lede">{latest.excerpt}</p>
+            <p class="meta home-edition-meta">{date} · {homepageCopy.latest.editionLabel}</p>
+            <a class="button button-secondary" href={`/insights/${latest.slug}`}>
+              {homepageCopy.latest.readLabel}
+            </a>
+          </> : <>
+            <h2 id="latest-heading" class="display-lg">{editionEmptyState.heading}</h2>
+            <p class="lede">{editionEmptyState.body}</p>
+          </>}
         </div>
         <aside class="latest-aside" aria-label="The weekly format">
           <p class="meta">{homepageCopy.latest.formatLabel}</p>

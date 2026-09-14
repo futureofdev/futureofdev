@@ -12,9 +12,11 @@ test -f .env || cp .env.example .env
 pnpm dev --filter=@futureofdev/web
 ```
 
-The site renders published free Beehiiv editions under `/insights`, keeps the
-pre-Beehiiv article export in the repository, and serves Coding Bootcamp in a
-Box through a signed subscriber download.
+The site renders only published free Beehiiv editions under `/insights` and
+serves Coding Bootcamp in a Box through a signed subscriber download. The
+pre-Beehiiv article export stays in the repository as source material; it is
+never shown as a public fallback. Until an edition is published, the homepage
+and Insights page show “No editions yet.”
 
 Follow [local integration validation](docs/development/local-validation.md) to
 check the website before deploying. With the local server running:

@@ -13,6 +13,11 @@ export const siteNavigation = [
   { label: "About", href: "/about" },
 ] as const;
 
+export const editionEmptyState = {
+  heading: "No editions yet.",
+  body: "Subscribe to get the first edition in your inbox.",
+} as const;
+
 export const homepageCopy = {
   seo: {
     title: "Learn and build the AI-native way",

@@ -31,9 +31,11 @@ Start the server and open the printed local URL:
 pnpm --filter=@futureofdev/web dev --host 127.0.0.1 --port 4321
 ```
 
-Restart after changing `.env`. Without Beehiiv credentials, the local site still
-renders its repository archive; a working homepage alone does not prove that
-Beehiiv is connected. Signup will report that the service is not configured.
+Restart after changing `.env`. Only published Beehiiv editions appear publicly;
+historical CMS exports are retained as source material, never as a fallback.
+An empty publication, missing credentials or an API outage leaves the edition
+list empty. A working homepage alone does not prove that Beehiiv is connected.
+Without credentials, signup reports that the service is not configured.
 
 Check the credentials and published-post API access without changing subscribers:
 
