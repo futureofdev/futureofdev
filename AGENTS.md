@@ -30,7 +30,10 @@ pnpm validate:course
 ```
 
 The release gate is lint, type checks, tests, production build and course
-validation. The Skilling CLI has not shipped and is not a repository gate.
+validation. The public relaunch also requires the Coding Bootcamp in a Box
+delivery path to pass end to end through a pinned, publicly installable Skilling
+CLI release. External package availability stays in the operational runbook
+rather than the deterministic repository CI gate.
 
 ## Architecture
 
@@ -48,9 +51,10 @@ validation. The Skilling CLI has not shipped and is not a repository gate.
   homepage copy. Keep editorial words there and structural markup in the Astro
   page.
 - Course pages derive counts from `apps/web/src/lib/course-content.ts`.
-- The course carries the same `learn`, `progress` and `homework` workflow under
-  `.agents/skills` and `.claude/skills`. Keep the bundles semantically aligned
-  while both learner runtimes are supported.
+- Coding Bootcamp in a Box uses Skilling CLI to create the learner workspace,
+  install the host skills and own progress. The checked-in `.agents/skills` and
+  `.claude/skills` bundles are interim migration sources, not the launch delivery
+  architecture; remove them only with the tested Skilling migration.
 - Repository operational skills live under `.agents/skills` and follow the
   checked-in `SKILL.md` format.
 

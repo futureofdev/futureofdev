@@ -93,6 +93,8 @@ Before public relaunch:
 - Bank four complete issues, including every Build and Keep asset.
 - Test the Beehiiv template and sending setup across the clients in the
   runbook.
+- Publish and pin the supported Skilling CLI release, then pass the bootcamp's
+  clean-download onboarding and delivery checks through that CLI.
 - Prepare one founder-led LinkedIn post for each issue.
 - Give each LinkedIn link explicit `utm_source=linkedin`,
   `utm_medium=social` and an issue-specific `utm_campaign` value.

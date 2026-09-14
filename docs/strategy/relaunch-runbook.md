@@ -11,6 +11,8 @@ that expose account information.
 - One LinkedIn post with a correctly tagged canonical link is ready for each
   edition.
 - The repository release gate passes.
+- The pinned Skilling CLI public-preview release is available and the signed
+  bootcamp download passes its complete CLI-based onboarding and delivery proof.
 - The account-side checks below have an operator and evidence.
 - A private weekly growth-review dry run has completed.
 
@@ -119,15 +121,30 @@ body, upstream timeout, upstream rate limit and an expired download token.
 ## Course download
 
 - Run the repository's local course validator after any course change.
-- Confirm the built worker contains all course files and both runtime skill
-  bundles. A zip with lessons but no skills breaks the learner setup.
-- Unzip a real download and confirm `$learn` works in Codex from a clean
-  directory.
-- Also test the documented Claude Code path while it remains a supported
-  learner runtime.
-- Replace the bundled interim runtime only when the Skilling CLI is available
-  and the migration has been tested. Its future availability is not a release
-  gate today.
+- Pin an exact compatible Skilling CLI package version in the learner setup
+  instructions. A floating `latest` release is not a reproducible dependency
+  while Skilling remains pre-1.0.
+- Confirm the built worker contains every course file required by Skilling. The
+  signed Future of Dev download remains the course-acquisition mechanism; a
+  learner must not need access to a private repository.
+- From a clean directory, unzip a real signed download and use the pinned CLI to
+  create the learner workspace, install the folder-scoped skills, initialise
+  progress and start the course.
+- Confirm `$learn`, `$progress` and `$homework` work in Codex and the equivalent
+  slash-command path works in Claude Code while both are claimed as supported.
+- Close and reopen each host, then confirm the same Skilling record resumes at
+  the correct position without the learner restating the course path.
+- Complete one knowledge objective, one practice objective with observed
+  provenance, a quiz remediation path, a lesson completion and a homework
+  submission. Inspect the resulting record against the observed session.
+- Run the setup once without existing Python/uv/Skilling preparation using the
+  documented beginner path. If the agent cannot bootstrap the dependency or
+  explain a supported prerequisite clearly, onboarding has failed.
+- Remove the interim bundled runtime skills and `.course/progress.json` path
+  only after the migrated download passes these checks. Do not ship two
+  competing progress authorities.
+- Re-run the proof using the public package and unauthenticated public Skilling
+  documentation immediately before relaunch.
 
 ## SEO cutover
 

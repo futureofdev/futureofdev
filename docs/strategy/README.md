@@ -41,6 +41,11 @@ working drafts:
    source-specific UTM link. Other social output is optional.
 9. Results and raw exports stay private. Metric definitions, collection
    contracts and report templates belong in the repository.
+10. Coding Bootcamp in a Box uses the publicly installable Skilling CLI at
+    relaunch. Skilling launches as a pinned public preview, not as a stable v1
+    claim. The signed Future of Dev download remains the course-acquisition path;
+    Skilling initialises the learner workspace, installs the host skills and owns
+    progress after download.
 
 ## Relaunch readiness
 
@@ -53,6 +58,8 @@ The relaunch can be scheduled only when all of these are true:
   checks.
 - The site passes lint, type checks, tests, the production build and the local
   course validator.
+- A pinned public Skilling CLI release can initialise and deliver a real signed
+  Coding Bootcamp download through every compatibility path claimed on the site.
 - The weekly growth review has completed one manual dry run using non-sensitive
   fixtures or private exports.
 
