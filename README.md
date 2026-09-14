@@ -7,13 +7,21 @@ with the positioning “Learn and build the AI-native way.”
 
 ```bash
 pnpm install
-cp .env.example .env
+# For a new checkout only; preserve an existing .env.
+test -f .env || cp .env.example .env
 pnpm dev --filter=@futureofdev/web
 ```
 
 The site renders published free Beehiiv editions under `/insights`, keeps the
 pre-Beehiiv article export in the repository, and serves Coding Bootcamp in a
 Box through a signed subscriber download.
+
+Follow [local integration validation](docs/development/local-validation.md) to
+check the website before deploying. With the local server running:
+
+```bash
+pnpm --filter=@futureofdev/web check:local
+```
 
 ## Courses
 

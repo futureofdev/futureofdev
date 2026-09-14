@@ -96,7 +96,11 @@ export const POST: APIRoute = async ({ request, locals }) => {
     if (new TextEncoder().encode(body).byteLength > MAX_REQUEST_BYTES) {
       return json({ error: "Request too large" }, 413);
     }
-    payload = JSON.parse(body) as NewsletterPayload;
+    const parsed: unknown = JSON.parse(body);
+    if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
+      return json({ error: "Invalid request" }, 400);
+    }
+    payload = parsed as NewsletterPayload;
   } catch {
     return json({ error: "Invalid request" }, 400);
   }

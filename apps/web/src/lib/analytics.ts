@@ -1,45 +1,6 @@
 import posthog from "posthog-js";
 
-type PageType =
-  | "home"
-  | "insights_index"
-  | "insight"
-  | "learning_index"
-  | "course"
-  | "about"
-  | "privacy"
-  | "other";
-
-interface AnalyticsEvents {
-  "$pageview": {
-    $current_url: string;
-    page_type: PageType;
-    content_slug?: string;
-    source?: string;
-  };
-  newsletter_signup_started: {
-    placement: string;
-    offer: string;
-  };
-  newsletter_subscribed: {
-    placement: string;
-    offer: string;
-    already_subscribed: boolean;
-  };
-  newsletter_subscription_failed: {
-    placement: string;
-    offer: string;
-  };
-  cta_clicked: {
-    cta: string;
-    placement?: string;
-    content_slug?: string;
-  };
-  course_download_requested: {
-    course: string;
-    placement: string;
-  };
-}
+import { sanitizeAnalyticsPayload, type AnalyticsEvents, type PageType } from "./analytics-privacy";
 
 const TOKEN_PATTERN = /^[a-z0-9][a-z0-9_-]*$/;
 const UUID_V4_PATTERN =
@@ -93,27 +54,41 @@ export function capturePageview(): void {
 }
 
 export function initialiseAnalytics(key: string | undefined, host: string): void {
-  if (!key || initialised || !hasConsent()) return;
-  posthog.init(key, {
-    api_host: host,
-    persistence: "localStorage+cookie",
-    autocapture: false,
-    capture_pageview: false,
-    capture_pageleave: false,
-    disable_session_recording: true,
-    mask_all_text: true,
-    mask_all_element_attributes: true,
-    person_profiles: "identified_only",
-  });
-  posthog.opt_in_capturing();
-  initialised = true;
+  if (!key || !hasConsent()) return;
+  if (!initialised) {
+    posthog.init(key, {
+      api_host: host,
+      persistence: "localStorage+cookie",
+      autocapture: false,
+      capture_pageview: false,
+      capture_pageleave: false,
+      capture_dead_clicks: false,
+      capture_heatmaps: false,
+      capture_performance: false,
+      capture_exceptions: false,
+      disable_session_recording: true,
+      save_campaign_params: false,
+      save_referrer: false,
+      advanced_disable_flags: true,
+      disable_surveys: true,
+      disable_conversations: true,
+      disable_product_tours: true,
+      before_send: sanitizeAnalyticsPayload,
+      mask_all_text: true,
+      mask_all_element_attributes: true,
+      person_profiles: "identified_only",
+    });
+    initialised = true;
+  }
+  posthog.opt_in_capturing({ captureEventName: false });
   capturePageview();
 }
 
 export function denyAnalytics(): void {
   if (!posthog.__loaded) return;
-  posthog.opt_out_capturing();
+  // reset() clears the SDK's stored consent; opt out after resetting identity.
   posthog.reset();
+  posthog.opt_out_capturing();
 }
 
 export function identifySubscriber(analyticsId: string): void {

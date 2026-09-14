@@ -23,6 +23,55 @@ function newsletterRequest(body: unknown): Request {
   });
 }
 
+test("newsletter rejects non-object JSON without an upstream request or server error", async () => {
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async () => { throw new Error("fetch should not be called"); };
+  try {
+    for (const body of [null, [], "reader", 42, true]) {
+      await assert.doesNotReject(async () => {
+        const response = await newsletterPost({
+          request: newsletterRequest(body),
+          locals,
+        } as never);
+        assert.equal(response.status, 400);
+      });
+    }
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test("existing subscribers keep their identity and get a download without analytics consent", async () => {
+  const originalFetch = globalThis.fetch;
+  const requests: string[] = [];
+  globalThis.fetch = async (input, init) => {
+    requests.push(String(input));
+    assert.equal(init?.method ?? "GET", "GET", "duplicate signup must not mutate the subscriber");
+    return Response.json({ data: {
+      id: "sub_test", email: "reader@example.com", status: "active", created: 1,
+      custom_fields: [{ name: "analytics_id", value: analyticsId }],
+    } });
+  };
+  try {
+    const response = await newsletterPost({
+      request: newsletterRequest({
+        email: "reader@example.com", placement: "course-page",
+        offer: "coding-bootcamp-in-a-box", analyticsConsent: false,
+      }),
+      locals,
+    } as never);
+    assert.equal(response.status, 200);
+    const body = await response.json() as Record<string, unknown>;
+    assert.equal(body.success, true);
+    assert.equal(body.alreadySubscribed, true);
+    assert.equal("analyticsId" in body, false);
+    assert.match(String(body.downloadUrl), /^\/api\/course-download\?token=/);
+    assert.equal(requests.length, 1);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
 test("newsletter validates actual body size before contacting Beehiiv", async () => {
   const originalFetch = globalThis.fetch;
   globalThis.fetch = async () => { throw new Error("fetch should not be called"); };
