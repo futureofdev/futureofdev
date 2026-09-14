@@ -22,19 +22,60 @@
   font-display: swap;
 }
 
+/* Metric-matched fallbacks: text set in the fallback occupies the same lines as
+   the web font, so the swap does not reflow the page. Values follow the
+   published Inter → Arial overrides; Archivo is preloaded instead. */
+@font-face {
+  font-family: "Inter Fallback";
+  src: local("Arial"), local("Helvetica Neue"), local("Helvetica");
+  size-adjust: 107.4%;
+  ascent-override: 90.2%;
+  descent-override: 22.48%;
+  line-gap-override: 0%;
+}
+
 /* Brand tokens are imported above from the brand package — the single source of
    truth. Only site-level additions the brand pack does not define belong here. */
 :root {
   /* site-level extensions, not part of the brand package */
   --fod-error: #a51d2d;
   --fod-success: #215b19;
+  /* Graphite is certified for secondary type on Base (4.83:1). On Cloud it is
+     4.43:1 and fails AA, so tinted surfaces switch --fod-muted to this darker
+     step (6.89:1 on Cloud, 7.53:1 on Base). Candidate for the brand pack. */
+  --fod-graphite-700: #4a5568;
+  --fod-muted: var(--fod-graphite);
+  /* Text and rules on Ink and Void. One source for the on-dark alphas. */
+  --fod-on-ink: var(--fod-base);
+  --fod-on-ink-muted: rgba(255, 255, 255, 0.68);
+  --fod-on-ink-faint: rgba(255, 255, 255, 0.5);
+  --fod-on-ink-rule: rgba(255, 255, 255, 0.18);
+  /* Long-form reading column. */
+  --fod-measure: 38rem;
   --fod-gutter: clamp(1.25rem, 4vw, 3rem);
   --fod-max: 60rem;
 
   color: var(--fod-ink);
   background: var(--fod-base);
-  font-family: var(--fod-body);
+  font-family: var(--fod-body), "Inter Fallback";
   font-synthesis: none;
+}
+
+/* Tinted surfaces use the darker secondary step; white islands inside them
+   return to Graphite, which passes on Base. */
+.section-cloud,
+.build-focus,
+.course-facts {
+  --fod-muted: var(--fod-graphite-700);
+}
+
+.panel,
+.course-card,
+.newsletter-block,
+.measure,
+.hero-aside,
+.stat-list > div {
+  --fod-muted: var(--fod-graphite);
 }
 
 *,
@@ -53,11 +94,19 @@ html {
 body {
   margin: 0;
   min-width: 20rem;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
   background: var(--fod-base);
   color: var(--fod-ink);
   font-size: 1rem;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+}
+
+/* Short pages (404, preferences) keep the footer at the bottom of the viewport. */
+main {
+  flex: 1 0 auto;
 }
 
 img,
@@ -131,8 +180,7 @@ a:hover {
   min-height: 4.25rem;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 2rem;
+  gap: clamp(1rem, 2.5vw, 2rem);
 }
 
 .brand-link {
@@ -141,32 +189,49 @@ a:hover {
 }
 
 .brand-link img {
-  width: 9.875rem;
+  width: 10.5rem;
   height: auto;
 }
 
 .site-nav {
   display: flex;
   align-items: center;
+  margin-left: auto;
   gap: clamp(0.9rem, 2.2vw, 1.5rem);
   font-size: 0.90625rem;
   font-weight: 500;
 }
 
+/* Vertical padding gives every link a 44px hit area without changing the row. */
 .site-nav a {
+  padding-block: 0.65rem;
   text-decoration: none;
 }
 
-.site-nav .nav-join {
+.site-nav a[aria-current="page"] {
+  text-decoration: underline;
+  text-decoration-color: var(--fod-signal);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.35em;
+}
+
+.nav-join {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
   padding: 0.55rem 1rem;
   border: 1px solid var(--fod-signal);
   background: var(--fod-signal);
   color: white;
+  font-size: 0.90625rem;
+  font-weight: 500;
+  text-decoration: none;
 }
 
-.site-nav .nav-join:hover {
+.nav-join:hover {
   border-color: var(--fod-signal-700);
   background: var(--fod-signal-700);
+  color: white;
 }
 
 .eyebrow,
@@ -174,9 +239,13 @@ a:hover {
   font-family: var(--fod-mono);
   font-size: 0.6875rem;
   font-weight: 500;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.1em;
   line-height: 1.45;
   text-transform: uppercase;
+}
+
+.meta {
+  color: var(--fod-muted);
 }
 
 .eyebrow {
@@ -184,6 +253,8 @@ a:hover {
   align-items: center;
   gap: 0.8rem;
   margin: 0 0 1rem;
+  font-size: 0.71875rem;
+  letter-spacing: 0.16em;
   color: var(--fod-signal);
 }
 
@@ -202,9 +273,11 @@ h2,
 h3 {
   margin-block: 0;
   font-family: var(--fod-display);
+  font-stretch: 112%;
   font-variation-settings: "wdth" 112, "wght" 800;
   font-weight: 800;
   letter-spacing: -0.027em;
+  text-wrap: balance;
 }
 
 .display-xl {
@@ -224,7 +297,7 @@ h3 {
 
 .lede {
   max-width: 64ch;
-  color: var(--fod-graphite);
+  color: var(--fod-muted);
   font-size: clamp(1rem, 1.5vw, 1.1875rem);
   line-height: 1.55;
 }
@@ -240,13 +313,13 @@ h3 {
 
 .section-ink {
   background: var(--fod-ink);
-  color: white;
+  color: var(--fod-on-ink);
 }
 
 .section-ink h1,
 .section-ink h2,
 .section-ink h3 {
-  color: white;
+  color: var(--fod-on-ink);
 }
 
 /* Brand rule 4: Signal is 3.66:1 on a dark surface and fails. Signal 300 is
@@ -256,16 +329,16 @@ h3 {
 }
 
 .section-ink .eyebrow::after {
-  background: rgba(255, 255, 255, 0.22);
+  background: var(--fod-on-ink-rule);
 }
 
 .section-ink .lede,
 .section-ink .meta {
-  color: rgba(255, 255, 255, 0.68);
+  color: var(--fod-on-ink-muted);
 }
 
 .section-ink p {
-  color: rgba(255, 255, 255, 0.68);
+  color: var(--fod-on-ink-muted);
 }
 
 .section-ink a {
@@ -287,7 +360,7 @@ h3 {
 }
 
 .section-ink .newsletter-block p {
-  color: var(--fod-graphite);
+  color: var(--fod-muted);
 }
 
 .hero {
@@ -299,7 +372,13 @@ h3 {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: clamp(1.75rem, 4vw, 3rem);
-  align-items: end;
+  align-items: start;
+}
+
+/* The short heading column travels with the long copy instead of sinking. */
+.split > :first-child {
+  position: sticky;
+  top: 2rem;
 }
 
 .hero-copy .lede {
@@ -362,6 +441,26 @@ button.button:hover {
   background: var(--fod-signal-700);
 }
 
+/* Build lime as a surface with Ink type: the one "do this" action on a layout.
+   Brand rule 2 — never twice on the same page. */
+.button-build {
+  border-color: var(--fod-ink);
+  background: var(--fod-build);
+  color: var(--fod-ink);
+}
+
+.button-build:hover {
+  border-color: var(--fod-ink);
+  background: var(--fod-ink);
+  color: var(--fod-on-ink);
+}
+
+.icon {
+  width: 1.125rem;
+  height: 1.125rem;
+  flex: 0 0 auto;
+}
+
 .grid-2,
 .grid-3,
 .grid-4 {
@@ -384,6 +483,17 @@ button.button:hover {
   color: var(--fod-signal-700);
 }
 
+.panel-head {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--fod-signal-700);
+}
+
+.panel-head .meta {
+  margin: 0;
+}
+
 .panel h3 {
   margin: 0.85rem 0 0.7rem;
   font-size: 1.1875rem;
@@ -392,7 +502,7 @@ button.button:hover {
 
 .panel p,
 .section-ink .panel p {
-  color: var(--fod-graphite);
+  color: var(--fod-muted);
   font-size: 0.90625rem;
 }
 
@@ -429,6 +539,14 @@ button.button:hover {
   color: var(--fod-signal-700);
 }
 
+.issue-card .issue-body {
+  min-width: 0;
+}
+
+.issue-card .tag-row {
+  margin: 0.6rem 0 0;
+}
+
 .issue-card h2,
 .issue-card h3 {
   margin-bottom: 0.45rem;
@@ -438,12 +556,17 @@ button.button:hover {
 
 .issue-card p {
   margin: 0;
-  color: var(--fod-graphite);
+  color: var(--fod-muted);
 }
 
 .issue-arrow {
   color: var(--fod-signal-700);
   font-size: 1.4rem;
+  transition: transform 150ms ease-out;
+}
+
+.issue-card:hover .issue-arrow {
+  transform: translateX(0.25rem);
 }
 
 .newsletter-block {
@@ -489,8 +612,13 @@ button.button:hover {
 .form-message {
   max-width: 58ch;
   margin: 0.75rem 0 0;
-  color: var(--fod-graphite);
+  color: var(--fod-muted);
   font-size: 0.8125rem;
+}
+
+.newsletter-form input[type="email"][aria-invalid="true"] {
+  border-color: var(--fod-error);
+  box-shadow: inset 0 0 0 1px var(--fod-error);
 }
 
 .form-message[data-state="success"] { color: var(--fod-success); }
@@ -498,6 +626,7 @@ button.button:hover {
 .download-link { margin-top: 1rem; }
 
 .newsletter-inline {
+  --fod-muted: inherit; /* no surface of its own, so use the section's step */
   max-width: 36rem;
   margin-top: 1.625rem;
   padding: 0;
@@ -514,9 +643,7 @@ button.button:hover {
   color: var(--fod-ink);
 }
 
-.build-focus .eyebrow,
-.build-focus .lede,
-.build-focus .meta {
+.build-focus .eyebrow {
   color: var(--fod-signal-700);
 }
 
@@ -527,6 +654,78 @@ button.button:hover {
 
 .home-hero {
   padding-block: clamp(3rem, 7vw, 5.625rem);
+}
+
+.home-hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: center;
+}
+
+/* The anatomy of an edition: the real artefact, not an illustration. */
+.anatomy {
+  padding: 1.375rem;
+  border: 1px solid var(--fod-ink);
+  background: var(--fod-ink);
+  color: var(--fod-on-ink);
+}
+
+.anatomy .meta {
+  margin: 0 0 0.5rem;
+  color: var(--fod-on-ink-faint);
+}
+
+.anatomy ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.anatomy li {
+  display: grid;
+  grid-template-columns: 1.125rem minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.75rem;
+  padding-block: 0.7rem;
+  border-bottom: 1px solid var(--fod-on-ink-rule);
+  font-size: 0.9375rem;
+}
+
+.anatomy li:last-child {
+  border-bottom: 0;
+}
+
+.anatomy li .icon {
+  color: var(--fod-signal-300);
+}
+
+.anatomy li .num {
+  color: var(--fod-on-ink-faint);
+  font-family: var(--fod-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+}
+
+.anatomy li.is-build {
+  font-weight: 600;
+}
+
+.anatomy li.is-build .icon {
+  color: var(--fod-on-ink);
+}
+
+.anatomy li small {
+  display: block;
+  color: var(--fod-on-ink-faint);
+  font-size: 0.8125rem;
+  font-weight: 400;
+}
+
+.anatomy-foot {
+  margin: 1rem 0 0;
+  color: var(--fod-on-ink-muted);
+  font-size: 0.8125rem;
 }
 
 .home-hero-intro {
@@ -572,9 +771,9 @@ button.button:hover {
   gap: 0.45rem;
   padding: 0.3125rem 0.5625rem;
   border: 1px solid var(--fod-hairline);
-  color: var(--fod-graphite);
+  color: var(--fod-muted);
   font-family: var(--fod-mono);
-  font-size: 0.65625rem;
+  font-size: 0.6875rem;
   letter-spacing: 0.1em;
   line-height: 1.2;
   text-transform: uppercase;
@@ -607,19 +806,19 @@ button.button:hover {
 
 .home-edition-meta {
   margin: 1.125rem 0;
-  color: var(--fod-graphite);
+  color: var(--fod-muted);
 }
 
 .latest-aside {
   padding: 1.375rem;
   border: 1px solid var(--fod-ink);
   background: var(--fod-ink);
-  color: white;
+  color: var(--fod-on-ink);
 }
 
 .latest-aside .meta {
   margin: 0 0 0.75rem;
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--fod-on-ink-faint);
 }
 
 .latest-aside ol {
@@ -633,19 +832,40 @@ button.button:hover {
   grid-template-columns: 2rem 1fr;
   gap: 0.5rem;
   padding-block: 0.75rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+  border-bottom: 1px solid var(--fod-on-ink-rule);
   font-size: 0.90625rem;
 }
 
 .latest-aside li span {
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--fod-on-ink-faint);
   font-family: var(--fod-mono);
   font-size: 0.6875rem;
   letter-spacing: 0.1em;
 }
 
+.latest-aside li a {
+  display: block;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.latest-aside li a:hover {
+  color: var(--fod-signal-300);
+}
+
+.latest-aside li small {
+  display: block;
+  margin-top: 0.15rem;
+  color: var(--fod-on-ink-faint);
+  font-family: var(--fod-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
 .latest-aside a {
-  color: white;
+  color: var(--fod-on-ink);
   font-size: 0.875rem;
 }
 
@@ -676,32 +896,51 @@ button.button:hover {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1.125rem;
+  margin: 0;
   padding: 1.375rem;
   border: 1px solid var(--fod-hairline);
   background: var(--fod-cloud);
 }
 
-.course-facts span,
-.course-facts strong {
+.course-facts dt,
+.course-facts dd {
   display: block;
+  margin: 0;
 }
 
-.course-facts span {
+.course-facts dt {
   margin-bottom: 0.1875rem;
-  color: var(--fod-graphite);
+  color: var(--fod-muted);
   font-family: var(--fod-mono);
-  font-size: 0.625rem;
+  font-size: 0.6875rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
-.course-facts strong {
-  font-size: 0.9375rem;
-  font-weight: 600;
+.course-facts dd {
+  font-family: var(--fod-display);
+  font-stretch: 110%;
+  font-variation-settings: "wdth" 110, "wght" 800;
+  font-size: 1.4rem;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
 }
 
 .founder-grid {
   align-items: start;
+}
+
+.founder-figure {
+  width: min(100%, 18rem);
+  margin: 0 0 1.5rem;
+  border: 2px solid var(--fod-ink);
+}
+
+.founder-figure img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
 }
 
 .founder-grid p {
@@ -724,8 +963,10 @@ button.button:hover {
   padding-block: clamp(3rem, 7vw, 5.625rem) clamp(2rem, 4vw, 3rem);
 }
 
-.article-header .narrow {
-  width: min(100%, 60rem);
+.article-header .narrow,
+.article-body,
+.article-end {
+  width: min(100%, calc(var(--fod-measure) + 2 * var(--fod-gutter)));
 }
 
 .article-header h1 {
@@ -737,7 +978,7 @@ button.button:hover {
 .article-dek {
   max-width: 58ch;
   margin: 1.5rem 0;
-  color: var(--fod-graphite);
+  color: var(--fod-muted);
   font-size: clamp(1rem, 1.5vw, 1.1875rem);
 }
 
@@ -752,11 +993,34 @@ button.button:hover {
 }
 
 .article-body {
-  width: min(100%, 60rem);
   margin-inline: auto;
-  padding: 0 var(--fod-gutter) clamp(4rem, 8vw, 6rem);
-  font-size: 1rem;
-  line-height: 1.72;
+  padding: 0 var(--fod-gutter);
+  font-size: 1.0625rem;
+  line-height: 1.7;
+}
+
+/* Figures, code and tables break out of the reading column. */
+.article-body :is(figure, pre, table),
+.article-body > img {
+  position: relative;
+  left: 50%;
+  width: min(100vw - 2 * var(--fod-gutter), var(--fod-max) - 2 * var(--fod-gutter));
+  max-width: none;
+  transform: translateX(-50%);
+}
+
+.article-body figure {
+  margin-block: 2rem;
+}
+
+.article-body figure img {
+  margin: 0;
+}
+
+.article-body figcaption {
+  margin-top: 0.6rem;
+  color: var(--fod-muted);
+  font-size: 0.8125rem;
 }
 
 .article-body > :first-child { margin-top: 0; }
@@ -774,6 +1038,106 @@ button.button:hover {
 .article-body table { width: 100%; margin: 2rem 0; border-collapse: collapse; }
 .article-body th,
 .article-body td { padding: 0.65rem; border: 1px solid var(--fod-hairline); text-align: left; }
+
+/* --- article end matter --- */
+
+.article-end {
+  margin: clamp(2.5rem, 5vw, 4rem) auto clamp(4rem, 8vw, 6rem);
+  padding: 1.5rem var(--fod-gutter) 0;
+}
+
+.article-end-rule {
+  border-top: 2px solid var(--fod-ink);
+  padding-top: 1.5rem;
+}
+
+.article-byline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.article-byline .meta {
+  margin: 0;
+}
+
+.article-byline .tag-row {
+  margin: 0;
+}
+
+.go-deeper {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 1rem 1.5rem;
+  align-items: center;
+  padding: 1.25rem 1.375rem;
+  border: 2px solid var(--fod-ink);
+}
+
+.go-deeper h2 {
+  margin: 0.3rem 0 0.4rem;
+  font-size: 1.375rem;
+  line-height: 1.1;
+}
+
+.go-deeper p {
+  margin: 0;
+  color: var(--fod-muted);
+  font-size: 0.9375rem;
+}
+
+.article-nav {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  margin-top: 1.5rem;
+  border: 1px solid var(--fod-hairline);
+  background: var(--fod-hairline);
+}
+
+.article-nav > * {
+  display: block;
+  min-width: 0;
+  padding: 1rem 1.1rem;
+  background: var(--fod-base);
+  text-decoration: none;
+}
+
+.article-nav a:hover b {
+  color: var(--fod-signal-700);
+}
+
+.article-nav .meta {
+  display: block;
+  margin: 0 0 0.35rem;
+}
+
+.article-nav b {
+  display: block;
+  font-family: var(--fod-display);
+  font-stretch: 108%;
+  font-variation-settings: "wdth" 108, "wght" 700;
+  font-weight: 700;
+  font-size: 1.0625rem;
+  letter-spacing: -0.015em;
+  line-height: 1.15;
+}
+
+.article-nav .next {
+  text-align: right;
+}
+
+.article-nav .placeholder {
+  --fod-muted: var(--fod-graphite-700);
+  background: var(--fod-cloud);
+}
+
+.article-all {
+  margin: 1.25rem 0 0;
+  font-size: 0.875rem;
+}
 
 .course-outline {
   counter-reset: phase -1;
@@ -796,26 +1160,26 @@ button.button:hover {
   font-size: 0.6875rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--fod-graphite);
+  color: var(--fod-muted);
 }
 
 .phase-highlight {
   margin: 0.7rem 0 0;
   max-width: 30ch;
-  color: var(--fod-graphite);
+  color: var(--fod-muted);
   font-size: 0.9rem;
 }
 
 .phase ol { margin: 0; columns: 2; gap: 2.5rem; padding-left: 1.25rem; }
-.phase li { break-inside: avoid; margin-bottom: 0.4rem; color: var(--fod-graphite); }
+.phase li { break-inside: avoid; margin-bottom: 0.4rem; color: var(--fod-muted); }
 
 .homework-flag {
   margin-left: 0.5rem;
-  padding: 0.1rem 0.35rem;
+  padding: 0.15rem 0.4rem;
   border: 1px solid var(--fod-signal);
-  color: var(--fod-signal);
+  color: var(--fod-signal-700);
   font-family: var(--fod-mono);
-  font-size: 0.5625rem;
+  font-size: 0.6875rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   white-space: nowrap;
@@ -864,10 +1228,10 @@ button.button:hover {
 
 .stat-list dt {
   font-family: var(--fod-mono);
-  font-size: 0.625rem;
+  font-size: 0.6875rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--fod-graphite);
+  color: var(--fod-muted);
 }
 
 .stat-list dd {
@@ -881,7 +1245,7 @@ button.button:hover {
 
 .stat-note {
   margin: 0.9rem 0 1.1rem;
-  color: var(--fod-graphite);
+  color: var(--fod-muted);
   font-size: 0.8125rem;
 }
 
@@ -922,7 +1286,7 @@ button.button:hover {
   letter-spacing: -0.015em;
 }
 
-.step-body p { margin: 0; color: var(--fod-graphite); font-size: 0.9375rem; }
+.step-body p { margin: 0; color: var(--fod-muted); font-size: 0.9375rem; }
 
 .step-body code,
 .download-note code {
@@ -936,7 +1300,7 @@ button.button:hover {
 .step-footnote {
   margin: 1.2rem 0 0;
   max-width: 60ch;
-  color: var(--fod-graphite);
+  color: var(--fod-muted);
   font-size: 0.875rem;
 }
 
@@ -965,7 +1329,7 @@ button.button:hover {
   letter-spacing: -0.03em;
 }
 
-.measure p:last-child { margin: 0; color: var(--fod-graphite); font-size: 0.9375rem; }
+.measure p:last-child { margin: 0; color: var(--fod-muted); font-size: 0.9375rem; }
 
 @media (max-width: 40rem) {
   .split-measure { grid-template-columns: 1fr; }
@@ -973,14 +1337,15 @@ button.button:hover {
 }
 
 .prose-note { margin-top: 1.1rem; }
-.prose-note p { color: var(--fod-graphite); font-size: 0.9375rem; }
+.prose-note p { color: var(--fod-muted); font-size: 0.9375rem; }
 .download-form { margin-top: 2.5rem; }
 .download-note { margin: 1.4rem 0 0; font-size: 0.9375rem; }
+.download-version { margin: 0.75rem 0 0; }
 
 .site-footer {
   padding-block: 3rem;
   background: var(--fod-ink);
-  color: white;
+  color: var(--fod-on-ink);
 }
 
 .footer-grid {
@@ -991,7 +1356,7 @@ button.button:hover {
 
 .footer-grid p {
   margin: 0.8rem 0 0;
-  color: rgba(255, 255, 255, 0.62);
+  color: var(--fod-on-ink-muted);
   font-size: 0.85rem;
 }
 
@@ -1000,8 +1365,13 @@ button.button:hover {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 0.45rem;
+  gap: 0.15rem;
   font-size: 0.85rem;
+}
+
+.footer-grid nav a,
+.footer-meta a {
+  padding-block: 0.3rem;
 }
 
 .footer-grid a:hover { color: var(--fod-signal-300); }
@@ -1019,7 +1389,8 @@ button.button:hover {
 }
 
 .cookie-banner[hidden] { display: none; }
-.cookie-banner p { margin: 0 0 1rem; font-size: 0.88rem; }
+.cookie-banner p { margin: 0 0 1rem; font-size: 0.875rem; }
+.cookie-banner p:first-child { margin-bottom: 0.35rem; }
 .cookie-actions { display: flex; gap: 0.65rem; }
 .cookie-actions button { min-height: 2.5rem; }
 
@@ -1037,29 +1408,53 @@ button.button:hover {
 @media (max-width: 800px) {
   .hero-grid,
   .split { grid-template-columns: 1fr; align-items: start; }
+  .split > :first-child { position: static; }
+  .home-hero-grid { grid-template-columns: 1fr; gap: 2rem; }
   .home-grid-2 { grid-template-columns: 1fr; }
   .grid-3,
   .grid-4 { grid-template-columns: repeat(2, 1fr); }
+  .article-nav { grid-template-columns: 1fr; }
+  .article-nav .next { text-align: left; }
+  .go-deeper { grid-template-columns: 1fr; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
   .footer-grid > :first-child { grid-column: 1 / -1; }
 }
 
-@media (max-width: 700px) {
-  .header-inner { align-items: flex-start; flex-direction: column; padding-block: 0.875rem; gap: 0.75rem; }
-  .site-nav { width: 100%; justify-content: space-between; gap: 0.5rem; overflow-x: auto; }
-  .site-nav .nav-join { padding: 0.4rem 0.6rem; }
+/* Header: the lockup and Join share the first row; the links sit beneath,
+   left-aligned, each with a full-height hit area. */
+@media (max-width: 600px) {
+  .header-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    padding-block: 0.75rem 0;
+    row-gap: 0;
+    column-gap: 1rem;
+  }
+  .brand-link { grid-column: 1; grid-row: 1; }
+  .nav-join { grid-column: 2; grid-row: 1; }
+  .site-nav { grid-column: 1 / -1; grid-row: 2; margin-left: 0; gap: 1.5rem; font-size: 0.875rem; }
+  .site-nav a { padding-block: 0.7rem; }
 }
 
 @media (max-width: 560px) {
   .brand-link img { width: 9rem; }
-  .site-nav { font-size: 0.78rem; }
   .grid-2,
   .grid-3,
-  .grid-4 { grid-template-columns: 1fr; }
+  .grid-4 { grid-template-columns: 1fr; gap: 0; border-top: 1px solid var(--fod-hairline); }
+  /* Boxed cards become rows on a phone: the same content at a third of the height. */
+  .grid-3 .panel,
+  .grid-4 .panel { padding: 1.1rem 0; border-width: 0 0 1px; }
+  .grid-4 .panel.method-build { margin-block: 0.75rem; padding: 1.1rem 1rem; border-width: 2px; }
+  .panel h3 { margin: 0.6rem 0 0.45rem; }
   .issue-card { grid-template-columns: 1fr auto; gap: 0.7rem; }
   .issue-card .meta { grid-column: 1 / -1; }
   .newsletter-form-fields { flex-direction: column; }
   .newsletter-form input[type="email"] { flex-basis: auto; border-right: 1px solid var(--fod-ink); border-bottom: 0; }
+  .hero-aside .button,
+  .course-card .button,
+  .download-link .button,
+  .go-deeper .button { width: 100%; }
   .phase ol { columns: 1; }
   .footer-grid { grid-template-columns: 1fr; }
   .footer-grid > :first-child { grid-column: auto; }
@@ -1085,6 +1480,7 @@ button.button:hover {
 
 .course-card .lede { font-size: 1rem; margin: 0.75rem 0 0; }
 .course-card .compatibility { margin-block: 1.1rem; }
+.course-card .button { margin-top: 0.25rem; }
 .course-card-aside .stat-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
 @media (max-width: 52rem) {

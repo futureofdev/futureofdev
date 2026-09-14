@@ -1,0 +1,71 @@
+---
+/**
+ * End matter for an edition: byline, the one "go deeper" action, and
+ * previous / next navigation through the archive.
+ *
+ * The course link is the page's single Build-lime surface (brand rule 2).
+ */
+import Icon from "./Icon.astro";
+import StageTag from "./StageTag.astro";
+import { articleEndCopy } from "../content/site";
+import type { InsightDetail, InsightSummary } from "../lib/insights";
+import { formatEditionDate, splitTags } from "../lib/tags";
+
+interface Props {
+  post: InsightDetail;
+  previous?: InsightSummary | null;
+  next?: InsightSummary | null;
+}
+
+const { post, previous = null, next = null } = Astro.props;
+const tags = splitTags(post.tags);
+---
+
+<footer class="article-end">
+  <div class="article-end-rule">
+    <div class="article-byline">
+      <p class="meta">{post.author} · {formatEditionDate(post.publishedAt, "long")} · {post.readingMinutes} min read</p>
+      {(tags.stages.length > 0 || tags.topics.length > 0) && (
+        <div class="tag-row" aria-label="Edition topics">
+          {tags.stages.map((stage) => <StageTag stage={stage} />)}
+          {tags.topics.map((topic) => <span class="tag">{topic}</span>)}
+        </div>
+      )}
+    </div>
+
+    <div class="go-deeper">
+      <div>
+        <div class="panel-head"><Icon name="issue-06-go-deeper" /><p class="meta">{articleEndCopy.goDeeperEyebrow}</p></div>
+        <h2>{articleEndCopy.goDeeperHeading}</h2>
+        <p>{articleEndCopy.goDeeperBody}</p>
+      </div>
+      <a
+        class="button button-build"
+        href="/learning/coding-bootcamp-in-a-box"
+        data-analytics-cta="go-deeper"
+        data-analytics-placement="article-end"
+        data-analytics-content-slug={post.slug}
+      >{articleEndCopy.goDeeperCta}</a>
+    </div>
+
+    <nav class="article-nav" aria-label="Edition navigation">
+      {previous ? (
+        <a href={`/insights/${previous.slug}`} rel="prev">
+          <span class="meta">← {articleEndCopy.previousLabel}</span>
+          <b>{previous.title}</b>
+        </a>
+      ) : (
+        <span class="placeholder"><span class="meta">{articleEndCopy.firstNote}</span></span>
+      )}
+      {next ? (
+        <a class="next" href={`/insights/${next.slug}`} rel="next">
+          <span class="meta">{articleEndCopy.nextLabel} →</span>
+          <b>{next.title}</b>
+        </a>
+      ) : (
+        <span class="placeholder next"><span class="meta">{articleEndCopy.latestNote}</span></span>
+      )}
+    </nav>
+    <p class="article-all"><a href="/insights">{articleEndCopy.allLabel}</a></p>
+  </div>
+</footer>

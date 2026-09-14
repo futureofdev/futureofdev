@@ -31,6 +31,7 @@ const {
     data-offer={offer}
     data-download-label={downloadLabel}
     data-ph-no-capture
+    novalidate
   >
     <div class="newsletter-form-fields">
       <label class="sr-only" for={`newsletter-${placement}`}>Email address</label>
@@ -67,6 +68,12 @@ const {
     return value?.trim().slice(0, max) || undefined;
   }
 
+  // Mirrors the server-side check so the inline message, not the browser
+  // tooltip, explains what to fix. Deliberately permissive on the domain part.
+  function looksLikeEmail(value: string) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) && value.length <= 254;
+  }
+
   document.querySelectorAll<HTMLFormElement>(".newsletter-form").forEach((form) => {
     if (form.dataset.bound === "true") return;
     form.dataset.bound = "true";
@@ -78,7 +85,21 @@ const {
       const downloadAnchor = download?.querySelector<HTMLAnchorElement>("a");
       const button = form.querySelector<HTMLButtonElement>("button[type=submit]");
       const email = new FormData(form).get("email");
-      if (typeof email !== "string" || !button || !message) return;
+      const input = form.querySelector<HTMLInputElement>("input[type=email]");
+      if (typeof email !== "string" || !button || !message || !input) return;
+
+      const trimmed = email.trim();
+      if (!looksLikeEmail(trimmed)) {
+        input.setAttribute("aria-invalid", "true");
+        message.textContent = trimmed
+          ? "That does not look like an email address. Check it and try again."
+          : "Enter your email address to join.";
+        message.dataset.state = "error";
+        message.hidden = false;
+        input.focus();
+        return;
+      }
+      input.removeAttribute("aria-invalid");
 
       const originalLabel = button.textContent || "Join the newsletter";
       button.disabled = true;
@@ -103,7 +124,7 @@ const {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            email,
+            email: trimmed,
             placement: form.dataset.placement,
             offer: form.dataset.offer || undefined,
             pageUrl: EMAIL_FREE_PATH,
@@ -156,6 +177,10 @@ const {
         button.disabled = false;
         button.textContent = originalLabel;
       }
+    });
+
+    form.querySelector<HTMLInputElement>("input[type=email]")?.addEventListener("input", (event) => {
+      (event.currentTarget as HTMLInputElement).removeAttribute("aria-invalid");
     });
 
     form.querySelector<HTMLAnchorElement>(".download-link a")?.addEventListener("click", () => {

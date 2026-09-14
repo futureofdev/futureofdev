@@ -26,6 +26,9 @@ const {
 } = Astro.props;
 
 const canonicalURL = new URL(canonicalPath, Astro.site);
+const currentPath = Astro.url.pathname.replace(/\/+$/, "") || "/";
+const isCurrent = (href: string) =>
+  href === "/" ? currentPath === "/" : currentPath === href || currentPath.startsWith(`${href}/`);
 const ogImageURL = new URL(ogImage, Astro.site);
 const fullTitle = title === "Future of Dev" ? title : `${title} | Future of Dev`;
 const organisation = {
@@ -55,6 +58,10 @@ const jsonLd = structuredData
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#111827" />
+    <meta name="color-scheme" content="light" />
+    <link rel="preload" href="/fonts/archivo.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/inter.woff2" as="font" type="font/woff2" crossorigin />
     {noindex && <meta name="robots" content="noindex, nofollow" />}
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="icon" type="image/png" href="/favicon-32.png" sizes="32x32" />
@@ -81,12 +88,14 @@ const jsonLd = structuredData
     <header class="site-header">
       <div class="wrap header-inner">
         <a class="brand-link" href="/" aria-label="Future of Dev home">
-          <img src="/brand/fod-lockup-horizontal.svg" width="186" height="32" alt="Future of Dev" />
+          <img src="/brand/fod-lockup-horizontal.svg" width="213" height="32" alt="Future of Dev" />
         </a>
         <nav class="site-nav" aria-label="Primary navigation">
-          {siteNavigation.map((item) => <a href={item.href}>{item.label}</a>)}
-          <a class="nav-join" href="/#join" data-analytics-cta="join" data-analytics-placement="navigation">Join</a>
+          {siteNavigation.filter((item) => item.href !== "/").map((item) => (
+            <a href={item.href} aria-current={isCurrent(item.href) ? "page" : undefined}>{item.label}</a>
+          ))}
         </nav>
+        <a class="nav-join" href="/#join" data-analytics-cta="join" data-analytics-placement="navigation">Join</a>
       </div>
     </header>
 
@@ -97,11 +106,11 @@ const jsonLd = structuredData
     <footer class="site-footer">
       <div class="wrap footer-grid">
         <div>
-          <img src="/brand/fod-lockup-horizontal-mono-white.svg" width="186" height="32" alt="Future of Dev" />
+          <img src="/brand/fod-lockup-horizontal-mono-white.svg" width="213" height="32" alt="Future of Dev" />
           <p>Learn and build the AI-native way.</p>
         </div>
         <nav aria-label="Footer navigation">
-          {siteNavigation.filter((item) => item.href !== "/").map((item) => (
+          {siteNavigation.map((item) => (
             <a href={item.href}>{item.label}</a>
           ))}
           <a href="/privacy">Privacy</a>

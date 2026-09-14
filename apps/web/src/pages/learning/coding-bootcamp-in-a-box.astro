@@ -1,7 +1,9 @@
 ---
 import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import Icon from "../../components/Icon.astro";
 import NewsletterForm from "../../components/NewsletterForm.astro";
+import type { IconName } from "../../lib/icons";
 import { courseManifest } from "../../lib/course";
 import { COURSE_OFFER } from "../../lib/course-token";
 import { courseStats, courseHours, phaseContent } from "../../lib/course-content";
@@ -32,6 +34,13 @@ const courseSchema = {
 function hours(minutes: number): string {
   return `${Math.round((minutes / 60) * 10) / 10}h`;
 }
+
+// Outcome cards map onto the lifecycle icon set.
+const outcomeIcons: Record<string, IconName> = {
+  Foundations: "lifecycle-discover",
+  Product: "lifecycle-build",
+  Evidence: "lifecycle-ship",
+};
 ---
 
 <BaseLayout
@@ -42,7 +51,7 @@ function hours(minutes: number): string {
   <header class="hero">
     <div class="wrap hero-grid">
       <div class="hero-copy">
-        <p class="eyebrow">{copy.eyebrow} · v{courseManifest.version}</p>
+        <p class="eyebrow">{copy.eyebrow}</p>
         <h1 class="display-xl">{copy.headline}</h1>
         <p class="lede">{courseManifest.description}</p>
         <div class="compatibility">
@@ -60,7 +69,7 @@ function hours(minutes: number): string {
           <div><dt>Homework</dt><dd>{courseStats.homeworkCount}</dd></div>
         </dl>
         <p class="stat-note">Free · self-paced · {courseManifest.license}</p>
-        <a class="button" href="#download" data-analytics-cta="get-course" data-analytics-placement="course-hero">Get the course</a>
+        <a class="button button-build" href="#download" data-analytics-cta="get-course" data-analytics-placement="course-hero">Get the course</a>
       </div>
     </div>
   </header>
@@ -93,13 +102,19 @@ function hours(minutes: number): string {
         <h2 id="outcomes-heading" class="display-lg">Finish with a real portfolio online.</h2>
       </div>
       <div class="grid-3">
-        {copy.outcomes.map((outcome) => (
+        {copy.outcomes.map((outcome) => {
+          const icon = outcomeIcons[outcome.label];
+          return (
           <article class="panel">
-            <p class="meta">{outcome.label}</p>
+            <div class="panel-head">
+              {icon && <Icon name={icon} />}
+              <p class="meta">{outcome.label}</p>
+            </div>
             <h3>{outcome.title}</h3>
             <p>{outcome.body}</p>
           </article>
-        ))}
+          );
+        })}
       </div>
     </div>
   </section>
@@ -192,7 +207,7 @@ function hours(minutes: number): string {
         <NewsletterForm
           placement="course-download"
           offer={COURSE_OFFER}
-          heading={copy.download.formHeading}
+          heading=""
           copy={copy.download.formCopy}
           buttonLabel="Subscribe and get the course"
           downloadLabel={`Download ${courseManifest.title}`}
@@ -202,6 +217,7 @@ function hours(minutes: number): string {
         Once it downloads, open the folder in {supported.map((agent) => agent.name).join(" or ")}.
         Run <code>$learn</code> in Codex or <code>/learn</code> in Claude Code.
       </p>
+      <p class="meta download-version">{courseManifest.title} v{courseManifest.version} · {courseManifest.license}</p>
     </div>
   </section>
 </BaseLayout>

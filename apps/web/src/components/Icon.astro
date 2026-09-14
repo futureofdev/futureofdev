@@ -1,0 +1,35 @@
+---
+/**
+ * Brand icon, inlined so it inherits `currentColor` from its parent.
+ *
+ * Source of truth is `future-of-dev-brand-v1/03-icons`, mirrored to
+ * `public/brand/icons`. 24×24 grid, 2px stroke, butt caps, mitred joins.
+ * Icons are decorative unless a `label` is given.
+ */
+import type { IconName } from "../lib/icons";
+
+interface Props {
+  name: IconName;
+  class?: string;
+  label?: string;
+}
+
+const files = import.meta.glob<string>("../../public/brand/icons/*.svg", {
+  query: "?raw",
+  import: "default",
+  eager: true,
+});
+
+const { name, class: className = "icon", label } = Astro.props;
+const source = files[`../../public/brand/icons/${name}.svg`];
+if (!source) throw new Error(`Unknown brand icon: ${name}`);
+
+const accessibility = label
+  ? `role="img" aria-label="${label.replace(/"/g, "&quot;")}"`
+  : 'aria-hidden="true" focusable="false"';
+const svg = source
+  .replace(/\s(width|height|role|aria-label)="[^"]*"/g, "")
+  .replace("<svg", `<svg class="${className}" ${accessibility}`);
+---
+
+<Fragment set:html={svg} />

@@ -91,14 +91,29 @@ layout, not as text or decoration.
 `apps/web/src/styles/global.css` imports the tokens from
 `future-of-dev-brand-v1/04-tokens/tokens.css`, the colour source of truth. Do
 not redeclare a brand colour or hard-code a hex value. The only site-level
-extensions are the annotated `--fod-error` and `--fod-success` tokens.
+extensions are the annotated tokens in the `:root` block of `global.css`:
+`--fod-error`, `--fod-success`, `--fod-graphite-700` (secondary type on Cloud),
+`--fod-muted` (contextual secondary text), the `--fod-on-ink-*` alphas for
+text and rules on Ink, and `--fod-measure` for reading columns.
 
-Two rules are easy to break silently:
+Four rules are easy to break silently:
 
 - On a dark surface, Signal indigo fails contrast. Use `--fod-signal-300` for
   links, labels and icons on `.section-ink`.
+- Graphite fails AA on Cloud (4.43:1). Secondary text uses `--fod-muted`, which
+  tinted sections switch to `--fod-graphite-700`; never set Graphite directly on
+  a Cloud surface.
 - A career-stage label pairs an icon and a word, never colour alone. Use
-  `StageTag.astro`.
+  `StageTag.astro`. Other brand icons render through `Icon.astro`, which inlines
+  the SVGs mirrored in `public/brand/icons` from the brand pack.
+- Build lime appears once per layout, as a surface with Ink text: the
+  `.lime-label` on the homepage Build step, or one `.button-build` on a page
+  whose single action is the download or course.
+
+`public/fonts` holds Latin subsets of the pack's variable fonts; regenerate them
+from `future-of-dev-brand-v1/05-fonts` with `pyftsubset` rather than editing.
+`public/og-default.png` is rendered from the pack (lockup, Archivo, one lime
+block) and must never carry pre-relaunch branding or vendor names.
 
 The design reference is
 `future-of-dev-brand-v1/01-documents/future-of-dev-beehiiv-target.html`.

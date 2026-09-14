@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import NewsletterForm from "../components/NewsletterForm.astro";
+import { founderImage } from "../content/site";
 ---
 
 <BaseLayout
@@ -50,6 +51,11 @@ import NewsletterForm from "../components/NewsletterForm.astro";
         <h2 class="display-lg">Luke Hennerley</h2>
       </div>
       <div>
+        {founderImage && (
+          <figure class="founder-figure">
+            <img src={founderImage.src} alt={founderImage.alt} width="288" height="288" loading="lazy" />
+          </figure>
+        )}
         <p class="lede">A product and technology practitioner with experience across software engineering, product development and digital delivery.</p>
         <p>Future of Dev brings those disciplines together around a single question: what should people learn and practise now to remain capable, relevant and confident?</p>
         <a href="https://www.linkedin.com/in/luke-hennerley-49204953/" rel="noopener noreferrer">Connect on LinkedIn →</a>

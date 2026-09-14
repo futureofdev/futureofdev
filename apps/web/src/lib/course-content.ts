@@ -131,5 +131,5 @@ export const courseStats = {
   ))],
 };
 
-/** Whole hours, rounded to one decimal — e.g. 34.9. */
-export const courseHours = Math.round((courseStats.durationMinutes / 60) * 10) / 10;
+/** Course time in whole hours — e.g. 35. Public copy never shows a decimal hour. */
+export const courseHours = Math.round(courseStats.durationMinutes / 60);

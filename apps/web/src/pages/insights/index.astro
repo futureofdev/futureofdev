@@ -3,8 +3,10 @@ export const prerender = false;
 
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import NewsletterForm from "../../components/NewsletterForm.astro";
+import StageTag from "../../components/StageTag.astro";
 import { editionEmptyState } from "../../content/site";
 import { listPublishedInsights } from "../../lib/insights";
+import { formatEditionDate, splitTags } from "../../lib/tags";
 
 const posts = await listPublishedInsights(Astro.locals, 100);
 Astro.response.headers.set(
@@ -31,18 +33,25 @@ Astro.response.headers.set(
         <h2>{editionEmptyState.heading}</h2>
         <p class="lede">{editionEmptyState.body}</p>
       </>}
-      {posts.map((post) => (
-        <a class="issue-card" href={`/insights/${post.slug}`}>
-          <span class="meta">
-            {new Date(post.publishedAt).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}
-          </span>
-          <span>
-            <h2>{post.title}</h2>
-            <p>{post.excerpt}</p>
-          </span>
-          <span class="issue-arrow" aria-hidden="true">→</span>
-        </a>
-      ))}
+      {posts.map((post) => {
+        const tags = splitTags(post.tags);
+        return (
+          <a class="issue-card" href={`/insights/${post.slug}`}>
+            <span class="meta">{formatEditionDate(post.publishedAt)}</span>
+            <span class="issue-body">
+              <h2>{post.title}</h2>
+              <p>{post.excerpt}</p>
+              {(tags.stages.length > 0 || tags.topics.length > 0) && (
+                <span class="tag-row">
+                  {tags.stages.map((stage) => <StageTag stage={stage} />)}
+                  {tags.topics.map((topic) => <span class="tag">{topic}</span>)}
+                </span>
+              )}
+            </span>
+            <span class="issue-arrow" aria-hidden="true">→</span>
+          </a>
+        );
+      })}
     </div>
   </section>
 

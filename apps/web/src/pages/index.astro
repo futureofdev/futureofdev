@@ -3,24 +3,25 @@ export const prerender = false;
 
 import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
+import Icon from "../components/Icon.astro";
 import NewsletterForm from "../components/NewsletterForm.astro";
 import StageTag from "../components/StageTag.astro";
 import { editionEmptyState, homepageCopy } from "../content/site";
-import { courseStats } from "../lib/course-content";
+import { courseHours, courseStats } from "../lib/course-content";
 import { listPublishedInsights } from "../lib/insights";
+import { formatEditionDate, splitTags } from "../lib/tags";
 
-const latest = (await listPublishedInsights(Astro.locals, 1))[0];
+const editions = await listPublishedInsights(Astro.locals, 4);
+const latest = editions[0];
+const previous = editions.slice(1);
+const latestTags = splitTags(latest?.tags);
 
 Astro.response.headers.set(
   "Cache-Control",
   "public, max-age=300, stale-while-revalidate=86400, stale-if-error=604800",
 );
 
-const date = latest && new Date(latest.publishedAt).toLocaleDateString("en-GB", {
-  day: "numeric",
-  month: "short",
-  year: "numeric",
-});
+const date = latest && formatEditionDate(latest.publishedAt);
 const courseEntry = (await getCollection("courses")).find(
   (course) => course.data.slug === "coding-bootcamp-in-a-box",
 );
@@ -29,28 +30,43 @@ if (!courseEntry) throw new Error("Missing course content for coding-bootcamp-in
 
 <BaseLayout title={homepageCopy.seo.title} description={homepageCopy.seo.description}>
   <section class="home-hero" aria-labelledby="home-heading">
-    <div class="wrap">
-      <h1 id="home-heading" class="display-xl">
-        {homepageCopy.hero.heading[0]}<br />{homepageCopy.hero.heading[1]}
-      </h1>
-      <p class="home-hero-intro">{homepageCopy.hero.intro}</p>
-      <p class="lede">{homepageCopy.hero.lede}</p>
-      <NewsletterForm
-        placement="homepage-hero"
-        variant="inline"
-        heading=""
-        copy=""
-        buttonLabel={homepageCopy.hero.joinLabel}
-        note={homepageCopy.hero.note}
-      />
-      {latest && <p class="home-hero-link">
-        <a
-          href={`/insights/${latest.slug}`}
-          data-analytics-cta="latest-edition"
-          data-analytics-placement="homepage-hero"
-          data-analytics-content-slug={latest.slug}
-        >{homepageCopy.hero.latestLabel}</a>
-      </p>}
+    <div class="wrap home-hero-grid">
+      <div class="home-hero-copy">
+        <h1 id="home-heading" class="display-xl">
+          {homepageCopy.hero.heading[0]}<br />{homepageCopy.hero.heading[1]}
+        </h1>
+        <p class="home-hero-intro">{homepageCopy.hero.intro}</p>
+        <p class="lede">{homepageCopy.hero.lede}</p>
+        <NewsletterForm
+          placement="homepage-hero"
+          variant="inline"
+          heading=""
+          copy=""
+          buttonLabel={homepageCopy.hero.joinLabel}
+          note={homepageCopy.hero.note}
+        />
+        {latest && <p class="home-hero-link">
+          <a
+            href={`/insights/${latest.slug}`}
+            data-analytics-cta="latest-edition"
+            data-analytics-placement="homepage-hero"
+            data-analytics-content-slug={latest.slug}
+          >{homepageCopy.hero.latestLabel}</a>
+        </p>}
+      </div>
+      <div class="anatomy" aria-labelledby="anatomy-heading">
+        <p id="anatomy-heading" class="meta">{homepageCopy.hero.anatomyLabel}</p>
+        <ol>
+          {homepageCopy.hero.anatomy.map((block) => (
+            <li class:list={[block.title === "Build" && "is-build"]}>
+              <Icon name={block.icon} />
+              <span>{block.title}{block.body && <small>{block.body}</small>}</span>
+              <span class="num">{block.number}</span>
+            </li>
+          ))}
+        </ol>
+        <p class="anatomy-foot">{homepageCopy.hero.anatomyNote}</p>
+      </div>
     </div>
   </section>
 
@@ -65,7 +81,7 @@ if (!courseEntry) throw new Error("Missing course content for coding-bootcamp-in
       <div class="grid-4">
         {homepageCopy.method.steps.map((step) => (
           <article class:list={["panel", step.title === "Build" && "method-build"]}>
-            <p class="meta">{step.number}</p>
+            <div class="panel-head"><Icon name={step.icon} /><p class="meta">{step.number}</p></div>
             <h3>{step.title}</h3>
             <p>{step.body}</p>
             {step.label && <span class="lime-label">{step.label}</span>}
@@ -81,13 +97,15 @@ if (!courseEntry) throw new Error("Missing course content for coding-bootcamp-in
       <div class="home-grid-2 home-latest">
         <div>
           {latest ? <>
-            <div class="tag-row" aria-label="Edition topics">
-              <StageTag stage="evolve" />
-              <span class="tag">Skills</span>
-            </div>
+            {(latestTags.stages.length > 0 || latestTags.topics.length > 0) && (
+              <div class="tag-row" aria-label="Edition topics">
+                {latestTags.stages.map((stage) => <StageTag stage={stage} />)}
+                {latestTags.topics.map((topic) => <span class="tag">{topic}</span>)}
+              </div>
+            )}
             <h2 id="latest-heading" class="display-lg">{latest.title}</h2>
             <p class="lede">{latest.excerpt}</p>
-            <p class="meta home-edition-meta">{date} · {homepageCopy.latest.editionLabel}</p>
+            <p class="meta home-edition-meta">{date} · {latest.author}</p>
             <a class="button button-secondary" href={`/insights/${latest.slug}`}>
               {homepageCopy.latest.readLabel}
             </a>
@@ -96,15 +114,27 @@ if (!courseEntry) throw new Error("Missing course content for coding-bootcamp-in
             <p class="lede">{editionEmptyState.body}</p>
           </>}
         </div>
-        <aside class="latest-aside" aria-label="The weekly format">
-          <p class="meta">{homepageCopy.latest.formatLabel}</p>
-          <ol>
-            {homepageCopy.latest.format.map((item, index) => (
-              <li><span>{String(index + 1).padStart(2, "0")}</span> {item}</li>
-            ))}
-          </ol>
+        <div class="latest-aside">
+          {previous.length > 0 ? <>
+            <p class="meta">{homepageCopy.latest.previousLabel}</p>
+            <ol>
+              {previous.map((edition, index) => (
+                <li>
+                  <span>{String(index + 1).padStart(2, "0")}</span>
+                  <a href={`/insights/${edition.slug}`}>{edition.title}<small>{formatEditionDate(edition.publishedAt)}</small></a>
+                </li>
+              ))}
+            </ol>
+          </> : <>
+            <p class="meta">{homepageCopy.latest.formatLabel}</p>
+            <ol>
+              {homepageCopy.latest.format.map((item, index) => (
+                <li><span>{String(index + 1).padStart(2, "0")}</span> {item}</li>
+              ))}
+            </ol>
+          </>}
           <a href="/insights">{homepageCopy.latest.browseLabel}</a>
-        </aside>
+        </div>
       </div>
     </div>
   </section>
@@ -119,6 +149,11 @@ if (!courseEntry) throw new Error("Missing course content for coding-bootcamp-in
             {homepageCopy.featuredLearning.heading[1]}
           </h2>
           <p class="lede">{homepageCopy.featuredLearning.lede}</p>
+          <div class="compatibility">
+            {courseEntry.data.compatibility.map((agent) => (
+              <span data-status={agent.status}>{agent.name} · {agent.status}</span>
+            ))}
+          </div>
           <a
             class="button button-dark"
             href="/learning/coding-bootcamp-in-a-box"
@@ -126,13 +161,12 @@ if (!courseEntry) throw new Error("Missing course content for coding-bootcamp-in
             data-analytics-placement="homepage"
           >{homepageCopy.featuredLearning.ctaLabel}</a>
         </div>
-        <div class="course-facts" aria-label="Course details">
-          <div><span>Lessons</span><strong>{courseStats.lessonCount}</strong></div>
-          <div><span>Phases</span><strong>{courseStats.phaseCount}</strong></div>
-          {courseEntry.data.compatibility.map((agent) => (
-            <div><span>{agent.name}</span><strong>{agent.status}</strong></div>
-          ))}
-        </div>
+        <dl class="course-facts" aria-label="Course details">
+          <div><dt>Lessons</dt><dd>{courseStats.lessonCount}</dd></div>
+          <div><dt>Phases</dt><dd>{courseStats.phaseCount}</dd></div>
+          <div><dt>Course time</dt><dd>{courseHours} hours</dd></div>
+          <div><dt>Objectives</dt><dd>{courseStats.objectiveCount}</dd></div>
+        </dl>
       </div>
     </div>
   </section>
@@ -163,7 +197,7 @@ if (!courseEntry) throw new Error("Missing course content for coding-bootcamp-in
       <p class="eyebrow">{homepageCopy.founder.eyebrow}</p>
       <div class="home-grid-2 founder-grid">
         <h2 id="founder-heading" class="display-lg">
-          {homepageCopy.founder.heading[0]}<br />{homepageCopy.founder.heading[1]}
+          {homepageCopy.founder.heading.join(" ")}
         </h2>
         <div>
           {homepageCopy.founder.paragraphs.map((paragraph) => <p>{paragraph}</p>)}

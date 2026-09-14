@@ -1,9 +1,11 @@
 ---
 export const prerender = false;
 
+import ArticleEnd from "../../components/ArticleEnd.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import NewsletterForm from "../../components/NewsletterForm.astro";
-import { getInsightBySlug } from "../../lib/insights";
+import { getInsightBySlug, listPublishedInsights, type InsightSummary } from "../../lib/insights";
+import { formatEditionDate } from "../../lib/tags";
 
 const slug = Astro.params.slug ?? "";
 let post;
@@ -22,16 +24,27 @@ try {
 
 if (!post) return Astro.redirect("/404", 302);
 
+// Neighbours in the archive for previous / next. Listing failures degrade to
+// no navigation rather than a failed page.
+let previous: InsightSummary | null = null;
+let next: InsightSummary | null = null;
+try {
+  const editions = await listPublishedInsights(Astro.locals, 100);
+  const index = editions.findIndex((edition) => edition.slug === post.slug);
+  if (index >= 0) {
+    previous = editions[index + 1] ?? null;
+    next = editions[index - 1] ?? null;
+  }
+} catch {
+  // Leave navigation empty.
+}
+
 Astro.response.headers.set(
   "Cache-Control",
   "public, max-age=300, stale-while-revalidate=86400, stale-if-error=604800",
 );
 
-const date = new Date(post.publishedAt).toLocaleDateString("en-GB", {
-  day: "numeric",
-  month: "long",
-  year: "numeric",
-});
+const date = formatEditionDate(post.publishedAt, "long");
 const canonical = `/insights/${post.slug}`;
 const articleSchema = {
   "@context": "https://schema.org",
@@ -74,6 +87,7 @@ const articleSchema = {
       </div>
     )}
     <div class="article-body" set:html={post.html} />
+    <ArticleEnd post={post} previous={previous} next={next} />
   </article>
 
   <section class="section build-focus">

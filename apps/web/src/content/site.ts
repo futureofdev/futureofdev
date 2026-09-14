@@ -18,6 +18,26 @@ export const editionEmptyState = {
   body: "Subscribe to get the first edition in your inbox.",
 } as const;
 
+/**
+ * Founder photograph for the About page. Leave `null` until an approved image
+ * is in `public/brand/`; the layout renders the figure only when this is set.
+ */
+export const founderImage: { src: string; alt: string } | null = null;
+
+/** End matter for every edition page. */
+export const articleEndCopy = {
+  goDeeperEyebrow: "Go deeper",
+  goDeeperHeading: "Build something with it.",
+  goDeeperBody:
+    "Coding Bootcamp in a Box takes you from an empty machine to a deployed portfolio, taught locally by Codex or Claude Code.",
+  goDeeperCta: "Explore the course",
+  previousLabel: "Previous edition",
+  nextLabel: "Next edition",
+  firstNote: "This is the first edition.",
+  latestNote: "This is the latest edition.",
+  allLabel: "All editions →",
+} as const;
+
 export const homepageCopy = {
   seo: {
     title: "Learn and build the AI-native way",
@@ -32,6 +52,16 @@ export const homepageCopy = {
     joinLabel: "Join Future of Dev",
     note: "Free · one useful edition each week · unsubscribe any time.",
     latestLabel: "Read the latest edition →",
+    anatomyLabel: "Anatomy of an edition",
+    anatomy: [
+      { number: "01", icon: "issue-01-the-shift", title: "The shift", body: null },
+      { number: "02", icon: "issue-02-why-it-matters", title: "Why it matters", body: null },
+      { number: "03", icon: "issue-03-learn", title: "Learn", body: null },
+      { number: "04", icon: "lifecycle-build", title: "Build", body: "15 to 30 minutes, ends in something real" },
+      { number: "05", icon: "issue-05-keep", title: "Keep", body: null },
+      { number: "06", icon: "issue-06-go-deeper", title: "Go deeper", body: null },
+    ],
+    anatomyNote: "Six blocks in the same order every week. By the third edition you can skip straight to Build.",
   },
   method: {
     eyebrow: "What you get",
@@ -39,24 +69,28 @@ export const homepageCopy = {
     steps: [
       {
         number: "01",
+        icon: "issue-01-the-shift",
         title: "Understand",
         body: "One change in tools, work or expectations. Plain terms, reasoning shown.",
         label: null,
       },
       {
         number: "02",
+        icon: "issue-03-learn",
         title: "Learn",
         body: "One method, framework or decision you can apply, separated from the tool it happens to use.",
         label: null,
       },
       {
         number: "03",
+        icon: "lifecycle-build",
         title: "Build",
         body: "A focused 15 to 30 minute exercise that ends in something you can point at.",
         label: "This is the part that matters",
       },
       {
         number: "04",
+        icon: "lifecycle-test",
         title: "Demonstrate",
         body: "Criteria to check your work against. Progress you can see, not assume.",
         label: null,
@@ -72,7 +106,7 @@ export const homepageCopy = {
       "A focused build to complete",
       "Criteria to keep and use",
     ],
-    editionLabel: "Latest edition",
+    previousLabel: "More editions",
     readLabel: "Read the edition",
     browseLabel: "Browse all insights →",
   },

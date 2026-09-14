@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import Icon from "../../components/Icon.astro";
 import NewsletterForm from "../../components/NewsletterForm.astro";
 import { courseStats, courseHours } from "../../lib/course-content";
 
@@ -43,7 +44,7 @@ const courses = (await getCollection("courses")).sort((a, b) =>
                   <span data-status={agent.status}>{agent.name} · {agent.status}</span>
                 ))}
               </div>
-              <a class="button" href={`/learning/${course.data.slug}`} data-analytics-cta="view-course" data-analytics-placement="learning-index" data-analytics-content-slug={course.data.slug}>View the course</a>
+              <a class="button button-build" href={`/learning/${course.data.slug}`} data-analytics-cta="view-course" data-analytics-placement="learning-index" data-analytics-content-slug={course.data.slug}>View the course</a>
             </div>
             <div class="course-card-aside">
               <p class="meta">At a glance</p>
@@ -67,9 +68,9 @@ const courses = (await getCollection("courses")).sort((a, b) =>
         <h2 id="how-heading" class="display-lg">Your tutor guides. You do the work.</h2>
       </div>
       <div class="grid-3">
-        <article class="panel"><p class="meta">Learn</p><h3>Understand the why</h3><p>Short explanations, checks and analogies build a working mental model.</p></article>
-        <article class="panel"><p class="meta">Build</p><h3>Practise in context</h3><p>Every phase moves a real project forward instead of ending at passive recall.</p></article>
-        <article class="panel"><p class="meta">Demonstrate</p><h3>Show the evidence</h3><p>Homework checks what runs, what you understand and what you can explain.</p></article>
+        <article class="panel"><div class="panel-head"><Icon name="issue-03-learn" /><p class="meta">Learn</p></div><h3>Understand the why</h3><p>Short explanations, checks and analogies build a working mental model.</p></article>
+        <article class="panel"><div class="panel-head"><Icon name="lifecycle-build" /><p class="meta">Build</p></div><h3>Practise in context</h3><p>Every phase moves a real project forward instead of ending at passive recall.</p></article>
+        <article class="panel"><div class="panel-head"><Icon name="lifecycle-test" /><p class="meta">Demonstrate</p></div><h3>Show the evidence</h3><p>Homework checks what runs, what you understand and what you can explain.</p></article>
       </div>
     </div>
   </section>
