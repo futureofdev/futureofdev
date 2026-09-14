@@ -656,76 +656,56 @@ button.button:hover {
   padding-block: clamp(3rem, 7vw, 5.625rem);
 }
 
-.home-hero-grid {
+/* The two optional blocks sit below the weekly four, lighter, so the page says
+   "most weeks are the four above" without a sentence having to carry it. */
+.extensions {
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
-  gap: clamp(2rem, 5vw, 4rem);
-  align-items: center;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 2fr);
+  gap: clamp(1.25rem, 3vw, 2.5rem);
+  margin-top: clamp(1.75rem, 4vw, 2.75rem);
+  padding-top: clamp(1.5rem, 3vw, 2rem);
+  border-top: 1px solid var(--fod-hairline);
 }
 
-/* The anatomy of an edition: the real artefact, not an illustration. */
-.anatomy {
-  padding: 1.375rem;
-  border: 1px solid var(--fod-ink);
-  background: var(--fod-ink);
-  color: var(--fod-on-ink);
-}
-
-.anatomy .meta {
+.extensions-head .meta {
   margin: 0 0 0.5rem;
-  color: var(--fod-on-ink-faint);
 }
 
-.anatomy ol {
+.extensions-head p {
+  margin: 0;
+  max-width: 34ch;
+  color: var(--fod-muted);
+  font-size: 0.875rem;
+}
+
+.extension-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1.25rem, 3vw, 2.5rem);
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.anatomy li {
-  display: grid;
-  grid-template-columns: 1.125rem minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 0.75rem;
-  padding-block: 0.7rem;
-  border-bottom: 1px solid var(--fod-on-ink-rule);
-  font-size: 0.9375rem;
+.extension-list .panel-head {
+  color: var(--fod-muted);
 }
 
-.anatomy li:last-child {
-  border-bottom: 0;
-}
-
-.anatomy li .icon {
-  color: var(--fod-signal-300);
-}
-
-.anatomy li .num {
-  color: var(--fod-on-ink-faint);
-  font-family: var(--fod-mono);
-  font-size: 0.6875rem;
-  letter-spacing: 0.1em;
-}
-
-.anatomy li.is-build {
-  font-weight: 600;
-}
-
-.anatomy li.is-build .icon {
-  color: var(--fod-on-ink);
-}
-
-.anatomy li small {
+.extension-list b {
   display: block;
-  color: var(--fod-on-ink-faint);
-  font-size: 0.8125rem;
-  font-weight: 400;
+  margin: 0.6rem 0 0.4rem;
+  font-family: var(--fod-display);
+  font-stretch: 108%;
+  font-variation-settings: "wdth" 108, "wght" 700;
+  font-weight: 700;
+  font-size: 1.0625rem;
+  letter-spacing: -0.015em;
 }
 
-.anatomy-foot {
-  margin: 1rem 0 0;
-  color: var(--fod-on-ink-muted);
-  font-size: 0.8125rem;
+.extension-list p {
+  margin: 0;
+  color: var(--fod-muted);
+  font-size: 0.90625rem;
 }
 
 .home-hero-intro {
@@ -1409,7 +1389,7 @@ button.button:hover {
   .hero-grid,
   .split { grid-template-columns: 1fr; align-items: start; }
   .split > :first-child { position: static; }
-  .home-hero-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .extensions { grid-template-columns: 1fr; gap: 1.25rem; }
   .home-grid-2 { grid-template-columns: 1fr; }
   .grid-3,
   .grid-4 { grid-template-columns: repeat(2, 1fr); }
@@ -1439,6 +1419,7 @@ button.button:hover {
 
 @media (max-width: 560px) {
   .brand-link img { width: 9rem; }
+  .extension-list { grid-template-columns: 1fr; gap: 1.5rem; }
   .grid-2,
   .grid-3,
   .grid-4 { grid-template-columns: 1fr; gap: 0; border-top: 1px solid var(--fod-hairline); }

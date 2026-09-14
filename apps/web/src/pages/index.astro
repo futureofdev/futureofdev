@@ -30,63 +30,64 @@ if (!courseEntry) throw new Error("Missing course content for coding-bootcamp-in
 
 <BaseLayout title={homepageCopy.seo.title} description={homepageCopy.seo.description}>
   <section class="home-hero" aria-labelledby="home-heading">
-    <div class="wrap home-hero-grid">
-      <div class="home-hero-copy">
-        <h1 id="home-heading" class="display-xl">
-          {homepageCopy.hero.heading[0]}<br />{homepageCopy.hero.heading[1]}
-        </h1>
-        <p class="home-hero-intro">{homepageCopy.hero.intro}</p>
-        <p class="lede">{homepageCopy.hero.lede}</p>
-        <NewsletterForm
-          placement="homepage-hero"
-          variant="inline"
-          heading=""
-          copy=""
-          buttonLabel={homepageCopy.hero.joinLabel}
-          note={homepageCopy.hero.note}
-        />
-        {latest && <p class="home-hero-link">
-          <a
-            href={`/insights/${latest.slug}`}
-            data-analytics-cta="latest-edition"
-            data-analytics-placement="homepage-hero"
-            data-analytics-content-slug={latest.slug}
-          >{homepageCopy.hero.latestLabel}</a>
-        </p>}
-      </div>
-      <div class="anatomy" aria-labelledby="anatomy-heading">
-        <p id="anatomy-heading" class="meta">{homepageCopy.hero.anatomyLabel}</p>
-        <ol>
-          {homepageCopy.hero.anatomy.map((block) => (
-            <li class:list={[block.title === "Build" && "is-build"]}>
-              <Icon name={block.icon} />
-              <span>{block.title}{block.body && <small>{block.body}</small>}</span>
-              <span class="num">{block.number}</span>
-            </li>
-          ))}
-        </ol>
-        <p class="anatomy-foot">{homepageCopy.hero.anatomyNote}</p>
-      </div>
+    <div class="wrap">
+      <h1 id="home-heading" class="display-xl">
+        {homepageCopy.hero.heading[0]}<br />{homepageCopy.hero.heading[1]}
+      </h1>
+      <p class="home-hero-intro">{homepageCopy.hero.intro}</p>
+      <p class="lede">{homepageCopy.hero.lede}</p>
+      <NewsletterForm
+        placement="homepage-hero"
+        variant="inline"
+        heading=""
+        copy=""
+        buttonLabel={homepageCopy.hero.joinLabel}
+        note={homepageCopy.hero.note}
+      />
+      {latest && <p class="home-hero-link">
+        <a
+          href={`/insights/${latest.slug}`}
+          data-analytics-cta="latest-edition"
+          data-analytics-placement="homepage-hero"
+          data-analytics-content-slug={latest.slug}
+        >{homepageCopy.hero.latestLabel}</a>
+      </p>}
     </div>
   </section>
 
-  <section class="section" aria-labelledby="method-heading">
+  <section class="section" aria-labelledby="edition-heading">
     <div class="wrap">
       <div class="section-head">
-        <p class="eyebrow">{homepageCopy.method.eyebrow}</p>
-        <h2 id="method-heading" class="display-lg">
-          {homepageCopy.method.heading[0]}<br />{homepageCopy.method.heading[1]}
+        <p class="eyebrow">{homepageCopy.edition.eyebrow}</p>
+        <h2 id="edition-heading" class="display-lg">
+          {homepageCopy.edition.heading[0]}<br />{homepageCopy.edition.heading[1]}
         </h2>
+        <p class="lede">{homepageCopy.edition.lede}</p>
       </div>
       <div class="grid-4">
-        {homepageCopy.method.steps.map((step) => (
-          <article class:list={["panel", step.title === "Build" && "method-build"]}>
-            <div class="panel-head"><Icon name={step.icon} /><p class="meta">{step.number}</p></div>
-            <h3>{step.title}</h3>
-            <p>{step.body}</p>
-            {step.label && <span class="lime-label">{step.label}</span>}
+        {homepageCopy.edition.beats.map((beat) => (
+          <article class:list={["panel", beat.label && "method-build"]}>
+            <div class="panel-head"><Icon name={beat.icon} /><p class="meta">{beat.number}</p></div>
+            <h3>{beat.title}</h3>
+            <p>{beat.body}</p>
+            {beat.label && <span class="lime-label">{beat.label}</span>}
           </article>
         ))}
+      </div>
+      <div class="extensions">
+        <div class="extensions-head">
+          <p class="meta">{homepageCopy.edition.extensionsLabel}</p>
+          <p>{homepageCopy.edition.extensionsNote}</p>
+        </div>
+        <ul class="extension-list">
+          {homepageCopy.edition.extensions.map((block) => (
+            <li>
+              <div class="panel-head"><Icon name={block.icon} /><p class="meta">{block.number}</p></div>
+              <b>{block.title}</b>
+              <p>{block.body}</p>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   </section>
@@ -94,7 +95,7 @@ if (!courseEntry) throw new Error("Missing course content for coding-bootcamp-in
   <section class="section section-cloud" aria-labelledby="latest-heading">
     <div class="wrap">
       <p class="eyebrow">{homepageCopy.latest.eyebrow}</p>
-      <div class="home-grid-2 home-latest">
+      <div class:list={["home-latest", previous.length > 0 && "home-grid-2"]}>
         <div>
           {latest ? <>
             {(latestTags.stages.length > 0 || latestTags.topics.length > 0) && (
@@ -114,8 +115,8 @@ if (!courseEntry) throw new Error("Missing course content for coding-bootcamp-in
             <p class="lede">{editionEmptyState.body}</p>
           </>}
         </div>
-        <div class="latest-aside">
-          {previous.length > 0 ? <>
+        {previous.length > 0 && (
+          <div class="latest-aside">
             <p class="meta">{homepageCopy.latest.previousLabel}</p>
             <ol>
               {previous.map((edition, index) => (
@@ -125,16 +126,9 @@ if (!courseEntry) throw new Error("Missing course content for coding-bootcamp-in
                 </li>
               ))}
             </ol>
-          </> : <>
-            <p class="meta">{homepageCopy.latest.formatLabel}</p>
-            <ol>
-              {homepageCopy.latest.format.map((item, index) => (
-                <li><span>{String(index + 1).padStart(2, "0")}</span> {item}</li>
-              ))}
-            </ol>
-          </>}
-          <a href="/insights">{homepageCopy.latest.browseLabel}</a>
-        </div>
+            <a href="/insights">{homepageCopy.latest.browseLabel}</a>
+          </div>
+        )}
       </div>
     </div>
   </section>

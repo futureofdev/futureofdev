@@ -27,9 +27,17 @@ if (!source) throw new Error(`Unknown brand icon: ${name}`);
 const accessibility = label
   ? `role="img" aria-label="${label.replace(/"/g, "&quot;")}"`
   : 'aria-hidden="true" focusable="false"';
-const svg = source
-  .replace(/\s(width|height|role|aria-label)="[^"]*"/g, "")
-  .replace("<svg", `<svg class="${className}" ${accessibility}`);
+
+// Rewrite the opening tag only. The shapes inside carry their own width and
+// height attributes, and stripping those collapses every rect-based icon.
+const openingTag = source.match(/<svg[^>]*>/)?.[0];
+if (!openingTag) throw new Error(`Malformed brand icon: ${name}`);
+const svg = source.replace(
+  openingTag,
+  openingTag
+    .replace(/\s(?:width|height|role|aria-label)="[^"]*"/g, "")
+    .replace("<svg", `<svg class="${className}" ${accessibility}`),
+);
 ---
 
 <Fragment set:html={svg} />

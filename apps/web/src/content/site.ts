@@ -52,60 +52,67 @@ export const homepageCopy = {
     joinLabel: "Join Future of Dev",
     note: "Free · one useful edition each week · unsubscribe any time.",
     latestLabel: "Read the latest edition →",
-    anatomyLabel: "Anatomy of an edition",
-    anatomy: [
-      { number: "01", icon: "issue-01-the-shift", title: "The shift", body: null },
-      { number: "02", icon: "issue-02-why-it-matters", title: "Why it matters", body: null },
-      { number: "03", icon: "issue-03-learn", title: "Learn", body: null },
-      { number: "04", icon: "lifecycle-build", title: "Build", body: "15 to 30 minutes, ends in something real" },
-      { number: "05", icon: "issue-05-keep", title: "Keep", body: null },
-      { number: "06", icon: "issue-06-go-deeper", title: "Go deeper", body: null },
-    ],
-    anatomyNote: "Six blocks in the same order every week. By the third edition you can skip straight to Build.",
   },
-  method: {
+  /**
+   * The edition beat. Four blocks in the same order every week, which is most
+   * of what a reader needs to recognise. Keep and Go deeper extend an edition
+   * that connects to a course; they are not part of the weekly promise.
+   */
+  edition: {
     eyebrow: "What you get",
-    heading: ["Every edition moves you", "through the same four steps."],
-    steps: [
+    heading: ["Every edition follows", "the same four beats."],
+    lede:
+      "Same order, same names, every week. By the third edition you know where the exercise is without reading anything else.",
+    beats: [
       {
         number: "01",
         icon: "issue-01-the-shift",
-        title: "Understand",
-        body: "One change in tools, work or expectations. Plain terms, reasoning shown.",
+        title: "The Shift",
+        body: "One change in tools, work or expectations, in plain terms with the reasoning shown.",
         label: null,
       },
       {
         number: "02",
+        icon: "issue-02-why-it-matters",
+        title: "Why it matters",
+        body: "What the change does to your work, your role or your route in — and what it does not.",
+        label: null,
+      },
+      {
+        number: "03",
         icon: "issue-03-learn",
         title: "Learn",
         body: "One method, framework or decision you can apply, separated from the tool it happens to use.",
         label: null,
       },
       {
-        number: "03",
+        number: "04",
         icon: "lifecycle-build",
         title: "Build",
         body: "A focused 15 to 30 minute exercise that ends in something you can point at.",
         label: "This is the part that matters",
       },
+    ],
+    extensionsLabel: "Sometimes",
+    extensionsNote:
+      "Two optional blocks, on the editions that connect to a course. Most weeks are the four above.",
+    extensions: [
       {
-        number: "04",
-        icon: "lifecycle-test",
-        title: "Demonstrate",
-        body: "Criteria to check your work against. Progress you can see, not assume.",
-        label: null,
+        number: "05",
+        icon: "issue-05-keep",
+        title: "Keep",
+        body: "A card, checklist or template from the edition, worth saving past the week you read it.",
+      },
+      {
+        number: "06",
+        icon: "issue-06-go-deeper",
+        title: "Go deeper",
+        body: "Where the edition opens into a course, for when one exercise is not enough.",
       },
     ],
   },
   latest: {
     eyebrow: "Latest edition",
-    formatLabel: "Inside every edition",
-    format: [
-      "The shift and why it matters",
-      "One practical thing to learn",
-      "A focused build to complete",
-      "Criteria to keep and use",
-    ],
     previousLabel: "More editions",
     readLabel: "Read the edition",
     browseLabel: "Browse all insights →",
