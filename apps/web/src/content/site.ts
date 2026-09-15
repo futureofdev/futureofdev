@@ -55,8 +55,8 @@ export const homepageCopy = {
   },
   /**
    * The edition beat. Four blocks in the same order every week, which is most
-   * of what a reader needs to recognise. Keep and Go deeper extend an edition
-   * that connects to a course; they are not part of the weekly promise.
+   * of what a reader needs to recognise. Go deeper extends an edition that
+   * comes with a course; it is not part of the weekly promise.
    */
   edition: {
     eyebrow: "What you get",
@@ -95,16 +95,10 @@ export const homepageCopy = {
     ],
     extensionsLabel: "Sometimes",
     extensionsNote:
-      "Two optional blocks, on the editions that connect to a course. Most weeks are the four above.",
+      "One optional block, on the editions that come with a course. Most weeks are the four above.",
     extensions: [
       {
         number: "05",
-        icon: "issue-05-keep",
-        title: "Keep",
-        body: "A card, checklist or template from the edition, worth saving past the week you read it.",
-      },
-      {
-        number: "06",
         icon: "issue-06-go-deeper",
         title: "Go deeper",
         body: "Where the edition opens into a course, for when one exercise is not enough.",
