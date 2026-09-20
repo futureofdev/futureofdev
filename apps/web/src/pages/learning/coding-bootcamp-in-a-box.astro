@@ -1,12 +1,17 @@
 ---
+export const prerender = false;
+
 import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import { ORGANIZATION_ID } from "../../lib/seo";
 import Icon from "../../components/Icon.astro";
 import NewsletterForm from "../../components/NewsletterForm.astro";
 import type { IconName } from "../../lib/icons";
 import { courseManifest } from "../../lib/course";
 import { COURSE_OFFER } from "../../lib/course-token";
 import { courseStats, courseHours, phaseContent } from "../../lib/course-content";
+import { toCourseOutlineItems } from "../../lib/course-outline";
 
 const courses = await getCollection("courses");
 const entry = courses.find((course) => course.data.slug === "coding-bootcamp-in-a-box");
@@ -21,14 +26,13 @@ const courseSchema = {
   "@type": "Course",
   name: courseManifest.title,
   description: courseManifest.description,
-  provider: { "@type": "Organization", name: "Future of Dev", url: "https://futureofdev.com" },
+  provider: { "@id": ORGANIZATION_ID, "@type": "Organization", name: "Future of Dev", url: "https://futureofdev.com" },
   isAccessibleForFree: true,
   educationalLevel: "Beginner",
   inLanguage: courseManifest.language,
   license: courseManifest.license,
   url: "https://futureofdev.com/learning/coding-bootcamp-in-a-box",
-  numberOfCredits: courseStats.lessonCount,
-  timeRequired: `PT${Math.round(courseStats.durationMinutes / 60)}H`,
+  timeRequired: `PT${courseStats.durationMinutes}M`,
 };
 
 function hours(minutes: number): string {
@@ -51,6 +55,7 @@ const outcomeIcons: Record<string, IconName> = {
   <header class="hero">
     <div class="wrap hero-grid">
       <div class="hero-copy">
+        <Breadcrumbs items={[{ name: "Home", path: "/" }, { name: "Learn", path: "/learning" }, { name: courseManifest.title, path: "/learning/coding-bootcamp-in-a-box" }]} />
         <p class="eyebrow">{copy.eyebrow}</p>
         <h1 class="display-xl">{copy.headline}</h1>
         <p class="lede">{courseManifest.description}</p>
@@ -68,7 +73,8 @@ const outcomeIcons: Record<string, IconName> = {
           <div><dt>Course time</dt><dd>{courseHours}h</dd></div>
           <div><dt>Homework</dt><dd>{courseStats.homeworkCount}</dd></div>
         </dl>
-        <p class="stat-note">Free · self-paced · {courseManifest.license}</p>
+        <p class="stat-note">Free materials · self-paced · {courseManifest.license}</p>
+        <p class="stat-note">AI tools may require payment.</p>
         <a class="button button-build" href="#download" data-analytics-cta="get-course" data-analytics-placement="course-hero">Get the course</a>
       </div>
     </div>
@@ -164,18 +170,21 @@ const outcomeIcons: Record<string, IconName> = {
         {phaseContent.map((phase) => (
           <section class="phase">
             <div class="phase-head">
-              <p class="meta">Phase {phase.number.toString().padStart(2, "0")}</p>
-              <h3>{phase.name}</h3>
+              <div class="phase-title">
+                <p class="meta">Phase {phase.number.toString().padStart(2, "0")}</p>
+                <h3>{phase.name}</h3>
+              </div>
               <p class="phase-meta">
                 {phase.lessons.length} lessons · {hours(phase.durationMinutes)} · {phase.objectives.length} objectives
               </p>
               {phase.highlight && <p class="phase-highlight">You {phase.highlight}.</p>}
             </div>
-            <ol>
-              {phase.lessonsWithDetail.map((lesson) => (
+            <ol class="lesson-list">
+              {toCourseOutlineItems(phase.lessonsWithDetail).map((lesson) => (
                 <li>
-                  {lesson.title}
-                  {lesson.homework && <span class="homework-flag">Homework</span>}
+                  <span class="lesson-number">{lesson.numberLabel}</span>
+                  <span class="lesson-title">{lesson.title}</span>
+                  {lesson.homeworkLabel && <span class="homework-flag">{lesson.homeworkLabel}</span>}
                 </li>
               ))}
             </ol>

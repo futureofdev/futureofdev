@@ -1,63 +1,12 @@
 ---
 export const prerender = false;
-
-import BaseLayout from "../../layouts/BaseLayout.astro";
-import NewsletterForm from "../../components/NewsletterForm.astro";
-import StageTag from "../../components/StageTag.astro";
-import { editionEmptyState } from "../../content/site";
-import { listPublishedInsights } from "../../lib/insights";
-import { formatEditionDate, splitTags } from "../../lib/tags";
-
-const posts = await listPublishedInsights(Astro.locals, 100);
-Astro.response.headers.set(
-  "Cache-Control",
-  "public, max-age=300, stale-while-revalidate=86400, stale-if-error=604800",
-);
+import InsightsArchive from "../../components/InsightsArchive.astro";
+import { listAllPublishedInsights } from "../../lib/insights";
+import { ARCHIVE_PAGE_SIZE, temporarilyUnavailable } from "../../lib/seo";
+let posts;
+try { posts = await listAllPublishedInsights(Astro.locals); }
+catch { return temporarilyUnavailable(); }
+Astro.response.headers.set("Cache-Control", "public, max-age=300, stale-while-revalidate=86400, stale-if-error=604800");
+const totalPages = Math.max(1, Math.ceil(posts.length / ARCHIVE_PAGE_SIZE));
 ---
-
-<BaseLayout
-  title="Insights"
-  description="Future of Dev editions and practical insight for learning, working and building in the AI-native era."
->
-  <header class="hero">
-    <div class="wrap">
-      <p class="eyebrow">Insights</p>
-      <h1 class="display-xl">Understand the shift.</h1>
-      <p class="lede">Interpretation, practical learning and things worth building. No daily noise.</p>
-    </div>
-  </header>
-
-  <section class="section" aria-label="Published insights">
-    <div class="wrap">
-      {posts.length === 0 && <>
-        <h2>{editionEmptyState.heading}</h2>
-        <p class="lede">{editionEmptyState.body}</p>
-      </>}
-      {posts.map((post) => {
-        const tags = splitTags(post.tags);
-        return (
-          <a class="issue-card" href={`/insights/${post.slug}`}>
-            <span class="meta">{formatEditionDate(post.publishedAt)}</span>
-            <span class="issue-body">
-              <h2>{post.title}</h2>
-              <p>{post.excerpt}</p>
-              {(tags.stages.length > 0 || tags.topics.length > 0) && (
-                <span class="tag-row">
-                  {tags.stages.map((stage) => <StageTag stage={stage} />)}
-                  {tags.topics.map((topic) => <span class="tag">{topic}</span>)}
-                </span>
-              )}
-            </span>
-            <span class="issue-arrow" aria-hidden="true">→</span>
-          </a>
-        );
-      })}
-    </div>
-  </section>
-
-  <section class="section build-focus">
-    <div class="wrap">
-      <NewsletterForm placement="insights-index" />
-    </div>
-  </section>
-</BaseLayout>
+<InsightsArchive posts={posts.slice(0, ARCHIVE_PAGE_SIZE)} page={1} totalPages={totalPages} />

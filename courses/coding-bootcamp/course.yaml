@@ -105,7 +105,7 @@ phases:
     lessons:
       - { number: 1, slug: what-is-utility-first-css, title: "What Is Utility-First CSS?" }
       - { number: 2, slug: installing-tailwind-v4-with-astro, title: "Installing Tailwind v4 with Astro" }
-      - { number: 3, slug: typography-and-colors, title: "Typography and Colors" }
+      - { number: 3, slug: typography-and-colors, title: "Typography and Colours" }
       - { number: 4, slug: spacing-sizing-layout, title: "Spacing, Sizing, and Layout" }
       - { number: 5, slug: flexbox-and-grid-with-tailwind, title: "Flexbox and Grid with Tailwind" }
       - { number: 6, slug: responsive-design-with-tailwind, title: "Responsive Design with Tailwind" }

@@ -23,7 +23,7 @@ sections:
   key_terms: present
   exercise:
     status: none
-    intent: "Conceptual phase: Astro's ideas are practised on the portfolio build rather than in isolation."
+    intent: "Conceptual phase: Astro's ideas are applied on the portfolio build rather than in isolation."
   next_up: present
 ---
 

@@ -151,9 +151,9 @@ form.addEventListener("submit", (e) => {
 **Stretch Goals:**
 - [ ] Local search/filter of fetched data
 - [ ] Pagination or "load more" button
-- [ ] Save favorites to localStorage
+- [ ] Save favourites to localStorage
 
 **Submission:** Show your tutor the app working with at least three different searches or inputs.
 
 ## Next Up
-Phase 3: **React** — the component-based UI library that makes building interactive UIs much more organized!
+Phase 3: **React** — the component-based UI library that makes building interactive UIs much more organised!

@@ -37,7 +37,7 @@ Deploying to Cloudflare Pages takes about 5 minutes.
 
 2. **Go to Workers & Pages → Create application → Pages → Connect to Git**
 
-3. **Connect GitHub** — authorize Cloudflare to access your repos
+3. **Connect GitHub** — authorise Cloudflare to access your repos
 
 4. **Select your repository** — `zero-to-portfolio`
 

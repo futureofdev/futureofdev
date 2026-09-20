@@ -63,7 +63,7 @@ text-decoration: none;    /* remove underline from links */
 
 ## Key Terms
 - **Selector**: CSS code that targets HTML elements
-- **Property**: What you're styling (color, margin, font-size)
+- **Property**: What you're styling (`color`, `margin`, `font-size`)
 - **Value**: What you're setting the property to
 - **Class**: Reusable label added with `class="name"` in HTML
 - **Specificity**: How "specific" a selector is (determines which rule wins)

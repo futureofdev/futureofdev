@@ -5,7 +5,7 @@ Tailwind CSS v4 is a utility-first CSS framework — instead of writing custom C
 ## Lessons (7 total)
 1. What Is Utility-First CSS?
 2. Installing Tailwind v4 with Astro
-3. Typography and Colors
+3. Typography and Colours
 4. Spacing, Sizing, and Layout
 5. Flexbox and Grid with Tailwind
 6. Responsive Design with Tailwind

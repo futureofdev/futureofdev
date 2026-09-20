@@ -25,7 +25,7 @@ sections:
   key_terms: present
   exercise:
     status: none
-    intent: "Utilities are practised directly on the portfolio as it is restyled, so there is no separate exercise to attempt."
+    intent: "Utilities are applied directly on the portfolio as it is restyled, so there is no separate exercise to attempt."
   next_up: present
 ---
 
@@ -80,12 +80,12 @@ Tailwind's state variants work like breakpoints — prefix any utility to apply 
    **Answer:** b) `bg-blue-500 hover:bg-blue-700` — Tailwind generates the hover CSS.
 
 2. What does adding `transition-colors duration-200` do?
-   - a) Changes color every 200ms automatically
-   - b) Animates color changes over 200ms when triggered (e.g., on hover)
-   - c) Sets 200 color transitions
-   - d) Limits transitions to color properties only
+   - a) Changes colour every 200ms automatically
+   - b) Animates colour changes over 200ms when triggered (e.g., on hover)
+   - c) Sets 200 colour transitions
+   - d) Limits transitions to colour properties only
 
-   **Answer:** b) Smooth color transitions on state changes — hover effects feel polished.
+   **Answer:** b) Smooth colour transitions on state changes — hover effects feel polished.
 
 3. What does the `group` class enable?
    - a) Grouping elements visually with a border

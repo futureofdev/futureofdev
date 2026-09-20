@@ -30,7 +30,7 @@ sections:
 **VS Code** (Visual Studio Code) is a free, open-source code editor made by Microsoft. It's the most popular code editor in the world — over 70% of developers use it.
 
 A code editor is like Microsoft Word, but for code. It has:
-- **Syntax highlighting**: Colors that make code readable
+- **Syntax highlighting**: Colours that make code readable
 - **IntelliSense**: Smart autocomplete that suggests code as you type
 - **Extensions**: Add-ons that add features (like Astro support)
 - **Integrated terminal**: Run commands without switching windows
@@ -40,7 +40,7 @@ The difference between a text editor and an IDE (Integrated Development Environm
 
 ## Key Terms
 - **Code editor**: Software for writing code (not Word/Notepad!)
-- **Syntax highlighting**: Color-coding that makes code structure visible
+- **Syntax highlighting**: Colour-coding that makes code structure visible
 - **IntelliSense**: VS Code's autocomplete and code intelligence feature
 - **Extension**: A plugin that adds features to VS Code
 - **Integrated terminal**: Terminal built directly into VS Code

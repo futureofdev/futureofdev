@@ -1,6 +1,6 @@
 # Phase 2: JavaScript
 
-Time to add behavior! JavaScript makes your webpages interactive — responding to clicks, fetching data, updating content without page reloads. This phase covers the fundamentals every JavaScript developer must know.
+Time to add behaviour! JavaScript makes your webpages interactive — responding to clicks, fetching data, updating content without page reloads. This phase covers the fundamentals every JavaScript developer must know.
 
 ## Lessons (8 total)
 1. JavaScript Basics: Variables and Types

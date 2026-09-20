@@ -1,0 +1,15 @@
+---
+import { breadcrumbSchema, serializeJsonLd, type Breadcrumb } from "../lib/seo";
+interface Props { items: Breadcrumb[] }
+const { items } = Astro.props;
+---
+<nav aria-label="Breadcrumb" class="breadcrumbs">
+  <ol>{items.map((item, index) => <li>{index === items.length - 1
+    ? <span aria-current="page">{item.name}</span> : <a href={item.path}>{item.name}</a>}</li>)}</ol>
+</nav>
+<script is:inline type="application/ld+json" set:html={serializeJsonLd(breadcrumbSchema(items))} />
+<style>
+  .breadcrumbs { margin-bottom: 1.5rem; font-size: 0.875rem; }
+  ol { display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 0; list-style: none; }
+  li + li::before { content: "/"; margin-right: 0.5rem; }
+</style>

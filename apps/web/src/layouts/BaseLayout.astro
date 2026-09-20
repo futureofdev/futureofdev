@@ -1,4 +1,5 @@
 ---
+import { canonicalUrl, serializeJsonLd, ORGANIZATION_ID, SITE_ORIGIN } from "../lib/seo";
 import CookieConsent from "../components/CookieConsent.astro";
 import PosthogAnalytics from "../components/PosthogAnalytics.astro";
 import { siteNavigation } from "../content/site";
@@ -16,7 +17,7 @@ interface Props {
 
 const {
   title = "Learn and build the AI-native way",
-  description = "The practical newsletter for people evolving with AI and entering the industry.",
+  description = "A practical AI newsletter for people in digital work. Learn useful methods, try an exercise and check the results.",
   canonicalPath = Astro.url.pathname,
   ogImage = "/og-default.png",
   ogType = "website",
@@ -25,7 +26,7 @@ const {
   structuredData,
 } = Astro.props;
 
-const canonicalURL = new URL(canonicalPath, Astro.site);
+const canonicalURL = canonicalUrl(canonicalPath);
 const currentPath = Astro.url.pathname.replace(/\/+$/, "") || "/";
 const isCurrent = (href: string) =>
   href === "/" ? currentPath === "/" : currentPath === href || currentPath.startsWith(`${href}/`);
@@ -34,6 +35,7 @@ const fullTitle = title === "Future of Dev" ? title : `${title} | Future of Dev`
 const organisation = {
   "@context": "https://schema.org",
   "@type": "Organization",
+  "@id": ORGANIZATION_ID,
   name: "Future of Dev",
   url: "https://futureofdev.com",
   logo: "https://futureofdev.com/brand/fod-symbol.svg",
@@ -44,11 +46,12 @@ const organisation = {
     "https://www.linkedin.com/company/futureofdev",
   ],
 };
+const website = { "@context": "https://schema.org", "@type": "WebSite", "@id": `${SITE_ORIGIN}/#website`, name: "Future of Dev", url: SITE_ORIGIN, publisher: { "@id": ORGANIZATION_ID } };
 const jsonLd = structuredData
   ? Array.isArray(structuredData)
-    ? [organisation, ...structuredData]
-    : [organisation, structuredData]
-  : [organisation];
+    ? [organisation, website, ...structuredData]
+    : [organisation, website, structuredData]
+  : [organisation, website];
 ---
 
 <!doctype html>
@@ -81,7 +84,7 @@ const jsonLd = structuredData
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageURL} />
 
-    <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    <script is:inline type="application/ld+json" set:html={serializeJsonLd(jsonLd)} />
   </head>
   <body>
     <a class="skip-link" href="#content">Skip to content</a>

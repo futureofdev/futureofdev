@@ -14,8 +14,8 @@ export const siteNavigation = [
 ] as const;
 
 export const editionEmptyState = {
-  heading: "No editions yet.",
-  body: "Subscribe to get the first edition in your inbox.",
+  heading: "The first edition is on its way.",
+  body: "Subscribe to receive it when it launches.",
 } as const;
 
 /**
@@ -40,17 +40,17 @@ export const articleEndCopy = {
 
 export const homepageCopy = {
   seo: {
-    title: "Learn and build the AI-native way",
+    title: "Practical AI Skills Newsletter",
     description:
-      "The practical newsletter for people evolving with AI and entering the industry. Understand change, develop useful skills and build something real.",
+      "Learn practical AI skills for digital work. Get clear explanations, useful methods and exercises to help you build with AI and check the results.",
   },
   hero: {
     heading: ["Learn and build the", "AI-native way."],
-    intro: "The practical newsletter for people evolving with AI and entering the industry.",
+    intro: "A practical AI newsletter for people in digital work.",
     lede:
-      "Understand what is changing, develop useful skills and build something real. One edition at a time.",
-    joinLabel: "Join Future of Dev",
-    note: "Free · one useful edition each week · unsubscribe any time.",
+      "Learn a method you can use in your next project. Each edition explains a change, shows how it affects your work and gives you an exercise to try.",
+    joinLabel: "Join the newsletter",
+    note: "Free to subscribe. Get the first edition when it launches. Unsubscribe any time.",
     latestLabel: "Read the latest edition →",
   },
   /**
@@ -60,48 +60,48 @@ export const homepageCopy = {
    */
   edition: {
     eyebrow: "What you get",
-    heading: ["Every edition follows", "the same four beats."],
+    heading: ["A useful idea.", "A way to put it into practice."],
     lede:
-      "Same order, same names, every week. By the third edition you know where the exercise is without reading anything else.",
+      "Work through one change and leave with something you can use in your day-to-day.",
     beats: [
       {
         number: "01",
         icon: "issue-01-the-shift",
         title: "The Shift",
-        body: "One change in tools, work or expectations, in plain terms with the reasoning shown.",
+        body: "One change in AI tools or ways of working, with the reasoning explained.",
         label: null,
       },
       {
         number: "02",
         icon: "issue-02-why-it-matters",
         title: "Why it matters",
-        body: "What the change does to your work, your role or your route in — and what it does not.",
+        body: "Where that change affects your work and what you need to consider.",
         label: null,
       },
       {
         number: "03",
         icon: "issue-03-learn",
         title: "Learn",
-        body: "One method, framework or decision you can apply, separated from the tool it happens to use.",
+        body: "A method you can apply, with an example that shows how it works.",
         label: null,
       },
       {
         number: "04",
         icon: "lifecycle-build",
         title: "Build",
-        body: "A focused 15 to 30 minute exercise that ends in something you can point at.",
+        body: "A focused 15 to 30 minute exercise. Try the method and check what you produce.",
         label: "This is the part that matters",
       },
     ],
     extensionsLabel: "Sometimes",
     extensionsNote:
-      "One optional block, on the editions that come with a course. Most weeks are the four above.",
+      "On editions that connect to a course, take the work further.",
     extensions: [
       {
         number: "05",
         icon: "issue-06-go-deeper",
         title: "Go deeper",
-        body: "Where the edition opens into a course, for when one exercise is not enough.",
+        body: "A relevant course for taking the work further.",
       },
     ],
   },
@@ -112,52 +112,52 @@ export const homepageCopy = {
     browseLabel: "Browse all insights →",
   },
   featuredLearning: {
-    eyebrow: "Featured learning",
+    eyebrow: "Learn to code",
     heading: ["Coding Bootcamp", "in a Box."],
     lede:
-      "Start with no development environment. Finish with a portfolio you built and deployed, taught locally through Codex or Claude Code.",
+      "Learn web development from your first terminal command to a portfolio you can deploy. Follow a self-paced course with an AI tutor and check your understanding through the work you build.",
     ctaLabel: "Explore the course",
   },
   audience: {
     eyebrow: "Who it is for",
-    heading: ["Whether you are three years in", "or three weeks in."],
-    lede: "Different starting points, same question: what should I learn and practise next?",
+    heading: ["Anyone interested in developing AI skills."],
+    lede: "The insights and courses provided are suitable for every level.",
     groups: [
       {
-        stage: "evolve",
-        title: "You are already in the work",
-        body: "For people whose digital work is changing and who want a practical way to adapt.",
+        stage: "enter",
+        title: "Build your foundations",
+        body: "You want to develop skills and understanding to take your first steps into the future.",
       },
       {
-        stage: "enter",
-        title: "You are trying to get in",
-        body: "For students, graduates and career changers building evidence for roles whose expectations keep moving.",
+        stage: "evolve",
+        title: "Adapt to change",
+        body: "You have an established career but want to turn AI-curiositry into action.",
       },
       {
         stage: "lead",
-        title: "You are responsible for others",
-        body: "For leaders and educators setting standards and building capability before the answers are settled.",
+        title: "Give direction",
+        body: "You're a leader that wants to understand more to help your team to evolve.",
       },
     ],
   },
   founder: {
     eyebrow: "Who writes it",
-    heading: ["Written from practice,", "not from the sidelines."],
+    heading: ["Written by", "Luke Hennerley."],
     paragraphs: [
-      "Future of Dev was founded by Luke Hennerley, a product and technology practitioner who has worked across software engineering, product development and digital delivery.",
-      "The publication turns fast-moving change into useful practice people can apply and demonstrate.",
+      "Future of Dev is written by Luke Hennerley. I work as VP of AI Operations at Sidetrade, a leading European tech company operating at the frontier of AI.",
+      "I take my every-day learnings and leadership, break it down and share it with others to help them to navigate the AI-native future.",
     ],
-    ctaLabel: "About Future of Dev →",
+    ctaLabel: "About Luke and Future of Dev →",
   },
   mission: {
-    eyebrow: "Mission",
+    eyebrow: "The approach",
     heading:
-      "Help people understand what AI changes, practise useful skills and build work they can demonstrate.",
-    lede: "Make the next useful thing obvious, small enough to start and real enough to show someone.",
+      "What does AI-native mean here?",
+    lede: "Use AI as part of how you explore an idea, develop a skill and produce useful work. Learn how to guide it, check its output and decide what to change. The result might be a research process, a project brief, a repeatable workflow or even a working project.",
   },
   finalSignup: {
-    heading: ["One useful edition each week.", "Understand, learn, build."],
-    buttonLabel: "Join Future of Dev",
-    note: "No spam. Unsubscribe in one click. Your email is never sold or shared.",
+    heading: ["Put your next useful AI skill", "into practice."],
+    buttonLabel: "Join the newsletter",
+    note: "Free to subscribe. Unsubscribe any time.",
   },
 } as const;

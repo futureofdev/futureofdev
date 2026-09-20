@@ -70,14 +70,14 @@ export default function Projects() {
 }
 ```
 
-**`useMemo` teaching moment:** Without it, filtering recalculates on every render. With it, only recalculates when `activeTag` changes — a micro-optimization worth knowing.
+**`useMemo` teaching moment:** Without it, filtering recalculates on every render. With it, only recalculates when `activeTag` changes — a micro-optimisation worth knowing.
 
 ## Quick Quiz
 1. Why is `useMemo` used for the filtered projects list?
    - a) It's required when using `useState`
    - b) It caches the filtered result — only recalculates when `activeTag` changes, not on every render
    - c) It prevents the list from rendering
-   - d) It memoizes the project data
+   - d) It memoises the project data
 
    **Answer:** b) Caching — avoids re-filtering the array on every render when other state changes.
 

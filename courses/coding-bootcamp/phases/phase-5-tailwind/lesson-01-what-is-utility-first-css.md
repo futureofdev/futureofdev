@@ -22,7 +22,7 @@ sections:
   key_terms: present
   exercise:
     status: none
-    intent: "Utilities are practised directly on the portfolio as it is restyled, so there is no separate exercise to attempt."
+    intent: "Utilities are applied directly on the portfolio as it is restyled, so there is no separate exercise to attempt."
   next_up: present
 ---
 

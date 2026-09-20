@@ -31,7 +31,7 @@ This is a project lesson. You're going to build a complete personal webpage usin
 
 The page will have:
 1. A navigation bar (Flexbox)
-2. A hero section (full-screen, centered)
+2. A hero section (full-screen, centred)
 3. An about section (two-column grid on desktop)
 4. A projects section (card grid with auto-fill)
 5. A contact form
@@ -72,7 +72,7 @@ Use what you've learned in every section. Ask your tutor for help if you get stu
 
    **Answer:** b) Either Grid (`grid-template-columns: 1fr 1fr`) or Flexbox with two children.
 
-2. How do you center content vertically AND horizontally using Flexbox?
+2. How do you centre content vertically AND horizontally using Flexbox?
    - a) `text-align: center; vertical-align: middle`
    - b) `justify-content: center; align-items: center`
    - c) `margin: auto`
@@ -101,7 +101,7 @@ Use what you've learned in every section. Ask your tutor for help if you get stu
 - [ ] Contact form with name, email, and message fields (with labels)
 - [ ] Footer with copyright text
 - [ ] Responsive: works on mobile (single column) and desktop (multi-column)
-- [ ] At least 3 different colors used (not default blue/black/white)
+- [ ] At least 3 different colours used (not default blue/black/white)
 - [ ] `box-sizing: border-box` reset applied
 
 **Stretch Goals:**

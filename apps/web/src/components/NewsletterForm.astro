@@ -13,8 +13,8 @@ interface Props {
 const {
   placement,
   offer,
-  heading = "One useful edition. Every week.",
-  copy = "Understand what is changing, learn a practical skill and build something real. No noise, and you can unsubscribe at any time.",
+  heading = "Put your next useful AI skill into practice.",
+  copy = "Join Future of Dev for clear explanations and exercises you can bring to your work.",
   buttonLabel = offer ? "Subscribe and get the course" : "Join the newsletter",
   downloadLabel = "Download the course",
   note = "By subscribing you agree to receive Future of Dev by email. Analytics consent is separate.",
@@ -50,7 +50,7 @@ const {
       <button class="button" type="submit">{buttonLabel}</button>
     </div>
     <p id={`newsletter-note-${placement}`} class="form-note">
-      {note}
+      {note} <a href="/privacy">Privacy notice</a>.
     </p>
     <p class="form-message" role="status" aria-live="polite" hidden></p>
     <p class="download-link" hidden><a class="button button-secondary" href="#">{downloadLabel}</a></p>

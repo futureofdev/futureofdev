@@ -56,7 +56,7 @@ function pageUrl(value: unknown): string | undefined {
     if (!["futureofdev.com", "www.futureofdev.com", "localhost", "127.0.0.1"].includes(url.hostname)) return undefined;
     // Only public routes can become analytics paths. Unknown paths may contain
     // private values even when the query string has been removed.
-    if (!/^\/(?:insights(?:\/[a-z0-9][a-z0-9_-]*)?|learning(?:\/coding-bootcamp-in-a-box)?|about|privacy|unsubscribe)?\/?$/.test(url.pathname)) return undefined;
+    if (!/^\/(?:insights(?:\/page\/[1-9][0-9]*|\/[a-z0-9][a-z0-9_-]*)?|learning(?:\/coding-bootcamp-in-a-box)?|about|privacy|unsubscribe)?\/?$/.test(url.pathname)) return undefined;
     return `${url.origin}${url.pathname}`;
   } catch {
     return undefined;

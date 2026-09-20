@@ -22,7 +22,7 @@ sections:
   key_terms: present
   exercise:
     status: none
-    intent: "Conceptual phase: Astro's ideas are practised on the portfolio build rather than in isolation."
+    intent: "Conceptual phase: Astro's ideas are applied on the portfolio build rather than in isolation."
   next_up: present
 ---
 
@@ -43,7 +43,7 @@ Astro is a web framework that generates **pure HTML** at build time. Unlike Reac
 ## Key Terms
 - **Static Site Generation (SSG)**: Generating HTML at build time
 - **Islands Architecture**: Hydrating only interactive components, not the whole page
-- **Hydration**: Adding JavaScript behavior to server-rendered HTML
+- **Hydration**: Adding JavaScript behaviour to server-rendered HTML
 - **Zero JavaScript by default**: Astro's core principle
 
 ## Quick Quiz

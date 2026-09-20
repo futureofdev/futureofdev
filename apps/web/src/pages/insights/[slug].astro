@@ -1,10 +1,13 @@
 ---
 export const prerender = false;
 
+import Authors from "../../components/Authors.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import { articleSchema, insightPath, temporarilyUnavailable } from "../../lib/seo";
 import ArticleEnd from "../../components/ArticleEnd.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import NewsletterForm from "../../components/NewsletterForm.astro";
-import { getInsightBySlug, listPublishedInsights, type InsightSummary } from "../../lib/insights";
+import { getInsightBySlug, listAllPublishedInsights, type InsightSummary } from "../../lib/insights";
 import { formatEditionDate } from "../../lib/tags";
 
 const slug = Astro.params.slug ?? "";
@@ -12,24 +15,20 @@ let post;
 try {
   post = await getInsightBySlug(Astro.locals, slug);
 } catch {
-  return new Response("This edition is temporarily unavailable.", {
-    status: 503,
-    headers: {
-      "Content-Type": "text/plain; charset=utf-8",
-      "Cache-Control": "public, max-age=0, stale-if-error=604800",
-      "Retry-After": "60",
-    },
-  });
+  return temporarilyUnavailable();
 }
 
-if (!post) return Astro.redirect("/404", 302);
+if (!post) {
+  const response = await Astro.rewrite("/404");
+  return new Response(response.body, { status: 404, headers: response.headers });
+}
 
 // Neighbours in the archive for previous / next. Listing failures degrade to
 // no navigation rather than a failed page.
 let previous: InsightSummary | null = null;
 let next: InsightSummary | null = null;
 try {
-  const editions = await listPublishedInsights(Astro.locals, 100);
+  const editions = await listAllPublishedInsights(Astro.locals);
   const index = editions.findIndex((edition) => edition.slug === post.slug);
   if (index >= 0) {
     previous = editions[index + 1] ?? null;
@@ -45,22 +44,7 @@ Astro.response.headers.set(
 );
 
 const date = formatEditionDate(post.publishedAt, "long");
-const canonical = `/insights/${post.slug}`;
-const articleSchema = {
-  "@context": "https://schema.org",
-  "@type": "Article",
-  headline: post.title,
-  description: post.excerpt,
-  datePublished: post.publishedAt,
-  mainEntityOfPage: `https://futureofdev.com${canonical}`,
-  author: { "@type": "Person", name: post.author },
-  publisher: {
-    "@type": "Organization",
-    name: "Future of Dev",
-    logo: { "@type": "ImageObject", url: "https://futureofdev.com/brand/fod-symbol.svg" },
-  },
-  ...(post.image ? { image: post.image } : {}),
-};
+const canonical = insightPath(post.slug);
 ---
 
 <BaseLayout
@@ -70,15 +54,16 @@ const articleSchema = {
   ogType="article"
   ogImage={post.image}
   publishedAt={post.publishedAt}
-  structuredData={articleSchema}
+  structuredData={articleSchema(post)}
 >
   <article>
     <header class="article-header">
       <div class="narrow">
+        <Breadcrumbs items={[{ name: "Home", path: "/" }, { name: "Insights", path: "/insights" }, { name: post.title, path: canonical }]} />
         <p class="eyebrow">Insight</p>
         <h1>{post.title}</h1>
         <p class="article-dek">{post.excerpt}</p>
-        <p class="meta">{post.author} · {date} · {post.readingMinutes} min read</p>
+        <p class="meta"><Authors authors={post.authors} /> · {date} · {post.readingMinutes} min read</p>
       </div>
     </header>
     {post.image && (

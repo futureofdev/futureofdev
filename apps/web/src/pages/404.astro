@@ -1,5 +1,8 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+
+export const prerender = false;
+Astro.response.status = 404;
 ---
 
 <BaseLayout title="Page not found" description="The requested Future of Dev page was not found." noindex>

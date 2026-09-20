@@ -65,7 +65,7 @@ When you run `npm run dev`, Astro serves your site on `localhost:4321` — only 
 
 2. Why is Cloudflare Pages good for Astro?
    - a) It's the only option for Astro
-   - b) It specializes in static site hosting — perfectly matched to Astro's build output
+   - b) It specialises in static site hosting — perfectly matched to Astro's build output
    - c) It costs less than alternatives
    - d) Cloudflare owns Astro
 

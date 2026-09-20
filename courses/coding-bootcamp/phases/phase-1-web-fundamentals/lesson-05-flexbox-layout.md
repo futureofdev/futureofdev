@@ -92,7 +92,7 @@ Build a navigation bar:
 
 ## Quick Quiz
 1. What does `justify-content: space-between` do?
-   - a) Centers all items
+   - a) Centres all items
    - b) Places items with equal space between them, first and last flush with edges
    - c) Adds space around each item including the edges
    - d) Stacks items vertically
@@ -100,12 +100,12 @@ Build a navigation bar:
    **Answer:** b) Places items with equal space between them, first and last at the edges — perfect for nav bars.
 
 2. What does `align-items: center` do?
-   - a) Centers items horizontally
-   - b) Centers text inside items
-   - c) Centers items along the cross axis (vertically in a row layout)
+   - a) Centres items horizontally
+   - b) Centres text inside items
+   - c) Centres items along the cross axis (vertically in a row layout)
    - d) Makes all items the same width
 
-   **Answer:** c) Centers items along the cross axis — in a row layout, this vertically centers items.
+   **Answer:** c) Centres items along the cross axis — in a row layout, this vertically centres items.
 
 3. What does `flex: 1` do on a flex item?
    - a) Makes the item 1px wide

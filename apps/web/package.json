@@ -8,6 +8,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "test": "tsx --test src/lib/*.test.ts",
+    "check:seo": "node --import tsx scripts/check-seo-rendered.ts",
     "check:local": "node --import tsx scripts/check-local-site.ts",
     "check:beehiiv": "node --import tsx scripts/check-beehiiv.ts",
     "validate:course": "tsx scripts/validate-course.ts",

@@ -26,7 +26,7 @@ sections:
   key_terms: present
   exercise:
     status: none
-    intent: "Utilities are practised directly on the portfolio as it is restyled, so there is no separate exercise to attempt."
+    intent: "Utilities are applied directly on the portfolio as it is restyled, so there is no separate exercise to attempt."
   next_up: present
 ---
 
@@ -68,7 +68,7 @@ Tailwind uses a **spacing scale** based on 4px (0.25rem) increments:
 - **`p-*`**: Padding (all sides)
 - **`px-*` / `py-*`**: Horizontal / vertical padding
 - **`m-*`**: Margin
-- **`mx-auto`**: Horizontal centering with auto margins
+- **`mx-auto`**: Horizontal centring with auto margins
 - **`max-w-*`**: Maximum width constraint
 
 ## Quick Quiz
@@ -80,13 +80,13 @@ Tailwind uses a **spacing scale** based on 4px (0.25rem) increments:
 
    **Answer:** b) px = horizontal padding × 4px/unit: 6×4=24px; py = vertical: 3×4=12px.
 
-2. How do you center a `div` horizontally with a max width?
+2. How do you centre a `div` horizontally with a max width?
    - a) `center max-w-lg`
    - b) `max-w-4xl mx-auto`
    - c) `align-center width-limited`
    - d) `container`
 
-   **Answer:** b) `max-w-4xl mx-auto` — max-width limits it, auto margins center it.
+   **Answer:** b) `max-w-4xl mx-auto` — max-width limits it, auto margins centre it.
 
 3. What does `min-h-screen` do?
    - a) Sets minimum font size to screen-readable

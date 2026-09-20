@@ -126,7 +126,7 @@ Open DevTools → click the phone icon → test different screen sizes!
    - a) Setting the page title for mobile
    - b) Telling mobile browsers not to zoom out to show the full desktop site
    - c) Enabling touch events
-   - d) Setting the background color on mobile
+   - d) Setting the background colour on mobile
 
    **Answer:** b) Telling mobile browsers to use the actual device width — critical for responsive design.
 

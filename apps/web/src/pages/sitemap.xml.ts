@@ -1,20 +1,24 @@
 import type { APIRoute } from "astro";
-import { listPublishedInsights } from "../lib/insights";
+import { listAllPublishedInsights } from "../lib/insights";
+
+import { canonicalUrl, escapeXml, insightPath, temporarilyUnavailable } from "../lib/seo";
 
 export const prerender = false;
 
 const staticPaths = ["/", "/insights", "/learning", "/learning/coding-bootcamp-in-a-box", "/about", "/privacy"];
 
 export const GET: APIRoute = async ({ locals }) => {
-  const posts = await listPublishedInsights(locals, 100);
-  const urls: Array<{ path: string; modified?: string }> = [
-    ...staticPaths.map((path) => ({ path })),
-    ...posts.map((post) => ({ path: `/insights/${post.slug}`, modified: post.publishedAt })),
+  let posts;
+  try { posts = await listAllPublishedInsights(locals); }
+  catch { return temporarilyUnavailable(); }
+  // Beehiiv's displayed/published date is not a verified modification date.
+  const paths = [
+    ...staticPaths,
+    ...posts.map((post) => insightPath(post.slug)),
   ];
-  const body = urls.map(({ path, modified }) => `
+  const body = paths.map((path) => `
   <url>
-    <loc>https://futureofdev.com${path}</loc>${modified ? `
-    <lastmod>${new Date(modified).toISOString()}</lastmod>` : ""}
+    <loc>${escapeXml(canonicalUrl(path))}</loc>
   </url>`).join("");
   return new Response(`<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${body}

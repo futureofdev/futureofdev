@@ -1,6 +1,9 @@
 ---
+export const prerender = false;
+
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import Icon from "../../components/Icon.astro";
 import NewsletterForm from "../../components/NewsletterForm.astro";
 import { courseStats, courseHours } from "../../lib/course-content";
@@ -11,14 +14,15 @@ const courses = (await getCollection("courses")).sort((a, b) =>
 ---
 
 <BaseLayout
-  title="Learn"
-  description="Practical Future of Dev courses built around useful skills, real projects and evidence of capability."
+  title="Practical Courses and AI Learning"
+  description="Explore practical learning from Future of Dev. Start with Coding Bootcamp in a Box, a free self-paced course for building your web development skills."
 >
   <header class="hero">
     <div class="wrap">
+      <Breadcrumbs items={[{ name: "Home", path: "/" }, { name: "Learn", path: "/learning" }]} />
       <p class="eyebrow">Learn</p>
       <h1 class="display-xl">Learn by building.</h1>
-      <p class="lede">Structured learning that turns understanding into something you can make, explain and demonstrate.</p>
+      <p class="lede">Develop a skill through work you can make, explain and improve. Start with Coding Bootcamp in a Box, our self-paced introduction to web development.</p>
     </div>
   </header>
 
@@ -26,10 +30,10 @@ const courses = (await getCollection("courses")).sort((a, b) =>
     <div class="wrap">
       <div class="section-head">
         <p class="eyebrow">Courses</p>
-        <h2 id="courses-heading" class="display-lg">Open courses you keep.</h2>
+        <h2 id="courses-heading" class="display-lg">Start with the coding course.</h2>
         <p class="lede">
-          Every course is a folder of markdown you download and own, taught by a coding agent
-          you already have. Nothing is locked behind a login.
+          Download the course materials and keep them on your computer. The course page explains
+          what you will build, which tools you need and how to begin.
         </p>
       </div>
       <div class="course-list">
@@ -69,13 +73,13 @@ const courses = (await getCollection("courses")).sort((a, b) =>
       </div>
       <div class="grid-3">
         <article class="panel"><div class="panel-head"><Icon name="issue-03-learn" /><p class="meta">Learn</p></div><h3>Understand the why</h3><p>Short explanations, checks and analogies build a working mental model.</p></article>
-        <article class="panel"><div class="panel-head"><Icon name="lifecycle-build" /><p class="meta">Build</p></div><h3>Practise in context</h3><p>Every phase moves a real project forward instead of ending at passive recall.</p></article>
+        <article class="panel"><div class="panel-head"><Icon name="lifecycle-build" /><p class="meta">Build</p></div><h3>Put it into practice</h3><p>Every phase moves a real project forward instead of ending at passive recall.</p></article>
         <article class="panel"><div class="panel-head"><Icon name="lifecycle-test" /><p class="meta">Demonstrate</p></div><h3>Show the evidence</h3><p>Homework checks what runs, what you understand and what you can explain.</p></article>
       </div>
     </div>
   </section>
 
   <section class="section build-focus">
-    <div class="wrap"><NewsletterForm placement="learning-footer" heading="Get new courses with the newsletter." /></div>
+    <div class="wrap"><NewsletterForm placement="learning-footer" heading="Hear about new learning from Future of Dev." /></div>
   </section>
 </BaseLayout>

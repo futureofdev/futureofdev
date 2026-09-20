@@ -125,7 +125,7 @@ Create your first HTML file:
    - a) Sets the image size
    - b) Links to another image
    - c) Provides descriptive text for accessibility and when image fails to load
-   - d) Sets the image color
+   - d) Sets the image colour
 
    **Answer:** c) Provides descriptive text for accessibility — screen readers read alt text aloud.
 

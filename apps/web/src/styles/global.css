@@ -1123,54 +1123,110 @@ button.button:hover {
 }
 
 .course-outline {
-  counter-reset: phase -1;
-}
-
-.phase {
-  display: grid;
-  grid-template-columns: minmax(0, 20rem) minmax(0, 1fr);
-  gap: clamp(1.25rem, 3vw, 2.5rem);
-  padding: 1.75rem 0;
   border-top: 1px solid var(--fod-hairline);
 }
 
-.phase:last-child { border-bottom: 1px solid var(--fod-hairline); }
-.phase h3 { font-size: 1.3rem; margin-top: 0.35rem; }
+.phase {
+  padding: clamp(1.5rem, 3vw, 2.25rem) 0;
+  border-bottom: 1px solid var(--fod-hairline);
+}
+
+.phase-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: 2rem;
+  align-items: end;
+}
+
+.phase h3 {
+  margin: 0.3rem 0 0;
+  font-size: clamp(1.3rem, 2vw, 1.55rem);
+  line-height: 1.1;
+}
 
 .phase-meta {
-  margin: 0.55rem 0 0;
+  margin: 0 0 0.1rem;
   font-family: var(--fod-mono);
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--fod-muted);
+  white-space: nowrap;
 }
 
 .phase-highlight {
+  grid-column: 1 / -1;
   margin: 0.7rem 0 0;
-  max-width: 30ch;
+  max-width: var(--fod-measure);
   color: var(--fod-muted);
-  font-size: 0.9rem;
+  font-size: 0.9375rem;
 }
 
-.phase ol { margin: 0; columns: 2; gap: 2.5rem; padding-left: 1.25rem; }
-.phase li { break-inside: avoid; margin-bottom: 0.4rem; color: var(--fod-muted); }
+.lesson-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  margin: 1.25rem 0 0;
+  padding: 1px;
+  background: var(--fod-hairline);
+  list-style: none;
+}
+
+.lesson-list li {
+  display: grid;
+  grid-template-columns: 2rem minmax(0, 1fr) auto;
+  gap: 0.75rem;
+  align-items: baseline;
+  min-width: 0;
+  padding: 0.75rem 0.85rem;
+  background: var(--fod-base);
+}
+
+.lesson-number {
+  color: var(--fod-muted);
+  font-family: var(--fod-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+}
+
+.lesson-title {
+  min-width: 0;
+  font-size: 0.9375rem;
+  font-weight: 550;
+  line-height: 1.4;
+}
 
 .homework-flag {
-  margin-left: 0.5rem;
-  padding: 0.15rem 0.4rem;
+  justify-self: end;
+  padding: 0.1rem 0.4rem;
   border: 1px solid var(--fod-signal);
   color: var(--fod-signal-700);
   font-family: var(--fod-mono);
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   letter-spacing: 0.1em;
+  line-height: 1.4;
   text-transform: uppercase;
   white-space: nowrap;
 }
 
 @media (max-width: 52rem) {
-  .phase { grid-template-columns: 1fr; }
-  .phase ol { columns: 1; }
+  .lesson-list { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 36rem) {
+  .phase-head { grid-template-columns: 1fr; }
+
+  .phase-meta {
+    margin-top: 0.75rem;
+    white-space: normal;
+  }
+
+  .lesson-list li { grid-template-columns: 2rem minmax(0, 1fr); }
+
+  .homework-flag {
+    grid-column: 2;
+    justify-self: start;
+  }
 }
 
 .compatibility {

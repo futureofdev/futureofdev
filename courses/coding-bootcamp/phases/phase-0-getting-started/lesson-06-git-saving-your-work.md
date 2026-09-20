@@ -127,7 +127,7 @@ git log --oneline
 - [ ] Run `npm --version` — paste the output
 - [ ] Run `git --version` — paste the output
 - [ ] Create a folder called `phase-0-homework` in `~/projects`
-- [ ] Initialize a git repository in that folder
+- [ ] Initialise a git repository in that folder
 - [ ] Create a `README.md` file with your name and today's date
 - [ ] Make a commit with message "Phase 0 complete: environment setup"
 - [ ] Run `git log --oneline` and share what you see

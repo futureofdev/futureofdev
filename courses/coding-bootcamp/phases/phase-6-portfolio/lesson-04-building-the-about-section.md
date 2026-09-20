@@ -56,18 +56,18 @@ The stats panel is decorative but reinforces the "Terminal Scholar" aesthetic �
 
 ## Quick Quiz
 1. What does `items-center` do on the grid container?
-   - a) Centers the grid horizontally
-   - b) Vertically aligns grid items to center when they're different heights
-   - c) Centers text in each grid item
-   - d) Adds centered items animation
+   - a) Centres the grid horizontally
+   - b) Vertically aligns grid items to centre when they're different heights
+   - c) Centres text in each grid item
+   - d) Adds centred items animation
 
-   **Answer:** b) Vertical alignment — on a grid/flex container, `items-center` vertically centers items.
+   **Answer:** b) Vertical alignment — on a grid/flex container, `items-center` vertically centres items.
 
-2. Why use CSS custom properties (`var(--color-surface)`) instead of Tailwind classes for colors?
-   - a) Tailwind doesn't have dark colors
-   - b) Our custom design system colors aren't in Tailwind's default palette
+2. Why use CSS custom properties (`var(--color-surface)`) instead of Tailwind classes for colours?
+   - a) Tailwind doesn't have dark colours
+   - b) Our custom design system colours aren't in Tailwind's default palette
    - c) CSS variables are faster
-   - d) Tailwind can't use background colors
+   - d) Tailwind can't use background colours
 
    **Answer:** b) Custom design tokens — our exact hex values need to be defined and referenced via CSS variables.
 

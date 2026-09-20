@@ -24,6 +24,9 @@ pages for unbuilt course names or include them in the sitemap.
 ## Canonical rules
 
 - `futureofdev.com` is the canonical host.
+- HTTPS and no trailing slash (except `/`) are the canonical URL convention.
+  Redirect navigation variants permanently and retain their query parameters;
+  canonical, social and sitemap URLs exclude those parameters.
 - Free Beehiiv editions render canonically at `/insights/{slug}`.
 - The Beehiiv-hosted archive must be disabled or point at the site canonical.
 - Historic `/claude-academy` URLs use one permanent redirect to the relevant
@@ -31,6 +34,13 @@ pages for unbuilt course names or include them in the sitemap.
 - Do not index unsubscribe, API, download-token or error routes.
 - Sitemap entries include only public canonical pages and published editions.
 - RSS links use the same canonical insight URLs.
+- Archive pages contain 20 editions, with crawlable next/previous links and a
+  self-canonical URL for each page. The sitemap includes every eligible edition.
+- Preview HTML responses are `noindex, nofollow`. Public HTML remains server
+  rendered so the middleware's host and indexing rules execute on Cloudflare.
+- Missing editions return 404 at the requested URL. Upstream failures return
+  503 with `Retry-After` and `no-store` on archive, article and feed routes.
+  The homepage remains usable and labels unavailable editions explicitly.
 
 ## Metadata and structured data
 
@@ -42,7 +52,11 @@ pages for unbuilt course names or include them in the sitemap.
   publisher and canonical entity URL.
 - Course pages emit `Course` JSON-LD from the course manifest and derived
   statistics.
-- The shared layout emits one `Organization` entity.
+- The shared layout emits stable `Organization` and `WebSite` entities.
+- Represent multiple authors separately and link Luke's byline to his About
+  profile. Visible breadcrumbs and their schema use the same canonical paths.
+- Lesson counts are not academic credits. Omit sitemap `lastmod` until a real
+  modification timestamp is available; publication time is not that evidence.
 - Never put a launch date, weekday or directional catalogue promise in metadata.
 
 ## Editorial search workflow
@@ -73,7 +87,8 @@ pages for unbuilt course names or include them in the sitemap.
 Before the foundation release:
 
 - Confirm the canonical, Open Graph and X URLs contain no query string.
-- Confirm `/sitemap.xml` and `/rss.xml` still render when Beehiiv is unavailable.
+- Confirm unavailable Beehiiv responses produce transient 503 feeds rather than
+  a successful empty sitemap or RSS. A genuinely empty publication remains 200.
 - Validate XML escaping for titles, excerpts and slugs.
 - Confirm legacy redirects preserve a UTM query in a single hop.
 - Confirm unsubscribe and API routes are absent from the sitemap and the
@@ -83,4 +98,5 @@ Before the foundation release:
 
 After an authorised production deploy, follow the account-side checks in the
 relaunch runbook. Submission and indexing actions are not part of the repository
-release gate.
+release gate. See [SEO validation](../development/seo-validation.md) for the
+fixture check and the remaining deployment evidence.

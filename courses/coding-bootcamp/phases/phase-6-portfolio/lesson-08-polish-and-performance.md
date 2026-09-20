@@ -32,7 +32,7 @@ sections:
 ---
 
 ## The Concept
-A great portfolio needs great performance. Astro gives you a head start (zero JS by default), but there are still optimizations to make.
+A great portfolio needs great performance. Astro gives you a head start (zero JS by default), but there are still optimisations to make.
 
 **Check your Lighthouse score:**
 1. `npm run build && npm run preview`
@@ -47,11 +47,11 @@ A great portfolio needs great performance. Astro gives you a head start (zero JS
 <meta property="og:image" content="/og-image.png" />
 ```
 
-**Font optimization:** We import from Google Fonts — use `display=swap` to prevent invisible text while fonts load (it's in our Google Fonts URL already).
+**Font optimisation:** We import from Google Fonts — use `display=swap` to prevent invisible text while fonts load (it's in our Google Fonts URL already).
 
 **Accessibility checklist:**
 - All images have `alt` text
-- Color contrast meets WCAG AA (4.5:1 for text)
+- Colour contrast meets WCAG AA (4.5:1 for text)
 - All interactive elements are keyboard-navigable
 - Form inputs have labels
 
@@ -73,7 +73,7 @@ A great portfolio needs great performance. Astro gives you a head start (zero JS
    **Answer:** c) 90+ — Astro sites regularly hit 100/100 with proper setup.
 
 3. What does `og:image` meta tag do?
-   - a) Optimizes images on the page
+   - a) Optimises images on the page
    - b) Specifies the image shown when your page is shared on social media
    - c) Sets the favicon
    - d) Enables image lazy loading

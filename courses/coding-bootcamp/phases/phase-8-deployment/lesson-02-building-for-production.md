@@ -34,7 +34,7 @@ sections:
 1. Renders all `.astro` pages to HTML
 2. Bundles and minifies JavaScript (React islands)
 3. Processes CSS (Tailwind generates only used classes)
-4. Optimizes images
+4. Optimises images
 5. Outputs everything to `dist/`
 
 ```bash
@@ -45,7 +45,7 @@ npm run preview
 # Preview server running at http://localhost:4321
 ```
 
-`dist/` contains your complete, optimized website — static files ready to serve.
+`dist/` contains your complete, optimised website — static files ready to serve.
 
 **Common build errors:**
 - TypeScript errors — fix type issues
@@ -54,7 +54,7 @@ npm run preview
 - Image not found — verify `public/` paths
 
 **Build vs dev differences:**
-- Dev: live reloading, not optimized, source maps
+- Dev: live reloading, not optimised, source maps
 - Build: minified, tree-shaken, no source maps, no dev server
 
 ## Key Terms

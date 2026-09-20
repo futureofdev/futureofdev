@@ -1,0 +1,23 @@
+---
+export const prerender = false;
+import InsightsArchive from "../../../components/InsightsArchive.astro";
+import { listAllPublishedInsights } from "../../../lib/insights";
+import { ARCHIVE_PAGE_SIZE, temporarilyUnavailable } from "../../../lib/seo";
+const rawPage = Astro.params.page ?? "";
+const page = Number(rawPage);
+if (rawPage === "1") return Astro.redirect(`/insights${Astro.url.search}`, 301);
+if (!/^[1-9]\d*$/.test(rawPage) || !Number.isSafeInteger(page)) {
+  const response = await Astro.rewrite("/404");
+  return new Response(response.body, { status: 404, headers: response.headers });
+}
+let posts;
+try { posts = await listAllPublishedInsights(Astro.locals); }
+catch { return temporarilyUnavailable(); }
+const totalPages = Math.max(1, Math.ceil(posts.length / ARCHIVE_PAGE_SIZE));
+if (page > totalPages) {
+  const response = await Astro.rewrite("/404");
+  return new Response(response.body, { status: 404, headers: response.headers });
+}
+Astro.response.headers.set("Cache-Control", "public, max-age=300, stale-while-revalidate=86400, stale-if-error=604800");
+---
+<InsightsArchive posts={posts.slice((page - 1) * ARCHIVE_PAGE_SIZE, page * ARCHIVE_PAGE_SIZE)} page={page} totalPages={totalPages} />

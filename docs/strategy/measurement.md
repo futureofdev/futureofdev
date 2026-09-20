@@ -113,6 +113,16 @@ raw query strings or full URLs containing queries. Page views use a query-free
 path plus low-cardinality page type, content slug and source fields. Analytics
 starts only after explicit consent. Autocapture and session replay remain off.
 
+### Search measurement boundary
+
+The current site records allowlisted UTM sources; it does not classify organic
+referrers. Report Search Console impressions/clicks and overall consented site
+conversions separately. Do not label their ratio an organic signup conversion
+rate or join the two aggregate sources into a person-level funnel. Unattributed
+traffic is not proof of direct traffic. Download-request events measure intent,
+not completed downloads or course starts. Adding organic attribution requires
+a separate, tested privacy contract; the launch SEO changes add no new tracker.
+
 ## Weekly report
 
 The private report should contain:

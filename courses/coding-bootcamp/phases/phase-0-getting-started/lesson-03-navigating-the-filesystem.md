@@ -29,7 +29,7 @@ sections:
 ---
 
 ## The Concept
-Your computer's files are organized in a **tree structure**. At the top is the **root** (`/` on Mac/Linux, `C:\` on Windows). Everything branches out from there.
+Your computer's files are organised in a **tree structure**. At the top is the **root** (`/` on Mac/Linux, `C:\` on Windows). Everything branches out from there.
 
 Think of it like a filing cabinet:
 - The cabinet itself = root (`/`)

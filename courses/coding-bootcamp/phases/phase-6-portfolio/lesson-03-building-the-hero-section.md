@@ -31,7 +31,7 @@ sections:
 ---
 
 ## The Concept
-The hero showcases the "Terminal Scholar" design: dark background, monospace fonts, syntax-colored code block.
+The hero showcases the "Terminal Scholar" design: dark background, monospace fonts, syntax-coloured code block.
 
 Key pieces:
 1. Full-viewport section (`min-h-screen flex items-center`)
@@ -39,7 +39,7 @@ Key pieces:
 3. Animated terminal with CSS `@keyframes`
 4. CSS-only blinking cursor
 
-The terminal window is just stylized HTML/CSS — no JavaScript needed. The syntax colors are inline styles using CSS custom properties.
+The terminal window is just stylised HTML/CSS — no JavaScript needed. The syntax colours are inline styles using CSS custom properties.
 
 ```astro
 <section class="min-h-screen flex items-center pt-20">

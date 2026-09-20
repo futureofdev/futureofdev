@@ -38,8 +38,8 @@ When you type `google.com` in your browser:
 
 **The three languages of the web:**
 - **HTML**: Structure — the skeleton (headings, paragraphs, images, links)
-- **CSS**: Style — the appearance (colors, fonts, layout)
-- **JavaScript**: Behavior — the interactivity (clicks, animations, data fetching)
+- **CSS**: Style — the appearance (colours, fonts, layout)
+- **JavaScript**: Behaviour — the interactivity (clicks, animations, data fetching)
 
 Every website you've ever visited is built with these three things.
 
@@ -75,9 +75,9 @@ You just watched the web work in real time!
    **Answer:** b) Converts domain names to IP addresses — like a phone book for the internet.
 
 2. What is the role of CSS in a webpage?
-   - a) Structure — organizing content into headings and paragraphs
-   - b) Behavior — handling clicks and animations
-   - c) Style — controlling appearance (colors, fonts, layout)
+   - a) Structure — organising content into headings and paragraphs
+   - b) Behaviour — handling clicks and animations
+   - c) Style — controlling appearance (colours, fonts, layout)
    - d) Communication — sending data to servers
 
    **Answer:** c) Style — CSS controls how things look.

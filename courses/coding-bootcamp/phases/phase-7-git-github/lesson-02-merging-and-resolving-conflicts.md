@@ -104,7 +104,7 @@ git commit -m "resolve: merge branches a and b"
    - c) Only one person commits at a time
    - d) Conflicts are unavoidable — there's no way to prevent them
 
-   **Answer:** b) Communication + short branches + frequent syncing — conflicts happen but can be minimized.
+   **Answer:** b) Communication + short branches + frequent syncing — conflicts happen but can be minimised.
 
 ## Next Up
 **GitHub** — pushing your code to the cloud and collaborating with others.

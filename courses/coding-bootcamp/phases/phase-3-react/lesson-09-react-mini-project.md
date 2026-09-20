@@ -131,7 +131,7 @@ function App() {
 **Stretch Goals:**
 - [ ] `localStorage` persistence (data survives page refresh)
 - [ ] Animations using CSS transitions triggered by state changes
-- [ ] `useMemo` optimization on the filtered list
+- [ ] `useMemo` optimisation on the filtered list
 
 **Submission:** Show your tutor the app running with multiple components visible and state changing.
 

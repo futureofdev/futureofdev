@@ -80,11 +80,11 @@ const links = [
 ## Quick Quiz
 1. Why use `{ passive: true }` on the scroll event listener?
    - a) It makes the listener passive/inactive
-   - b) It tells the browser the handler won't call `preventDefault()`, allowing scroll optimization
+   - b) It tells the browser the handler won't call `preventDefault()`, allowing scroll optimisation
    - c) It's required for all event listeners
    - d) It reduces memory usage
 
-   **Answer:** b) Performance optimization — passive scroll listeners don't block scrolling.
+   **Answer:** b) Performance optimisation — passive scroll listeners don't block scrolling.
 
 2. What CSS does `fixed top-0 left-0 right-0 z-50` achieve?
    - a) Makes the element fixed at the bottom

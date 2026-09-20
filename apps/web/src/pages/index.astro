@@ -8,17 +8,20 @@ import NewsletterForm from "../components/NewsletterForm.astro";
 import StageTag from "../components/StageTag.astro";
 import { editionEmptyState, homepageCopy } from "../content/site";
 import { courseHours, courseStats } from "../lib/course-content";
-import { listPublishedInsights } from "../lib/insights";
+import { listPublishedInsights, type InsightSummary } from "../lib/insights";
 import { formatEditionDate, splitTags } from "../lib/tags";
 
-const editions = await listPublishedInsights(Astro.locals, 4);
+let editions: InsightSummary[] = [];
+let editionsUnavailable = false;
+try { editions = await listPublishedInsights(Astro.locals, 4); }
+catch { editionsUnavailable = true; }
 const latest = editions[0];
 const previous = editions.slice(1);
 const latestTags = splitTags(latest?.tags);
 
 Astro.response.headers.set(
   "Cache-Control",
-  "public, max-age=300, stale-while-revalidate=86400, stale-if-error=604800",
+  editionsUnavailable ? "no-store" : "public, max-age=300, stale-while-revalidate=86400, stale-if-error=604800",
 );
 
 const date = latest && formatEditionDate(latest.publishedAt);
@@ -42,11 +45,11 @@ if (!courseEntry) throw new Error("Missing course content for coding-bootcamp-in
         heading=""
         copy=""
         buttonLabel={homepageCopy.hero.joinLabel}
-        note={homepageCopy.hero.note}
+        note={latest ? "Free. One useful edition each week. Unsubscribe any time." : editionsUnavailable ? "Free to subscribe. Unsubscribe any time." : homepageCopy.hero.note}
       />
       {latest && <p class="home-hero-link">
         <a
-          href={`/insights/${latest.slug}`}
+          href={`/insights/${encodeURIComponent(latest.slug)}`}
           data-analytics-cta="latest-edition"
           data-analytics-placement="homepage-hero"
           data-analytics-content-slug={latest.slug}
@@ -107,12 +110,12 @@ if (!courseEntry) throw new Error("Missing course content for coding-bootcamp-in
             <h2 id="latest-heading" class="display-lg">{latest.title}</h2>
             <p class="lede">{latest.excerpt}</p>
             <p class="meta home-edition-meta">{date} · {latest.author}</p>
-            <a class="button button-secondary" href={`/insights/${latest.slug}`}>
+            <a class="button button-secondary" href={`/insights/${encodeURIComponent(latest.slug)}`}>
               {homepageCopy.latest.readLabel}
             </a>
           </> : <>
-            <h2 id="latest-heading" class="display-lg">{editionEmptyState.heading}</h2>
-            <p class="lede">{editionEmptyState.body}</p>
+            <h2 id="latest-heading" class="display-lg">{editionsUnavailable ? "Editions are temporarily unavailable." : editionEmptyState.heading}</h2>
+            <p class="lede">{editionsUnavailable ? "Please try again shortly. You can still join the newsletter below." : editionEmptyState.body}</p>
           </>}
         </div>
         {previous.length > 0 && (
@@ -122,7 +125,7 @@ if (!courseEntry) throw new Error("Missing course content for coding-bootcamp-in
               {previous.map((edition, index) => (
                 <li>
                   <span>{String(index + 1).padStart(2, "0")}</span>
-                  <a href={`/insights/${edition.slug}`}>{edition.title}<small>{formatEditionDate(edition.publishedAt)}</small></a>
+                  <a href={`/insights/${encodeURIComponent(edition.slug)}`}>{edition.title}<small>{formatEditionDate(edition.publishedAt)}</small></a>
                 </li>
               ))}
             </ol>
@@ -143,6 +146,7 @@ if (!courseEntry) throw new Error("Missing course content for coding-bootcamp-in
             {homepageCopy.featuredLearning.heading[1]}
           </h2>
           <p class="lede">{homepageCopy.featuredLearning.lede}</p>
+          <p>The course materials are free. Access to the AI tools is separate and may require payment.</p>
           <div class="compatibility">
             {courseEntry.data.compatibility.map((agent) => (
               <span data-status={agent.status}>{agent.name} · {agent.status}</span>
@@ -170,7 +174,9 @@ if (!courseEntry) throw new Error("Missing course content for coding-bootcamp-in
       <div class="section-head">
         <p class="eyebrow">{homepageCopy.audience.eyebrow}</p>
         <h2 id="audience-heading" class="display-lg">
-          {homepageCopy.audience.heading[0]}<br />{homepageCopy.audience.heading[1]}
+          {homepageCopy.audience.heading.map((line, index) => (
+            <>{index > 0 && <br />}{line}</>
+          ))}
         </h2>
         <p class="lede">{homepageCopy.audience.lede}</p>
       </div>

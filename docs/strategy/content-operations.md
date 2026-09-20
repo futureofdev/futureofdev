@@ -24,6 +24,14 @@ sources.
 
 ## Editing workflow
 
+Use British English for authored copy, metadata and course prose: colour,
+behaviour, centre, organise, optimise and licence (noun). For Luke's preferred
+“practice” spelling, use the noun in phrases such as “put it into practice”, or
+choose verbs such as “try”, “apply” and “develop”. Preserve programming keywords,
+API/schema field names, commands, URLs and exact third-party interface labels.
+The site's document language is `en-GB`. Review Beehiiv editions before publishing;
+the website renders their authored text without automatic spelling replacement.
+
 1. Read `voice.md`, or ask Codex to use `$write-in-voice` for the change.
 2. Name the page, audience and one action the copy should make clearer.
 3. Edit the source in the map above. Keep dynamic facts such as course counts

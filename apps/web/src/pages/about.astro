@@ -1,18 +1,24 @@
 ---
+export const prerender = false;
+
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import { founderSchema } from "../lib/seo";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import NewsletterForm from "../components/NewsletterForm.astro";
 import { founderImage } from "../content/site";
 ---
 
 <BaseLayout
-  title="About"
-  description="Future of Dev helps people learn, work and build with confidence as AI changes digital work."
+  title="About Luke Hennerley and Future of Dev"
+  description="Meet Luke Hennerley and learn why Future of Dev helps people develop practical AI skills through explanations, exercises and work they can demonstrate."
+  structuredData={founderSchema}
 >
   <header class="hero">
     <div class="wrap">
+      <Breadcrumbs items={[{ name: "Home", path: "/" }, { name: "About", path: "/about" }]} />
       <p class="eyebrow">About Future of Dev</p>
-      <h1 class="display-xl">Capability over hype.</h1>
-      <p class="lede">A practical publication with a teaching instinct for the AI-native era.</p>
+      <h1 class="display-xl">Learn how to use AI with judgement.</h1>
+      <p class="lede">Future of Dev is a newsletter-led learning publication founded by Luke Hennerley. It helps people in digital work understand how AI impacting their lives and try useful ways of working with it.</p>
     </div>
   </header>
 
@@ -20,12 +26,12 @@ import { founderImage } from "../content/site";
     <div class="wrap split">
       <div>
         <p class="eyebrow">Purpose</p>
-        <h2 class="display-lg">Remain an active participant in the future of work.</h2>
+        <h2 class="display-lg">Develop skills you can put to work.</h2>
       </div>
       <div>
-        <p class="lede">AI is changing tasks, workflows, teams and entry routes faster than conventional education can update.</p>
-        <p>Future of Dev sits between AI news, traditional education and vendor training. It interprets change, teaches practical skills and encourages readers to build.</p>
-        <p>The goal is not information alone. It is turning information into useful, demonstrable capability.</p>
+        <p class="lede">Using AI in your work raises practical questions. What should you ask it to do? How do you check the result? Which parts still need your judgement?</p>
+        <p>Future of Dev explores those questions through explanations, exercises and work you can examine.</p>
+        <p>Use what you learn in your next project and build the confidence to explain your choices.</p>
       </div>
     </div>
   </section>
@@ -34,12 +40,12 @@ import { founderImage } from "../content/site";
     <div class="wrap">
       <div class="section-head">
         <p class="eyebrow">Principles</p>
-        <h2 class="display-lg">Independent. Practical. Agency-led.</h2>
+        <h2 class="display-lg">Independent. Practical. Free.</h2>
       </div>
       <div class="grid-3">
-        <article class="panel"><p class="meta">01</p><h3>Adaptation over fear</h3><p>Urgency matters. Doom does not build capability.</p></article>
-        <article class="panel"><p class="meta">02</p><h3>Judgement over dependence</h3><p>Tools change. Transferable thinking and craft endure.</p></article>
-        <article class="panel"><p class="meta">03</p><h3>Evidence over certificates</h3><p>Build real things and learn to explain the choices behind them.</p></article>
+        <article class="panel"><p class="meta">01</p><h3>Adaptation</h3><p>Urgency matters. Doom does not build capability.</p></article>
+        <article class="panel"><p class="meta">02</p><h3>Judgement</h3><p>Tools change. Transferable critical thinking remains.</p></article>
+        <article class="panel"><p class="meta">03</p><h3>Evidence</h3><p>Build real things and learn to explain the choices behind them.</p></article>
       </div>
     </div>
   </section>
@@ -48,7 +54,7 @@ import { founderImage } from "../content/site";
     <div class="wrap split">
       <div>
         <p class="eyebrow">Founder</p>
-        <h2 class="display-lg">Luke Hennerley</h2>
+        <h2 id="luke-hennerley" class="display-lg">Luke Hennerley</h2>
       </div>
       <div>
         {founderImage && (
@@ -56,8 +62,8 @@ import { founderImage } from "../content/site";
             <img src={founderImage.src} alt={founderImage.alt} width="288" height="288" loading="lazy" />
           </figure>
         )}
-        <p class="lede">A product and technology practitioner with experience across software engineering, product development and digital delivery.</p>
-        <p>Future of Dev brings those disciplines together around a single question: what should people learn and practise now to remain capable, relevant and confident?</p>
+        <p class="lede">Leading AI-native initatives at Sidetrade, a frontier AI tech company in Europe.</p>
+        <p>I take my every-day learnings and leadership, break it down and share it with others to help them to navigate the AI-native future.</p>
         <a href="https://www.linkedin.com/in/luke-hennerley-49204953/" rel="noopener noreferrer">Connect on LinkedIn →</a>
       </div>
     </div>

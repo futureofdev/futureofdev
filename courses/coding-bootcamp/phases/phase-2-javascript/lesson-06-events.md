@@ -62,7 +62,7 @@ form.addEventListener("submit", (e) => {
 - **`addEventListener(event, callback)`**: Attach an event listener
 - **Event object (`e`)**: Contains details about the event
 - **`e.target`**: The element that triggered the event
-- **`e.preventDefault()`**: Stop the browser's default behavior
+- **`e.preventDefault()`**: Stop the browser's default behaviour
 
 ## Hands-On Exercise
 Build a click counter:
@@ -95,11 +95,11 @@ reset.addEventListener("click", () => {
 ## Quick Quiz
 1. What does `event.preventDefault()` do on a form submission?
    - a) Validates the form data
-   - b) Stops the page from reloading (the browser's default form behavior)
+   - b) Stops the page from reloading (the browser's default form behaviour)
    - c) Clears the form fields
    - d) Sends the form to the server
 
-   **Answer:** b) Stops the browser's default behavior — which for forms is reloading the page.
+   **Answer:** b) Stops the browser's default behaviour — which for forms is reloading the page.
 
 2. What is `event.target`?
    - a) Where the event will be sent

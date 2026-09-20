@@ -1,5 +1,5 @@
 ---
-title: "Typography and Colors"
+title: "Typography and Colours"
 phase: 5
 lesson: 3
 duration_minutes: 30
@@ -21,7 +21,7 @@ sections:
   key_terms: present
   exercise:
     status: none
-    intent: "Utilities are practised directly on the portfolio as it is restyled, so there is no separate exercise to attempt."
+    intent: "Utilities are applied directly on the portfolio as it is restyled, so there is no separate exercise to attempt."
   next_up: present
 ---
 
@@ -40,7 +40,7 @@ sections:
 
 **Weight:** `font-thin` → `font-light` → `font-normal` → `font-medium` → `font-semibold` → `font-bold` → `font-extrabold` → `font-black`
 
-**Color utilities:**
+**Colour utilities:**
 ```html
 <div class="bg-slate-900 text-white border border-slate-700">
   Dark card
@@ -58,8 +58,8 @@ sections:
 ## Key Terms
 - **`text-{size}`**: Font size utility
 - **`font-{weight}`**: Font weight utility
-- **`text-{color}-{shade}`**: Text color (e.g., `text-blue-500`)
-- **`bg-{color}-{shade}`**: Background color
+- **`text-{color}-{shade}`**: Text colour (e.g., `text-blue-500`)
+- **`bg-{color}-{shade}`**: Background colour
 - **`leading-{value}`**: Line height
 
 ## Quick Quiz
@@ -72,14 +72,14 @@ sections:
    **Answer:** c) `font-bold` — Tailwind uses the `font-{weight}` pattern.
 
 2. What does `text-lg` do?
-   - a) Sets text color to light gray
+   - a) Sets text colour to light grey
    - b) Sets font size to large (18px / 1.125rem)
    - c) Makes text lowercase
    - d) Sets line height to large
 
    **Answer:** b) Font size large — `text-lg` = `font-size: 1.125rem`.
 
-3. How do you set a background color in Tailwind?
+3. How do you set a background colour in Tailwind?
    - a) `background-blue`
    - b) `color-bg-blue`
    - c) `bg-blue-500`

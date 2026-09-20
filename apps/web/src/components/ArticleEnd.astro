@@ -5,6 +5,8 @@
  *
  * The course link is the page's single Build-lime surface (brand rule 2).
  */
+import Authors from "./Authors.astro";
+import { insightPath } from "../lib/seo";
 import Icon from "./Icon.astro";
 import StageTag from "./StageTag.astro";
 import { articleEndCopy } from "../content/site";
@@ -18,13 +20,14 @@ interface Props {
 }
 
 const { post, previous = null, next = null } = Astro.props;
+const showCourse = post.tags.includes("coding-bootcamp-in-a-box");
 const tags = splitTags(post.tags);
 ---
 
 <footer class="article-end">
   <div class="article-end-rule">
     <div class="article-byline">
-      <p class="meta">{post.author} · {formatEditionDate(post.publishedAt, "long")} · {post.readingMinutes} min read</p>
+      <p class="meta"><Authors authors={post.authors} /> · {formatEditionDate(post.publishedAt, "long")} · {post.readingMinutes} min read</p>
       {(tags.stages.length > 0 || tags.topics.length > 0) && (
         <div class="tag-row" aria-label="Edition topics">
           {tags.stages.map((stage) => <StageTag stage={stage} />)}
@@ -33,7 +36,7 @@ const tags = splitTags(post.tags);
       )}
     </div>
 
-    <div class="go-deeper">
+    {showCourse && <div class="go-deeper">
       <div>
         <div class="panel-head"><Icon name="issue-06-go-deeper" /><p class="meta">{articleEndCopy.goDeeperEyebrow}</p></div>
         <h2>{articleEndCopy.goDeeperHeading}</h2>
@@ -46,11 +49,11 @@ const tags = splitTags(post.tags);
         data-analytics-placement="article-end"
         data-analytics-content-slug={post.slug}
       >{articleEndCopy.goDeeperCta}</a>
-    </div>
+    </div>}
 
     <nav class="article-nav" aria-label="Edition navigation">
       {previous ? (
-        <a href={`/insights/${previous.slug}`} rel="prev">
+        <a href={insightPath(previous.slug)} rel="prev">
           <span class="meta">← {articleEndCopy.previousLabel}</span>
           <b>{previous.title}</b>
         </a>
@@ -58,7 +61,7 @@ const tags = splitTags(post.tags);
         <span class="placeholder"><span class="meta">{articleEndCopy.firstNote}</span></span>
       )}
       {next ? (
-        <a class="next" href={`/insights/${next.slug}`} rel="next">
+        <a class="next" href={insightPath(next.slug)} rel="next">
           <span class="meta">{articleEndCopy.nextLabel} →</span>
           <b>{next.title}</b>
         </a>

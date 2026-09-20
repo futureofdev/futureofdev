@@ -26,7 +26,7 @@ sections:
   key_terms: present
   exercise:
     status: none
-    intent: "Utilities are practised directly on the portfolio as it is restyled, so there is no separate exercise to attempt."
+    intent: "Utilities are applied directly on the portfolio as it is restyled, so there is no separate exercise to attempt."
   next_up: present
 ---
 
@@ -79,7 +79,7 @@ import "../styles/global.css";
 - **`@theme`**: CSS block for defining custom design tokens in v4
 
 ## Quick Quiz
-1. In Tailwind v4, where do you define custom colors?
+1. In Tailwind v4, where do you define custom colours?
    - a) `tailwind.config.js`
    - b) In `@theme {}` block in CSS, using CSS custom properties
    - c) In `astro.config.mjs`
@@ -104,4 +104,4 @@ import "../styles/global.css";
    **Answer:** c) `@import "tailwindcss"` — single import, no directives needed.
 
 ## Next Up
-**Typography and Colors** — Tailwind's system for text and color utilities.
+**Typography and Colours** — Tailwind's system for text and colour utilities.

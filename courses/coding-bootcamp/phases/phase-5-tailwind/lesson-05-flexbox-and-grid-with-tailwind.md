@@ -21,7 +21,7 @@ sections:
   key_terms: present
   exercise:
     status: none
-    intent: "Utilities are practised directly on the portfolio as it is restyled, so there is no separate exercise to attempt."
+    intent: "Utilities are applied directly on the portfolio as it is restyled, so there is no separate exercise to attempt."
   next_up: present
 ---
 
@@ -70,11 +70,11 @@ Tailwind wraps flexbox and grid as utilities:
 ## Quick Quiz
 1. What does `flex items-center justify-center` create?
    - a) A flex container with items at the start
-   - b) A flex container with items centered both horizontally and vertically
-   - c) A centered block element
+   - b) A flex container with items centred both horizontally and vertically
+   - c) A centred block element
    - d) Three flex columns
 
-   **Answer:** b) `items-center` = vertical center, `justify-center` = horizontal center in a row layout.
+   **Answer:** b) `items-center` = vertical centre, `justify-center` = horizontal centre in a row layout.
 
 2. How do you create a 3-column grid with Tailwind?
    - a) `columns-3`

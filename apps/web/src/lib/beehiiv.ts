@@ -28,6 +28,8 @@ export interface BeehiivPost {
   platform?: string;
   thumbnail_url?: string | null;
   web_url?: string | null;
+  hidden_from_feed?: boolean;
+  enforce_gated_content?: boolean;
   publish_date?: number | null;
   displayed_date?: number | null;
   created?: number | null;
@@ -70,8 +72,9 @@ export interface BeehiivEngagement {
   unique_verified_clicks: number;
 }
 
-interface ListPostsResponse {
+export interface ListPostsResponse {
   data?: BeehiivPost[];
+  total_pages?: number;
 }
 
 interface AggregateStatsResponse {
@@ -156,10 +159,10 @@ export interface ListPostsOptions {
   slugs?: string[];
 }
 
-export async function listPosts(
+export async function listPostPage(
   config: BeehiivConfig,
   options: ListPostsOptions = {},
-): Promise<BeehiivPost[]> {
+): Promise<ListPostsResponse> {
   const params = new URLSearchParams({
     limit: String(options.limit ?? 25),
     status: options.status ?? "confirmed",
@@ -178,7 +181,13 @@ export async function listPosts(
     { headers: authHeaders(config.apiKey) },
   );
   if (!response.ok) throw new BeehiivApiError(response.status);
-  return ((await response.json()) as ListPostsResponse).data ?? [];
+  const body = (await response.json()) as ListPostsResponse;
+  if (!Array.isArray(body.data)) throw new BeehiivApiError(502);
+  return body;
+}
+
+export async function listPosts(config: BeehiivConfig, options: ListPostsOptions = {}): Promise<BeehiivPost[]> {
+  return (await listPostPage(config, options)).data!;
 }
 
 export async function getAggregatePostStats(

@@ -3,12 +3,12 @@ courseId: coding-bootcamp-in-a-box
 slug: coding-bootcamp-in-a-box
 status: available
 featured: true
-eyebrow: Free flagship course
+eyebrow: Free coding course materials
 headline: Coding Bootcamp in a Box.
-summary: A complete, self-paced path from first terminal command to a deployed portfolio.
+summary: Learn the foundations of web development by building a portfolio, with an AI tutor to guide your practice.
 seoDescription: >-
-  Go from no development environment to a portfolio you built and deployed
-  yourself. Free, self-paced, and taught locally through Codex or Claude Code.
+  Learn web development with Coding Bootcamp in a Box. Free self-paced course
+  materials, practical projects and a path from your first command to a portfolio.
 compatibility:
   - name: Codex
     status: supported
@@ -18,7 +18,7 @@ quickstart:
   heading: Start with Codex or Claude Code in four steps.
   lede: >-
     The download includes the same course plus a tutor skill for each supported
-    agent. You do not need the Skilling CLI or a separate course account.
+    agent. Follow the instructions included with your download.
   steps:
     - label: Download
       body: Subscribe below and the download appears on this page straight away.
@@ -44,25 +44,25 @@ outcomes:
 prerequisites:
   heading: Start from zero.
   body: >-
-    You need a computer, an internet connection and time to practise. No coding
-    experience is assumed, and nothing in the course expects you to have written
-    a line of code before.
+    No coding experience is assumed. You will need a computer, an internet
+    connection, time for practice and access to a supported AI tool. The course
+    materials are free. AI tools and optional services, such as a custom domain,
+    may have their own charges. Check the tool requirements before you begin.
 download:
-  heading: Put the full course on your machine.
-  lede: Subscribe and the private download appears here immediately. The link lasts 15 minutes.
+  heading: Get the course materials.
+  lede: Subscribe to Future of Dev and your download link will appear on this page. Already subscribed? Use the same email address to get access.
   formHeading: Subscribe and get the course.
   formCopy: >-
-    Beehiiv confirms the subscription in real time, then the download appears
-    here. There is no course-delivery email and no automation to wait for.
+    Get the course materials and receive Future of Dev by email. You can
+    unsubscribe from the newsletter at any time.
 ---
 
-Coding Bootcamp in a Box is the flagship Future of Dev course. It is written in
-the open [Skilling format](https://startskill.ing): a manifest, a folder of
-markdown lessons, and a progress record that belongs to the learner rather than
-to us.
+Coding Bootcamp in a Box is a self-paced introduction to web development. The
+course materials use the open [Skilling format](https://startskill.ing), with
+lessons you can read and keep on your own computer.
 
-That matters for one practical reason. The course is not locked to a product.
-Today the download includes tested tutor skills for both Codex and Claude Code;
-each teaches from the same files without requiring the Skilling CLI. When the
-course migrates to the Skilling CLI, those runtime-specific skills can be
-replaced without rewriting the lessons.
+The current download includes tutor skills for Codex and Claude Code. Both use
+the same lessons. Follow the setup instructions in the downloaded README.
+
+Future of Dev is an independent learning publication. References to AI tools
+explain how to use the course; they do not imply endorsement by their makers.

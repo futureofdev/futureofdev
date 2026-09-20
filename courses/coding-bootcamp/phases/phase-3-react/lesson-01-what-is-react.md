@@ -76,7 +76,7 @@ Write out in plain English: what 3 pieces of state would a Twitter-like app need
 ## Quick Quiz
 1. What problem does React solve?
    - a) Making websites load faster
-   - b) Keeping the UI automatically synchronized with changing data
+   - b) Keeping the UI automatically synchronised with changing data
    - c) Writing CSS more easily
    - d) Connecting to databases
 

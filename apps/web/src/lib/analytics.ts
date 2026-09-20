@@ -21,6 +21,7 @@ function pageContext(pathname: string): { page_type: PageType; content_slug?: st
   const parts = pathname.split("/").filter(Boolean);
   if (parts.length === 0) return { page_type: "home" };
   if (parts[0] === "insights") {
+    if (parts[1] === "page" && /^[1-9][0-9]*$/.test(parts[2] ?? "")) return { page_type: "insights_index" };
     return parts[1]
       ? { page_type: "insight", content_slug: token(parts[1], 120) }
       : { page_type: "insights_index" };
