@@ -1,191 +1,58 @@
 ---
-import LandingLayout from "../layouts/LandingLayout.astro";
+export const prerender = false;
 
-const lastUpdated = "25 February 2026";
+import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
-<LandingLayout
-  title="Privacy Policy"
-  description="How Future of Dev collects and uses data, and your rights under GDPR."
->
-  <div class="max-w-2xl mx-auto px-6 pt-16 md:pt-24 pb-24">
+<BaseLayout title="Privacy" description="How Future of Dev handles newsletter and website data.">
+  <article class="narrow prose-page">
+    <p class="eyebrow">Privacy notice</p>
+    <h1>Clear data boundaries.</h1>
+    <p class="lede">Last updated 21 August 2026.</p>
 
-    <div class="mb-10">
-      <p class="text-xs font-mono uppercase tracking-widest text-muted-foreground mb-3">Legal</p>
-      <h1 class="text-3xl md:text-4xl font-bold tracking-tight mb-3">Privacy Policy</h1>
-      <p class="text-sm text-muted-foreground">Last updated: {lastUpdated}</p>
-    </div>
+    <h2>What we collect</h2>
+    <p>
+      If you subscribe, Beehiiv stores your email address, subscription status, consent and attribution data so it can deliver Future of Dev and manage preferences. Beehiiv is the source of truth for that newsletter data.
+    </p>
+    <p>
+      Each subscriber also has a randomly generated <code>analytics_id</code>. It is pseudonymous personal data. It is not an authentication credential, does not appear in public URLs and is not derived from your email address.
+    </p>
 
-    <div class="prose-section space-y-10">
+    <h2>Optional website analytics</h2>
+    <p>
+      PostHog only starts after you choose “Allow analytics”. We use PostHog Cloud EU for behavioural analytics, configure it not to retain IP addresses, disable form autocapture and session recordings, and omit query strings from page URLs.
+    </p>
+    <p>
+      If you subscribe while analytics consent is active, the browser identifies the existing anonymous journey using your <code>analytics_id</code> and marks the profile as a newsletter subscriber. Your email address is never sent to PostHog. If analytics consent is absent, the subscription still completes and no PostHog identity or signup event is sent.
+    </p>
 
-      <section>
-        <h2>Who we are</h2>
-        <p>
-          Future of Dev (<a href="https://futureofdev.com">futureofdev.com</a>) is run by Luke Hennerley.
-          We publish free courses, insights, and resources to help people navigate software careers in the AI era.
-          You can reach us at <a href="mailto:luke@futureofdev.com">luke@futureofdev.com</a>.
-        </p>
-      </section>
+    <h2>Course downloads</h2>
+    <p>
+      Coding Bootcamp in a Box is downloaded through a signed link after successful newsletter subscription. The link contains a random nonce, the course version, a signature and a 15-minute expiry. It contains no email address and cannot be used to sign in.
+    </p>
 
-      <section>
-        <h2>What we collect and why</h2>
+    <h2>Retention and access</h2>
+    <p>
+      Newsletter records are retained in Beehiiv while the subscription is active and as needed for suppression, legal or security obligations. Behavioural events in PostHog are retained for 12 months. Access to both systems is restricted to people who need it to operate the publication.
+    </p>
 
-        <h3>Analytics (PostHog)</h3>
-        <p>
-          We use PostHog to understand how people use this site — which pages are visited, where people drop off,
-          and how content performs. By default, PostHog runs in a cookieless, memory-only mode: no data is stored
-          on your device and nothing persists between visits.
-        </p>
-        <p>
-          If you accept cookies via the banner, PostHog switches to cookie-based tracking so we can recognise
-          you across visits. In that mode, a random anonymous identifier is stored in a cookie on your device.
-          No name or email is attached to this identifier unless you choose to share it (e.g. by subscribing
-          to the newsletter).
-        </p>
-        <p>
-          PostHog is self-hostable and we use their EU-based cloud (<code>eu.i.posthog.com</code>).
-          Data does not leave the EU. See <a href="https://posthog.com/privacy" target="_blank" rel="noopener noreferrer">PostHog's privacy policy</a>.
-        </p>
+    <h2>Your choices and rights</h2>
+    <p>
+      Every new edition uses Beehiiv’s native preference and unsubscribe links. Legacy links set a short-lived, signed and HTTP-only confirmation cookie, then open a query-free confirmation page before updating the matching Beehiiv subscription.
+    </p>
+    <p>
+      You can ask to access, correct, export or delete your personal data, object to processing, or withdraw consent. For a valid deletion request we remove the Beehiiv subscriber where legally permitted and use the matching <code>analytics_id</code> to delete the PostHog person and associated events.
+    </p>
+    <p>Email <a href="mailto:luke@futureofdev.com">luke@futureofdev.com</a>. We aim to respond within 30 days.</p>
 
-        <h3>Newsletter (Resend)</h3>
-        <p>
-          If you subscribe to our newsletter, we store your email address with Resend to send you updates.
-          You can unsubscribe at any time via the link in any email. We do not sell or share your email
-          with third parties. See <a href="https://resend.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer">Resend's privacy policy</a>.
-        </p>
-        <p>
-          When you subscribe, we also associate your email with your PostHog analytics profile (if PostHog
-          is active in your session). This lets us understand the journey from visitor to subscriber.
-          Your email is only linked to analytics data on devices where you have subscribed.
-        </p>
+    <h2>Processors</h2>
+    <ul>
+      <li><a href="https://www.beehiiv.com/privacy" rel="noopener noreferrer">Beehiiv</a>: newsletter subscriptions and delivery</li>
+      <li><a href="https://posthog.com/privacy" rel="noopener noreferrer">PostHog Cloud EU</a>: consented behavioural analytics</li>
+      <li><a href="https://www.cloudflare.com/privacypolicy/" rel="noopener noreferrer">Cloudflare</a>: hosting, security and content delivery</li>
+    </ul>
 
-        <h3>Course progress (Claude Academy)</h3>
-        <p>
-          If you take a course via Claude Academy and opt in to progress sharing, we collect anonymous
-          lesson completion data: a randomly generated ID (no name, email, or device info), the phase and
-          lesson numbers, and a timestamp. This data is stored in Supabase on EU-based infrastructure
-          and is used solely to understand how students progress through the curriculum.
-          You are asked for this consent explicitly before any data is sent.
-        </p>
-      </section>
-
-      <section>
-        <h2>Cookies</h2>
-        <p>
-          We only set cookies if you accept the cookie consent banner. The cookies we set are:
-        </p>
-        <ul>
-          <li><strong>ph_*</strong> — PostHog analytics cookies. Store an anonymous distinct ID to recognise you across visits. No personal information is stored in the cookie itself.</li>
-        </ul>
-        <p>
-          We also use <code>localStorage</code> to store your cookie preference (<code>ph_consent</code>)
-          so we don't ask again on future visits.
-        </p>
-        <p>
-          You can clear your consent at any time by clearing your browser's cookies and local storage for this site.
-        </p>
-      </section>
-
-      <section>
-        <h2>Your rights (GDPR)</h2>
-        <p>If you are in the EU or UK, you have the right to:</p>
-        <ul>
-          <li><strong>Access</strong> — request a copy of any personal data we hold about you</li>
-          <li><strong>Erasure</strong> — ask us to delete your data</li>
-          <li><strong>Objection</strong> — object to processing based on legitimate interests</li>
-          <li><strong>Portability</strong> — receive your data in a portable format</li>
-          <li><strong>Withdraw consent</strong> — opt out of cookies at any time by clearing your browser storage</li>
-        </ul>
-        <p>
-          To exercise any of these rights, email <a href="mailto:luke@futureofdev.com">luke@futureofdev.com</a>.
-          We will respond within 30 days.
-        </p>
-      </section>
-
-      <section>
-        <h2>Third-party services</h2>
-        <ul>
-          <li><a href="https://posthog.com/privacy" target="_blank" rel="noopener noreferrer">PostHog</a> — analytics</li>
-          <li><a href="https://resend.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer">Resend</a> — email delivery</li>
-          <li><a href="https://supabase.com/privacy" target="_blank" rel="noopener noreferrer">Supabase</a> — anonymous course progress data</li>
-          <li><a href="https://www.sanity.io/legal/privacy" target="_blank" rel="noopener noreferrer">Sanity</a> — content management</li>
-          <li><a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener noreferrer">Cloudflare</a> — hosting and delivery</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>Changes to this policy</h2>
-        <p>
-          We may update this policy from time to time. The date at the top of this page reflects the most
-          recent revision. Continued use of the site after changes constitutes acceptance of the updated policy.
-        </p>
-      </section>
-
-      <section>
-        <h2>Contact</h2>
-        <p>
-          Questions about this policy? Email <a href="mailto:luke@futureofdev.com">luke@futureofdev.com</a>.
-        </p>
-      </section>
-
-    </div>
-  </div>
-</LandingLayout>
-
-<style>
-  .prose-section h2 {
-    font-size: 1.125rem;
-    font-weight: 600;
-    color: hsl(var(--foreground));
-    margin-bottom: 0.75rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid hsl(var(--border));
-  }
-
-  .prose-section h3 {
-    font-size: 0.9375rem;
-    font-weight: 600;
-    color: hsl(var(--foreground));
-    margin-top: 1.25rem;
-    margin-bottom: 0.5rem;
-  }
-
-  .prose-section p {
-    font-size: 0.9375rem;
-    line-height: 1.75;
-    color: hsl(var(--foreground) / 0.8);
-    margin-bottom: 0.875rem;
-  }
-
-  .prose-section ul {
-    list-style: disc;
-    padding-left: 1.5rem;
-    margin-bottom: 0.875rem;
-    space-y: 0.25rem;
-  }
-
-  .prose-section li {
-    font-size: 0.9375rem;
-    line-height: 1.75;
-    color: hsl(var(--foreground) / 0.8);
-    margin-bottom: 0.25rem;
-  }
-
-  .prose-section a {
-    color: hsl(var(--foreground));
-    text-decoration: underline;
-    text-underline-offset: 3px;
-  }
-
-  .prose-section a:hover {
-    color: hsl(var(--primary));
-  }
-
-  .prose-section code {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.8125rem;
-    background: hsl(var(--muted));
-    padding: 0.125rem 0.375rem;
-    border-radius: 0.25rem;
-  }
-</style>
+    <h2>Changes</h2>
+    <p>We may update this notice as the service changes. The date above identifies the current version.</p>
+  </article>
+</BaseLayout>

@@ -1,37 +1,34 @@
----
-// PostHog analytics with GDPR consent management.
-// Always inits with persistence: 'memory' (no consent needed).
-// Upgrades to localStorage+cookie persistence after explicit user consent.
-// Requires PUBLIC_POSTHOG_KEY env var; silently no-ops if absent.
----
-
 <script>
-  import posthog from "posthog-js";
+  import {
+    captureAnalyticsEvent,
+    denyAnalytics,
+    initialiseAnalytics,
+  } from "../lib/analytics";
 
   const key = import.meta.env.PUBLIC_POSTHOG_KEY as string | undefined;
   const host = (import.meta.env.PUBLIC_POSTHOG_HOST as string | undefined) || "https://eu.i.posthog.com";
 
-  if (key) {
-    posthog.init(key, {
-      api_host: host,
-      // Start cookieless — safe without consent. Upgraded after opt-in.
-      persistence: "memory",
-      capture_pageview: true,
-      capture_pageleave: true,
-      autocapture: false,
-      disable_session_recording: true,
-    });
-
-    // Upgrade immediately if consent was already given in a previous visit
-    if (localStorage.getItem("ph_consent") === "true") {
-      posthog.set_config({ persistence: "localStorage+cookie" });
-    }
+  function initialisePostHog() {
+    initialiseAnalytics(key, host);
   }
 
-  // Listen for consent granted from the banner
-  window.addEventListener("ph:consent-granted", () => {
-    if (key) {
-      posthog.set_config({ persistence: "localStorage+cookie" });
-    }
+  initialisePostHog();
+  window.addEventListener("ph:consent-granted", initialisePostHog);
+  window.addEventListener("ph:consent-denied", denyAnalytics);
+
+  document.addEventListener("click", (event) => {
+    const target = event.target instanceof Element
+      ? event.target.closest<HTMLElement>("[data-analytics-cta]")
+      : null;
+    if (!target) return;
+    captureAnalyticsEvent("cta_clicked", {
+      cta: target.dataset.analyticsCta || "unknown",
+      ...(target.dataset.analyticsPlacement
+        ? { placement: target.dataset.analyticsPlacement }
+        : {}),
+      ...(target.dataset.analyticsContentSlug
+        ? { content_slug: target.dataset.analyticsContentSlug }
+        : {}),
+    });
   });
 </script>

@@ -1,53 +1,48 @@
 ---
-import LandingLayout from "../layouts/LandingLayout.astro";
-
 export const prerender = false;
 
+import BaseLayout from "../layouts/BaseLayout.astro";
+
 const status = Astro.url.searchParams.get("status");
+Astro.response.headers.set("Cache-Control", "private, no-store");
 ---
 
-<LandingLayout title="Unsubscribe" description="Manage your email preferences.">
-  <div class="min-h-[60vh] flex items-center justify-center px-6">
-    <div class="max-w-sm w-full text-center">
-      {status === "success" && (
-        <div>
-          <p class="text-xs font-mono uppercase tracking-widest text-muted-foreground mb-3">All done</p>
-          <h1 class="text-2xl font-bold mb-3">You've been unsubscribed</h1>
-          <p class="text-muted-foreground text-sm leading-relaxed mb-8">
-            You won't receive any more emails from Future of Dev. Changed your mind?
-          </p>
-          <a
-            href="/"
-            class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors text-sm"
-          >
-            Back to Future of Dev
-          </a>
-        </div>
-      )}
-
-      {status === "invalid" && (
-        <div>
-          <p class="text-xs font-mono uppercase tracking-widest text-muted-foreground mb-3">Invalid link</p>
-          <h1 class="text-2xl font-bold mb-3">Link not recognised</h1>
-          <p class="text-muted-foreground text-sm leading-relaxed mb-8">
-            This unsubscribe link is invalid or has expired. Email us at
-            <a href="mailto:luke@futureofdev.com" class="underline underline-offset-2 hover:text-foreground transition-colors">luke@futureofdev.com</a>
-            and we'll remove you manually.
-          </p>
-        </div>
-      )}
-
-      {(status === "error" || !status) && (
-        <div>
-          <p class="text-xs font-mono uppercase tracking-widest text-muted-foreground mb-3">Something went wrong</p>
-          <h1 class="text-2xl font-bold mb-3">Couldn't unsubscribe</h1>
-          <p class="text-muted-foreground text-sm leading-relaxed mb-8">
-            Please email us at
-            <a href="mailto:luke@futureofdev.com" class="underline underline-offset-2 hover:text-foreground transition-colors">luke@futureofdev.com</a>
-            and we'll take care of it.
-          </p>
-        </div>
-      )}
-    </div>
-  </div>
-</LandingLayout>
+<BaseLayout title="Email preferences" description="Manage your Future of Dev subscription." noindex>
+  <section class="prose-page narrow">
+    {status === "success" ? (
+      <>
+        <p class="eyebrow">All done</p>
+        <h1>You have been unsubscribed.</h1>
+        <p class="lede">Beehiiv will no longer send Future of Dev to this address.</p>
+        <p><a class="button" href="/">Return home</a></p>
+      </>
+    ) : status === "invalid" ? (
+      <>
+        <p class="eyebrow">Invalid link</p>
+        <h1>That link was not recognised.</h1>
+        <p>Email <a href="mailto:luke@futureofdev.com">luke@futureofdev.com</a> for help.</p>
+      </>
+    ) : status === "error" ? (
+      <>
+        <p class="eyebrow">Temporary error</p>
+        <h1>Your preferences could not be updated.</h1>
+        <p>Please try again or email <a href="mailto:luke@futureofdev.com">luke@futureofdev.com</a>.</p>
+      </>
+    ) : status === "confirm" ? (
+      <>
+        <p class="eyebrow">Legacy email link</p>
+        <h1>Unsubscribe from Future of Dev?</h1>
+        <p class="lede">This will update your subscription in Beehiiv. New editions use Beehiiv’s own preference links.</p>
+        <form method="post" action="/api/unsubscribe" class="ph-no-capture" data-ph-no-capture>
+          <button class="button" type="submit">Confirm unsubscribe</button>
+        </form>
+      </>
+    ) : (
+      <>
+        <p class="eyebrow">Email preferences</p>
+        <h1>Use the link in your latest edition.</h1>
+        <p>Beehiiv’s preference and unsubscribe links appear in the footer of every newsletter.</p>
+      </>
+    )}
+  </section>
+</BaseLayout>

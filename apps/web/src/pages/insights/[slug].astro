@@ -1,363 +1,83 @@
 ---
 export const prerender = false;
 
-import { ThemeToggle } from "../../components/ThemeToggle";
-import { ReadingProgress } from "../../components/ReadingProgress";
-import { PortableTextContent } from "../../components/PortableTextContent";
-import PosthogAnalytics from "../../components/PosthogAnalytics.astro";
-import { sanityClient } from "../../lib/sanity";
-import { postBySlugQuery } from "@futureofdev/sanity-client";
-import imageUrlBuilder from "@sanity/image-url";
+import Authors from "../../components/Authors.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import { articleSchema, insightPath, temporarilyUnavailable } from "../../lib/seo";
+import ArticleEnd from "../../components/ArticleEnd.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import NewsletterForm from "../../components/NewsletterForm.astro";
+import { getInsightBySlug, listAllPublishedInsights, type InsightSummary } from "../../lib/insights";
+import { formatEditionDate } from "../../lib/tags";
 
-const { slug } = Astro.params;
-
-let post: any = null;
-
+const slug = Astro.params.slug ?? "";
+let post;
 try {
-  post = await sanityClient.fetch(postBySlugQuery, { slug });
-} catch (e) {
-  console.log("Could not fetch post");
+  post = await getInsightBySlug(Astro.locals, slug);
+} catch {
+  return temporarilyUnavailable();
 }
 
 if (!post) {
-  return Astro.redirect("/404");
+  const response = await Astro.rewrite("/404");
+  return new Response(response.body, { status: 404, headers: response.headers });
 }
 
-// Image URL builder
-const builder = imageUrlBuilder(sanityClient);
-function urlFor(source: any) {
-  return builder.image(source);
+// Neighbours in the archive for previous / next. Listing failures degrade to
+// no navigation rather than a failed page.
+let previous: InsightSummary | null = null;
+let next: InsightSummary | null = null;
+try {
+  const editions = await listAllPublishedInsights(Astro.locals);
+  const index = editions.findIndex((edition) => edition.slug === post.slug);
+  if (index >= 0) {
+    previous = editions[index + 1] ?? null;
+    next = editions[index - 1] ?? null;
+  }
+} catch {
+  // Leave navigation empty.
 }
 
-// Format date
-const formattedDate = post.publishedAt
-  ? new Date(post.publishedAt).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    })
-  : null;
+Astro.response.headers.set(
+  "Cache-Control",
+  "public, max-age=300, stale-while-revalidate=86400, stale-if-error=604800",
+);
 
-// Calculate reading time (rough estimate)
-function calculateReadingTime(body: any[]): number {
-  if (!body) return 0;
-  const text = body
-    .filter((block: any) => block._type === "block")
-    .map((block: any) =>
-      block.children?.map((child: any) => child.text).join(" ")
-    )
-    .join(" ");
-  const words = text.split(/\s+/).length;
-  return Math.ceil(words / 200); // Assuming 200 words per minute
-}
-
-const readingTime = calculateReadingTime(post.body);
-
-const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-const fullTitle = `${post.title} | Future of Dev`;
-const postDescription = post.excerpt || `Read ${post.title} on Future of Dev`;
-const ogImageSource = post.ogImage ?? post.mainImage;
-const ogImageURL = ogImageSource
-  ? urlFor(ogImageSource).width(1200).height(630).format("jpg").url()
-  : new URL("/og-default.png", Astro.site).href;
-const ogImageType = ogImageSource ? "image/jpeg" : "image/png";
+const date = formatEditionDate(post.publishedAt, "long");
+const canonical = insightPath(post.slug);
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="description" content={postDescription} />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="generator" content={Astro.generator} />
-    <title>{fullTitle}</title>
-    <link rel="canonical" href={canonicalURL} />
+<BaseLayout
+  title={post.title}
+  description={post.excerpt}
+  canonicalPath={canonical}
+  ogType="article"
+  ogImage={post.image}
+  publishedAt={post.publishedAt}
+  structuredData={articleSchema(post)}
+>
+  <article>
+    <header class="article-header">
+      <div class="narrow">
+        <Breadcrumbs items={[{ name: "Home", path: "/" }, { name: "Insights", path: "/insights" }, { name: post.title, path: canonical }]} />
+        <p class="eyebrow">Insight</p>
+        <h1>{post.title}</h1>
+        <p class="article-dek">{post.excerpt}</p>
+        <p class="meta"><Authors authors={post.authors} /> · {date} · {post.readingMinutes} min read</p>
+      </div>
+    </header>
+    {post.image && (
+      <div class="wrap article-image-wrap">
+        <img class="article-image" src={post.image} alt="" width="1200" height="630" />
+      </div>
+    )}
+    <div class="article-body" set:html={post.html} />
+    <ArticleEnd post={post} previous={previous} next={next} />
+  </article>
 
-    <!-- Open Graph -->
-    <meta property="og:type" content="article" />
-    <meta property="og:url" content={canonicalURL} />
-    <meta property="og:title" content={fullTitle} />
-    <meta property="og:description" content={postDescription} />
-    <meta property="og:image" content={ogImageURL} />
-    <meta property="og:image:secure_url" content={ogImageURL} />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta property="og:image:type" content={ogImageType} />
-    <meta property="og:site_name" content="Future of Dev" />
-    {post.publishedAt && <meta property="article:published_time" content={post.publishedAt} />}
-    {post.author?.name && <meta property="article:author" content={post.author.name} />}
-
-    <!-- Twitter / X -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={fullTitle} />
-    <meta name="twitter:description" content={postDescription} />
-    <meta name="twitter:image" content={ogImageURL} />
-
-    <!-- JSON-LD BlogPosting -->
-    <script type="application/ld+json" set:html={JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "BlogPosting",
-      "headline": post.title,
-      "description": postDescription,
-      "image": ogImageURL,
-      "url": canonicalURL,
-      "datePublished": post.publishedAt || undefined,
-      "author": post.author?.name ? {
-        "@type": "Person",
-        "name": post.author.name,
-      } : undefined,
-      "publisher": {
-        "@type": "Organization",
-        "name": "Future of Dev",
-        "logo": { "@type": "ImageObject", "url": "https://futureofdev.com/favicon.svg" },
-      },
-    })} />
-
-    <!-- Preconnect to external origins -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preconnect" href="https://cdn.sanity.io" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-
-    <!-- Prevent flash of wrong theme - defaults to light mode -->
-    <script is:inline>
-      (function() {
-        const saved = localStorage.getItem('theme');
-        if (saved === 'dark') {
-          document.documentElement.classList.add('dark');
-        }
-      })();
-    </script>
-  </head>
-  <body class="min-h-screen bg-background text-foreground">
-    <!-- Reading progress bar -->
-    <ReadingProgress client:load />
-
-    <!-- Theme toggle -->
-    <div class="fixed top-4 right-4 z-40">
-      <ThemeToggle client:load />
+  <section class="section build-focus">
+    <div class="wrap">
+      <NewsletterForm placement="insight-footer" />
     </div>
-
-    <!-- Back navigation -->
-    <nav class="fixed top-4 left-4 z-40">
-      <a
-        href="/insights"
-        class="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground active:text-foreground/70 transition-colors text-sm p-2 -m-2 touch-manipulation"
-      >
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-        </svg>
-        <span class="hidden sm:inline">Insights</span>
-      </a>
-    </nav>
-
-    <article class="py-16 md:py-24 px-4">
-      <div class="container mx-auto max-w-2xl">
-        <!-- Header -->
-        <header class="mb-12 md:mb-16">
-          {
-            post.categories && post.categories.length > 0 && (
-              <div class="flex gap-2 mb-6">
-                {post.categories.map((cat: any) => (
-                  <span class="font-mono text-xs uppercase tracking-wide text-muted-foreground/80 border border-border px-2 py-1 rounded-sm">
-                    {cat.title}
-                  </span>
-                ))}
-              </div>
-            )
-          }
-
-          <h1 class="text-3xl md:text-4xl font-bold tracking-tight mb-6 leading-tight">
-            {post.title}
-          </h1>
-
-          <div class="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
-            {
-              post.author && (
-                <div class="flex items-center gap-3">
-                  {post.author.image && (
-                    <img
-                      src={urlFor(post.author.image).width(40).height(40).url()}
-                      alt={post.author.name}
-                      width={32}
-                      height={32}
-                      class="w-8 h-8 rounded-full"
-                    />
-                  )}
-                  <span class="font-medium text-foreground">{post.author.name}</span>
-                </div>
-              )
-            }
-            {
-              formattedDate && (
-                <>
-                  <span class="text-border/50">·</span>
-                  <time datetime={post.publishedAt} class="font-mono text-sm">{formattedDate}</time>
-                </>
-              )
-            }
-            {
-              readingTime > 0 && (
-                <>
-                  <span class="text-border/50">·</span>
-                  <span class="font-mono text-sm">{readingTime} min</span>
-                </>
-              )
-            }
-          </div>
-        </header>
-
-        <!-- Main Image -->
-        {
-          post.mainImage && (
-            <div class="mb-12 md:mb-16 -mx-4 md:mx-0">
-              <img
-                src={urlFor(post.mainImage).width(1200).auto("format").url()}
-                alt={post.mainImage.alt || post.title}
-                width={1200}
-                height={675}
-                class="w-full md:rounded-lg"
-              />
-            </div>
-          )
-        }
-
-        <!-- Body Content - Focused on Readability -->
-        <div class="prose-content text-base md:text-lg">
-          <PortableTextContent value={post.body} client:load />
-        </div>
-
-        <!-- Author Bio -->
-        {
-          post.author && post.author.bio && (
-            <div class="mt-16 md:mt-20 pt-8 border-t border-border">
-              <div class="flex items-start gap-4">
-                {post.author.image && (
-                  <img
-                    src={urlFor(post.author.image).width(64).height(64).url()}
-                    alt={post.author.name}
-                    width={64}
-                    height={64}
-                    class="w-16 h-16 rounded-full flex-shrink-0"
-                  />
-                )}
-                <div>
-                  <p class="font-semibold text-lg mb-1">{post.author.name}</p>
-                  <p class="text-muted-foreground">{post.author.bio}</p>
-                </div>
-              </div>
-            </div>
-          )
-        }
-
-        <!-- Back to Insights -->
-        <div class="mt-12 md:mt-16 pt-8 border-t border-border">
-          <a
-            href="/insights"
-            class="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
-          >
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-            </svg>
-            Back to insights
-          </a>
-        </div>
-      </div>
-    </article>
-
-    <!-- Footer -->
-    <footer class="border-t border-border py-8">
-      <div class="container mx-auto px-4 flex flex-col items-center gap-4 text-sm text-muted-foreground">
-        <div class="flex items-center gap-4">
-          <a href="https://www.instagram.com/claude.academy" target="_blank" rel="noopener noreferrer" class="hover:text-foreground transition-colors" aria-label="Instagram">
-            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
-            </svg>
-          </a>
-          <a href="https://www.tiktok.com/@claude.academy" target="_blank" rel="noopener noreferrer" class="hover:text-foreground transition-colors" aria-label="TikTok">
-            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.85 4.85 0 01-1.01-.07z"/>
-            </svg>
-          </a>
-          <a href="mailto:luke@futureofdev.com" class="hover:text-foreground transition-colors" aria-label="Email">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0l-9.75 6.093L2.25 6.75" />
-            </svg>
-          </a>
-        </div>
-        <p>
-          Made by <a href="https://www.linkedin.com/in/luke-hennerley-49204953/" target="_blank" rel="noopener noreferrer" class="hover:text-foreground transition-colors underline underline-offset-2">Luke Hennerley</a> with ♥
-        </p>
-        <p>&copy; {new Date().getFullYear()} Future of Dev. All rights reserved.</p>
-      </div>
-    </footer>
-
-    <!-- Cloudflare Web Analytics -->
-    <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "YOUR_CF_ANALYTICS_TOKEN"}'></script>
-    <PosthogAnalytics />
-  </body>
-</html>
-
-<style is:global>
-  @import "../../styles/global.css";
-
-  /* Readable prose styles for blog content */
-  .prose-content {
-    max-width: 65ch;
-  }
-
-  .prose-content p {
-    margin-bottom: 1.75rem;
-  }
-
-  .prose-content h2 {
-    margin-top: 3.5rem;
-    margin-bottom: 1.5rem;
-  }
-
-  .prose-content h3 {
-    margin-top: 2.5rem;
-    margin-bottom: 1rem;
-  }
-
-  /* Selection styling */
-  .prose-content ::selection {
-    background-color: var(--color-primary);
-    color: var(--color-primary-foreground);
-  }
-
-  /* Focus visible for accessibility */
-  .prose-content a:focus-visible {
-    outline: 2px solid var(--color-ring);
-    outline-offset: 2px;
-    border-radius: 2px;
-  }
-
-  /* Image fade-in animation */
-  @keyframes fade-in {
-    from {
-      opacity: 0;
-      transform: translateY(4px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  .animate-fade-in {
-    animation: fade-in 0.4s ease-out forwards;
-  }
-
-  /* Respect reduced motion */
-  @media (prefers-reduced-motion: reduce) {
-    .animate-fade-in {
-      animation: none;
-      opacity: 1;
-    }
-  }
-</style>
+  </section>
+</BaseLayout>

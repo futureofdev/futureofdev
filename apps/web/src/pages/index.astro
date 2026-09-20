@@ -1,273 +1,235 @@
 ---
 export const prerender = false;
 
-import LandingLayout from "../layouts/LandingLayout.astro";
-import AnimatedBulb from "../components/AnimatedBulb.astro";
-import { sanityClient } from "../lib/sanity";
-import { postsQuery, homepageQuery } from "@futureofdev/sanity-client";
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Icon from "../components/Icon.astro";
+import NewsletterForm from "../components/NewsletterForm.astro";
+import StageTag from "../components/StageTag.astro";
+import { editionEmptyState, homepageCopy } from "../content/site";
+import { courseHours, courseStats } from "../lib/course-content";
+import { listPublishedInsights, type InsightSummary } from "../lib/insights";
+import { formatEditionDate, splitTags } from "../lib/tags";
 
-let homepage: any = null;
-let posts: any[] = [];
+let editions: InsightSummary[] = [];
+let editionsUnavailable = false;
+try { editions = await listPublishedInsights(Astro.locals, 4); }
+catch { editionsUnavailable = true; }
+const latest = editions[0];
+const previous = editions.slice(1);
+const latestTags = splitTags(latest?.tags);
 
-try {
-  [homepage, posts] = await Promise.all([
-    sanityClient.fetch(homepageQuery),
-    sanityClient.fetch(postsQuery),
-  ]);
-  posts = posts.slice(0, 3);
-} catch (e) {
-  console.log("Sanity not configured, showing placeholder content");
-}
+Astro.response.headers.set(
+  "Cache-Control",
+  editionsUnavailable ? "no-store" : "public, max-age=300, stale-while-revalidate=86400, stale-if-error=604800",
+);
 
-const title = homepage?.title ?? "Future of Dev";
-const tagline = homepage?.tagline ?? "AI is Changing Software Development — Forever.";
-const seoTitle = homepage?.seo?.title ?? "Free Agentic Development News, Courses & Insights";
-const seoDescription = homepage?.seo?.description ?? "Home to Claude Academy — free AI-powered coding bootcamps, career insights, and practical guides to help developers navigate the future of Agentic Development.";
-
-const sections = homepage?.sections ?? [
-  {
-    heading: "Manifesto",
-    paragraphs: [
-      "The rules are being rewritten.",
-      "AI isn't coming for your job — but developers who understand AI will replace those who don't.",
-      "We believe in adaptation over fear, skills over hype, and action over paralysis.",
-    ],
-  },
-  {
-    heading: "Mission",
-    paragraphs: [
-      "Help developers and aspiring technologists navigate the AI-driven future.",
-      "Cut through the noise. Provide practical guidance. Build real skills.",
-      "Create a community of lifelong learners ready for what's next.",
-    ],
-  },
-];
+const date = latest && formatEditionDate(latest.publishedAt);
+const courseEntry = (await getCollection("courses")).find(
+  (course) => course.data.slug === "coding-bootcamp-in-a-box",
+);
+if (!courseEntry) throw new Error("Missing course content for coding-bootcamp-in-a-box");
 ---
 
-<LandingLayout title={seoTitle} description={seoDescription}>
-
-  <div class="max-w-2xl mx-auto px-6 pt-16 md:pt-24">
-
-    <!-- ── Hero ──────────────────────────────────────────── -->
-    <div class="pb-10 text-center">
-      <div class="flex justify-center mb-4 md:mb-6">
-        <AnimatedBulb class="w-16 md:w-24" />
-      </div>
-
-      {posts[0] && (
-        <a
-          href={`/insights/${posts[0].slug.current}`}
-          data-track-latest-insight
-          data-insight-slug={posts[0].slug.current}
-          class="inline-flex items-center gap-2 mb-5 md:mb-6 px-3 py-1.5 rounded-full border border-border bg-muted/50 hover:border-primary/40 hover:bg-muted transition-colors group"
-        >
-          <span class="text-[10px] font-mono uppercase tracking-widest text-primary">Latest Insight</span>
-          <span class="w-px h-3 bg-border"></span>
-          <span class="text-xs text-muted-foreground group-hover:text-foreground transition-colors line-clamp-1 max-w-[200px] md:max-w-xs">{posts[0].title}</span>
-          <span class="text-muted-foreground group-hover:text-primary transition-colors text-xs">→</span>
-        </a>
-      )}
-
-      <h1 class="text-4xl md:text-7xl font-bold tracking-tight mb-3 md:mb-4 font-mono">
-        {title}
+<BaseLayout title={homepageCopy.seo.title} description={homepageCopy.seo.description}>
+  <section class="home-hero" aria-labelledby="home-heading">
+    <div class="wrap">
+      <h1 id="home-heading" class="display-xl">
+        {homepageCopy.hero.heading[0]}<br />{homepageCopy.hero.heading[1]}
       </h1>
-      <p class="text-lg md:text-2xl text-muted-foreground">
-        {tagline}
-      </p>
-    </div>
-
-    <hr class="border-border" />
-
-    <!-- ── Body ──────────────────────────────────────────── -->
-    <div class="space-y-12 md:space-y-16 pt-10 pb-16 md:pb-24">
-
-      <!-- Claude Academy callout -->
-      <div>
+      <p class="home-hero-intro">{homepageCopy.hero.intro}</p>
+      <p class="lede">{homepageCopy.hero.lede}</p>
+      <NewsletterForm
+        placement="homepage-hero"
+        variant="inline"
+        heading=""
+        copy=""
+        buttonLabel={homepageCopy.hero.joinLabel}
+        note={latest ? "Free. One useful edition each week. Unsubscribe any time." : editionsUnavailable ? "Free to subscribe. Unsubscribe any time." : homepageCopy.hero.note}
+      />
+      {latest && <p class="home-hero-link">
         <a
-          href="/claude-academy"
-          data-track-academy-cta
-          class="block group rounded-xl border border-border bg-card p-4 md:p-6 hover:border-primary/50 hover:bg-muted/30 transition-all"
-        >
-          <div class="flex items-start gap-4 md:gap-5">
-            <div class="flex-shrink-0">
-              <img src="/claude-academy.svg" alt="Claude Academy" width={56} height={56} class="w-12 h-12 md:w-14 md:h-14" />
-            </div>
-            <div class="flex-1 min-w-0">
-              <div class="flex flex-wrap items-center gap-1.5 md:gap-2 mb-2">
-                <p class="text-xs font-mono uppercase tracking-wide text-primary">Claude Academy</p>
-                <span class="inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-mono font-semibold uppercase tracking-wider bg-primary/10 text-primary rounded-full">
-                  New · Zero to Online Portfolio
-                </span>
-              </div>
-              <h3 class="text-lg font-semibold text-foreground group-hover:text-primary transition-colors mb-2">
-                Learn with Claude
-              </h3>
-              <p class="text-sm text-muted-foreground line-clamp-2">
-                Free, open-source AI-powered bootcamps. Helping you to upskill & keep up with AI, no matter your level.
-              </p>
-            </div>
-            <div class="flex-shrink-0 self-center text-muted-foreground group-hover:text-primary transition-colors">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-              </svg>
-            </div>
-          </div>
-        </a>
-      </div>
+          href={`/insights/${encodeURIComponent(latest.slug)}`}
+          data-analytics-cta="latest-edition"
+          data-analytics-placement="homepage-hero"
+          data-analytics-content-slug={latest.slug}
+        >{homepageCopy.hero.latestLabel}</a>
+      </p>}
+    </div>
+  </section>
 
-      <!-- Newsletter -->
-      <div>
-        <p class="text-sm text-muted-foreground mb-3">
-          Impactful news, insights and courses — straight to your inbox. No spam, unsubscribe any time.
-        </p>
-        <form id="newsletter-form" class="flex flex-col sm:flex-row gap-3">
-          <input
-            type="email"
-            name="email"
-            required
-            placeholder="you@example.com"
-            class="flex-1 px-4 py-2.5 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-colors text-sm"
-          />
-          <button
-            type="submit"
-            class="px-5 py-2.5 rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors whitespace-nowrap text-sm"
-          >
-            Subscribe
-          </button>
-        </form>
-        <p id="newsletter-message" class="mt-3 text-sm hidden"></p>
-      </div>
-
-      <!-- Content sections (Manifesto, Mission, etc.) -->
-      {sections.map((section: any) => (
-        <div>
-          <h2 class="text-xs font-mono uppercase tracking-widest text-muted-foreground mb-6">
-            {section.heading}
-          </h2>
-          <div class="space-y-4 text-muted-foreground">
-            {section.paragraphs?.map((paragraph: string) => (
-              <p>{paragraph}</p>
-            ))}
-          </div>
-        </div>
-      ))}
-
-      <!-- Insights -->
-      <div>
-        <h2 class="text-xs font-mono uppercase tracking-widest text-muted-foreground mb-6">
-          Insights
+  <section class="section" aria-labelledby="edition-heading">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">{homepageCopy.edition.eyebrow}</p>
+        <h2 id="edition-heading" class="display-lg">
+          {homepageCopy.edition.heading[0]}<br />{homepageCopy.edition.heading[1]}
         </h2>
-        {posts.length > 0 ? (
-          <div class="space-y-6">
-            {posts.map((post: any) => (
-              <a
-                href={`/insights/${post.slug.current}`}
-                data-track-insight
-                data-insight-slug={post.slug.current}
-                data-insight-title={post.title}
-                class="block group p-4 -mx-4 md:p-5 md:-mx-5 rounded-lg border border-transparent hover:border-border hover:bg-muted/30 transition-all"
-              >
-                <div class="flex items-start justify-between gap-4">
-                  <div class="space-y-2 flex-1">
-                    <h3 class="text-lg font-medium text-foreground group-hover:text-primary transition-colors">
-                      {post.title}
-                    </h3>
-                    {post.excerpt && (
-                      <p class="text-sm text-muted-foreground line-clamp-2">{post.excerpt}</p>
-                    )}
-                    <div class="flex items-center gap-3 text-xs text-muted-foreground pt-1">
-                      {post.author?.name && <span>{post.author.name}</span>}
-                      {post.publishedAt && (
-                        <>
-                          {post.author?.name && <span>·</span>}
-                          <time datetime={post.publishedAt}>
-                            {new Date(post.publishedAt).toLocaleDateString('en-US', {
-                              month: 'short', day: 'numeric', year: 'numeric'
-                            })}
-                          </time>
-                        </>
-                      )}
-                    </div>
-                  </div>
-                  <span class="text-muted-foreground group-hover:text-primary transition-colors mt-1">→</span>
-                </div>
-              </a>
-            ))}
+        <p class="lede">{homepageCopy.edition.lede}</p>
+      </div>
+      <div class="grid-4">
+        {homepageCopy.edition.beats.map((beat) => (
+          <article class:list={["panel", beat.label && "method-build"]}>
+            <div class="panel-head"><Icon name={beat.icon} /><p class="meta">{beat.number}</p></div>
+            <h3>{beat.title}</h3>
+            <p>{beat.body}</p>
+            {beat.label && <span class="lime-label">{beat.label}</span>}
+          </article>
+        ))}
+      </div>
+      <div class="extensions">
+        <div class="extensions-head">
+          <p class="meta">{homepageCopy.edition.extensionsLabel}</p>
+          <p>{homepageCopy.edition.extensionsNote}</p>
+        </div>
+        <ul class="extension-list">
+          {homepageCopy.edition.extensions.map((block) => (
+            <li>
+              <div class="panel-head"><Icon name={block.icon} /><p class="meta">{block.number}</p></div>
+              <b>{block.title}</b>
+              <p>{block.body}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-cloud" aria-labelledby="latest-heading">
+    <div class="wrap">
+      <p class="eyebrow">{homepageCopy.latest.eyebrow}</p>
+      <div class:list={["home-latest", previous.length > 0 && "home-grid-2"]}>
+        <div>
+          {latest ? <>
+            {(latestTags.stages.length > 0 || latestTags.topics.length > 0) && (
+              <div class="tag-row" aria-label="Edition topics">
+                {latestTags.stages.map((stage) => <StageTag stage={stage} />)}
+                {latestTags.topics.map((topic) => <span class="tag">{topic}</span>)}
+              </div>
+            )}
+            <h2 id="latest-heading" class="display-lg">{latest.title}</h2>
+            <p class="lede">{latest.excerpt}</p>
+            <p class="meta home-edition-meta">{date} · {latest.author}</p>
+            <a class="button button-secondary" href={`/insights/${encodeURIComponent(latest.slug)}`}>
+              {homepageCopy.latest.readLabel}
+            </a>
+          </> : <>
+            <h2 id="latest-heading" class="display-lg">{editionsUnavailable ? "Editions are temporarily unavailable." : editionEmptyState.heading}</h2>
+            <p class="lede">{editionsUnavailable ? "Please try again shortly. You can still join the newsletter below." : editionEmptyState.body}</p>
+          </>}
+        </div>
+        {previous.length > 0 && (
+          <div class="latest-aside">
+            <p class="meta">{homepageCopy.latest.previousLabel}</p>
+            <ol>
+              {previous.map((edition, index) => (
+                <li>
+                  <span>{String(index + 1).padStart(2, "0")}</span>
+                  <a href={`/insights/${encodeURIComponent(edition.slug)}`}>{edition.title}<small>{formatEditionDate(edition.publishedAt)}</small></a>
+                </li>
+              ))}
+            </ol>
+            <a href="/insights">{homepageCopy.latest.browseLabel}</a>
           </div>
-        ) : (
-          <p class="text-muted-foreground">Coming soon.</p>
         )}
       </div>
-
     </div>
-  </div>
+  </section>
 
-</LandingLayout>
+  <section class="section" aria-labelledby="course-heading">
+    <div class="wrap">
+      <p class="eyebrow">{homepageCopy.featuredLearning.eyebrow}</p>
+      <div class="home-grid-2 featured-learning">
+        <div>
+          <h2 id="course-heading" class="display-lg">
+            {homepageCopy.featuredLearning.heading[0]}<br />
+            {homepageCopy.featuredLearning.heading[1]}
+          </h2>
+          <p class="lede">{homepageCopy.featuredLearning.lede}</p>
+          <p>The course materials are free. Access to the AI tools is separate and may require payment.</p>
+          <div class="compatibility">
+            {courseEntry.data.compatibility.map((agent) => (
+              <span data-status={agent.status}>{agent.name} · {agent.status}</span>
+            ))}
+          </div>
+          <a
+            class="button button-dark"
+            href="/learning/coding-bootcamp-in-a-box"
+            data-analytics-cta="featured-course"
+            data-analytics-placement="homepage"
+          >{homepageCopy.featuredLearning.ctaLabel}</a>
+        </div>
+        <dl class="course-facts" aria-label="Course details">
+          <div><dt>Lessons</dt><dd>{courseStats.lessonCount}</dd></div>
+          <div><dt>Phases</dt><dd>{courseStats.phaseCount}</dd></div>
+          <div><dt>Course time</dt><dd>{courseHours} hours</dd></div>
+          <div><dt>Objectives</dt><dd>{courseStats.objectiveCount}</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
 
-<script>
-  import posthog from "posthog-js";
+  <section class="section section-cloud" aria-labelledby="audience-heading">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">{homepageCopy.audience.eyebrow}</p>
+        <h2 id="audience-heading" class="display-lg">
+          {homepageCopy.audience.heading.map((line, index) => (
+            <>{index > 0 && <br />}{line}</>
+          ))}
+        </h2>
+        <p class="lede">{homepageCopy.audience.lede}</p>
+      </div>
+      <div class="grid-3">
+        {homepageCopy.audience.groups.map((group) => (
+          <article class="panel">
+            <StageTag stage={group.stage} />
+            <h3>{group.title}</h3>
+            <p>{group.body}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
 
-  // Track Claude Academy CTA click
-  document.querySelector<HTMLAnchorElement>("[data-track-academy-cta]")?.addEventListener("click", () => {
-    posthog.capture("claude_academy_cta_clicked", { source: "homepage" });
-  });
+  <section class="section section-ink" aria-labelledby="founder-heading">
+    <div class="wrap">
+      <p class="eyebrow">{homepageCopy.founder.eyebrow}</p>
+      <div class="home-grid-2 founder-grid">
+        <h2 id="founder-heading" class="display-lg">
+          {homepageCopy.founder.heading.join(" ")}
+        </h2>
+        <div>
+          {homepageCopy.founder.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+          <a href="/about">{homepageCopy.founder.ctaLabel}</a>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  // Track latest insight badge click
-  const latestInsightLink = document.querySelector<HTMLAnchorElement>("[data-track-latest-insight]");
-  latestInsightLink?.addEventListener("click", () => {
-    posthog.capture("latest_insight_clicked", {
-      insight_slug: latestInsightLink.dataset.insightSlug,
-    });
-  });
+  <section class="section mission-section" aria-labelledby="mission-heading">
+    <div class="wrap">
+      <div class="mission-copy">
+        <p class="eyebrow">{homepageCopy.mission.eyebrow}</p>
+        <h2 id="mission-heading" class="display-lg">{homepageCopy.mission.heading}</h2>
+        <p class="lede">{homepageCopy.mission.lede}</p>
+      </div>
+    </div>
+  </section>
 
-  // Track insight list clicks
-  document.querySelectorAll<HTMLAnchorElement>("[data-track-insight]").forEach((link) => {
-    link.addEventListener("click", () => {
-      posthog.capture("insight_clicked", {
-        insight_slug: link.dataset.insightSlug,
-        insight_title: link.dataset.insightTitle,
-        source: "homepage",
-      });
-    });
-  });
-
-  const form = document.getElementById("newsletter-form") as HTMLFormElement;
-  const message = document.getElementById("newsletter-message") as HTMLElement;
-
-  form?.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const email = new FormData(form).get("email") as string;
-    const button = form.querySelector("button") as HTMLButtonElement;
-
-    button.disabled = true;
-    button.textContent = "Subscribing...";
-    message.classList.add("hidden");
-
-    try {
-      const res = await fetch("/api/newsletter", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-      });
-      const data = await res.json();
-      if (res.ok) {
-        posthog.identify(email, { email });
-        posthog.capture("newsletter_signup", { source: "homepage" });
-        message.textContent = "Thanks for subscribing — welcome to the community!";
-        message.className = "mt-3 text-sm text-primary";
-        form.reset();
-      } else {
-        posthog.capture("newsletter_signup_error", { source: "homepage", error: data.error ?? "unknown" });
-        message.textContent = data.error || "Something went wrong. Try again.";
-        message.className = "mt-3 text-sm text-red-500";
-      }
-    } catch (err) {
-      posthog.captureException(err instanceof Error ? err : new Error(String(err)));
-      message.textContent = "Network error. Please try again.";
-      message.className = "mt-3 text-sm text-red-500";
-    } finally {
-      button.disabled = false;
-      button.textContent = "Subscribe";
-    }
-  });
-</script>
+  <section id="join" class="section section-cloud final-signup" aria-labelledby="join-heading">
+    <div class="wrap">
+      <h2 id="join-heading" class="display-lg">
+        {homepageCopy.finalSignup.heading[0]}<br />{homepageCopy.finalSignup.heading[1]}
+      </h2>
+      <NewsletterForm
+        placement="homepage-final"
+        variant="inline"
+        heading=""
+        copy=""
+        buttonLabel={homepageCopy.finalSignup.buttonLabel}
+        note={homepageCopy.finalSignup.note}
+      />
+    </div>
+  </section>
+</BaseLayout>

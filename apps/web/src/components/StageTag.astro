@@ -1,0 +1,28 @@
+---
+/**
+ * Career-stage label.
+ *
+ * Brand rule: a career-stage label always pairs an icon *and* a word, never
+ * colour alone. The icon comes from the brand pack and inherits `currentColor`.
+ */
+import Icon from "./Icon.astro";
+
+interface Props {
+  stage: "evolve" | "enter" | "lead" | "everyone";
+  class?: string;
+}
+
+const { stage, class: className } = Astro.props;
+
+const labels = {
+  evolve: "Evolve",
+  enter: "Enter",
+  lead: "Lead",
+  everyone: "Everyone",
+} as const;
+---
+
+<span class:list={["tag", `tag-${stage}`, className]}>
+  <Icon name={`stage-${stage}`} class="tag-icon" />
+  {labels[stage]}
+</span>

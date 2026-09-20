@@ -1,0 +1,40 @@
+/* Future of Dev — design tokens v1.0 */
+:root {
+  /* core six — fixed by strategy brief §14 */
+  --fod-ink: #111827;
+  --fod-signal: #4355FF;
+  --fod-build: #C8FF3D;
+  --fod-cloud: #F3F5F8;
+  --fod-accent: #42D7FF;
+  --fod-base: #FFFFFF;
+
+  /* system extensions */
+  --fod-graphite: #6B7280;
+  --fod-hairline: #E2E6EC;
+  --fod-signal-700: #2E3FE0;
+  --fod-signal-300: #8B98FF;
+  --fod-signal-050: #EDEFFF;
+  --fod-cyan-700: #0E7490;
+  --fod-void: #0A0E17;
+  --fod-slate: #1F2937;
+
+  /* type */
+  --fod-display: 'Archivo', 'Helvetica Neue', Arial, sans-serif;
+  --fod-body: 'Inter', -apple-system, 'Segoe UI', Arial, sans-serif;
+  --fod-mono: 'JetBrains Mono', Consolas, monospace;
+  --fod-display-vf: 'wdth' 112, 'wght' 800;
+
+  /* geometry — 4px unit, same grid as the symbol */
+  --fod-u: 4px;
+  --fod-radius: 0;
+  --fod-rule: 1px solid var(--fod-hairline);
+  --fod-clearspace: calc(var(--fod-u) * 2);
+}
+
+/* dark surfaces: signal fails on void (3.66:1) — swap to signal-300 */
+[data-theme="dark"] {
+  --fod-bg: var(--fod-void);
+  --fod-surface: var(--fod-slate);
+  --fod-fg: var(--fod-cloud);
+  --fod-signal-text: var(--fod-signal-300);
+}

@@ -28,8 +28,11 @@ dist/
 .DS_Store
 Thumbs.db
 
-# Claude Code
-.claude/
+# Local Claude Code state (course-owned .claude skill bundles remain tracked)
+/.claude/
+
+# Private analytics inputs and generated growth reports
+/.private/growth/
 
 # Logs
 *.log

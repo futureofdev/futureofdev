@@ -7,34 +7,30 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "lint": "eslint src --ext .ts,.tsx,.astro",
+    "test": "tsx --test src/lib/*.test.ts",
+    "check:seo": "node --import tsx scripts/check-seo-rendered.ts",
+    "check:local": "node --import tsx scripts/check-local-site.ts",
+    "check:beehiiv": "node --import tsx scripts/check-beehiiv.ts",
+    "validate:course": "tsx scripts/validate-course.ts",
+    "growth:collect": "tsx scripts/collect-growth-review.ts",
+    "growth:review": "tsx scripts/render-growth-review.ts",
+    "lint": "eslint \"src/**/*.{ts,tsx}\"",
     "type-check": "astro check && tsc --noEmit"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^12.0.0",
-    "@astrojs/react": "^4.1.0",
-    "@astrojs/sitemap": "^3.2.0",
-    "@futureofdev/sanity-client": "workspace:*",
-    "@futureofdev/ui": "workspace:*",
-    "@portabletext/react": "^3.1.0",
-    "@sanity/astro": "^3.2.0",
-    "@sanity/client": "^7.14.0",
-    "@sanity/image-url": "^1.1.0",
-    "@tailwindcss/vite": "^4.0.0",
     "astro": "^5.1.0",
     "dotenv": "^17.2.3",
+    "fflate": "^0.4.8",
     "posthog-js": "^1.353.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "resend": "^6.9.2",
-    "@supabase/supabase-js": "^2.49.1",
-    "tailwindcss": "^4.0.0"
+    "sanitize-html": "^2.16.0",
+    "yaml": "^2.8.2"
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.0",
     "@futureofdev/eslint-config": "workspace:*",
     "@futureofdev/typescript-config": "workspace:*",
-    "@types/react": "^19.0.0",
-    "@types/react-dom": "^19.0.0",
+    "tsx": "^4.21.0",
     "typescript": "^5.7.0"
   }
 }

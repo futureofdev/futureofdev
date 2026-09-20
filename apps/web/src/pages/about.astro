@@ -1,0 +1,75 @@
+---
+export const prerender = false;
+
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import { founderSchema } from "../lib/seo";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import NewsletterForm from "../components/NewsletterForm.astro";
+import { founderImage } from "../content/site";
+---
+
+<BaseLayout
+  title="About Luke Hennerley and Future of Dev"
+  description="Meet Luke Hennerley and learn why Future of Dev helps people develop practical AI skills through explanations, exercises and work they can demonstrate."
+  structuredData={founderSchema}
+>
+  <header class="hero">
+    <div class="wrap">
+      <Breadcrumbs items={[{ name: "Home", path: "/" }, { name: "About", path: "/about" }]} />
+      <p class="eyebrow">About Future of Dev</p>
+      <h1 class="display-xl">Learn how to use AI with judgement.</h1>
+      <p class="lede">Future of Dev is a newsletter-led learning publication founded by Luke Hennerley. It helps people in digital roles understand what AI changes, develop practical skills and produce work they can examine.</p>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="wrap split">
+      <div>
+        <p class="eyebrow">Purpose</p>
+        <h2 class="display-lg">Develop skills you can put to work.</h2>
+      </div>
+      <div>
+        <p class="lede">Using AI in your work raises practical questions. What should you ask it to do? How do you check the result? Which parts still need your judgement?</p>
+        <p>Future of Dev explores those questions through explanations, exercises and work you can examine.</p>
+        <p>Use what you learn in your next project and build the confidence to explain your choices.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-cloud">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Principles</p>
+        <h2 class="display-lg">Independent. Practical. Evidence-led.</h2>
+      </div>
+      <div class="grid-3">
+        <article class="panel"><p class="meta">01</p><h3>Adaptation</h3><p>AI changes the work. Fear does not help you respond.</p></article>
+        <article class="panel"><p class="meta">02</p><h3>Judgement</h3><p>Tools change. Your ability to question, check and decide still matters.</p></article>
+        <article class="panel"><p class="meta">03</p><h3>Evidence</h3><p>Build real things and learn to explain the choices behind them.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap split">
+      <div>
+        <p class="eyebrow">Founder</p>
+        <h2 id="luke-hennerley" class="display-lg">Luke Hennerley</h2>
+      </div>
+      <div>
+        {founderImage && (
+          <figure class="founder-figure">
+            <img src={founderImage.src} alt={founderImage.alt} width="288" height="288" loading="lazy" />
+          </figure>
+        )}
+        <p class="lede">Luke Hennerley is VP of AI Operations at Sidetrade, following work across software engineering, product development and digital delivery.</p>
+        <p>He writes Future of Dev to turn lessons from that work into methods, exercises and decisions other people can test in their own context.</p>
+        <a href="https://www.linkedin.com/in/luke-hennerley-49204953/" rel="noopener noreferrer">Connect on LinkedIn →</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section build-focus">
+    <div class="wrap"><NewsletterForm placement="about-footer" /></div>
+  </section>
+</BaseLayout>

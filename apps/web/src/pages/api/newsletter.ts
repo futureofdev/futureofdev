@@ -1,141 +1,189 @@
 import type { APIRoute } from "astro";
-import { Resend } from "resend";
+import {
+  BeehiivApiError,
+  createSubscription,
+  getAnalyticsId,
+  getBeehiivConfig,
+  getRuntimeEnv,
+  getSubscriptionByEmail,
+  updateSubscriptionByEmail,
+  type BeehiivSubscription,
+} from "../../lib/beehiiv";
+import { COURSE_OFFER, createCourseDownloadToken } from "../../lib/course-token";
 
 export const prerender = false;
 
-const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+const TOKEN_PATTERN = /^[a-z0-9][a-z0-9_-]*$/;
+const ALLOWED_HOSTS = new Set(["futureofdev.com", "www.futureofdev.com", "localhost", "127.0.0.1"]);
+const MAX_REQUEST_BYTES = 8_192;
 
-const ALLOWED_ORIGINS = ["https://futureofdev.com", "https://www.futureofdev.com"];
-
-function escapeHtml(str: string): string {
-  return str
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
+interface NewsletterPayload {
+  email?: unknown;
+  placement?: unknown;
+  offer?: unknown;
+  pageUrl?: unknown;
+  analyticsConsent?: unknown;
+  attribution?: unknown;
 }
 
-function buildWelcomeEmail(email: string): string {
-  const safeEmail = escapeHtml(email);
-  const unsubscribeUrl = `https://futureofdev.com/api/unsubscribe?e=${btoa(email)}`;
-  return `
-<!DOCTYPE html>
-<html lang="en">
-<head><meta charset="UTF-8" /></head>
-<body style="margin:0;padding:0;background-color:#f8fafc;font-family:'Inter',system-ui,sans-serif;">
-  <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f8fafc;padding:40px 20px;">
-    <tr>
-      <td align="center">
-        <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background-color:#ffffff;border-radius:8px;border:1px solid #e2e8f0;">
-          <!-- Header -->
-          <tr>
-            <td style="padding:32px 32px 24px;border-bottom:1px solid #e2e8f0;">
-              <span style="font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:700;color:#1e293b;">Future of Dev</span>
-            </td>
-          </tr>
-          <!-- Body -->
-          <tr>
-            <td style="padding:32px;">
-              <h1 style="margin:0 0 16px;font-size:24px;font-weight:700;color:#0f172a;">Welcome aboard!</h1>
-              <p style="margin:0 0 16px;font-size:15px;line-height:1.6;color:#475569;">
-                You're now subscribed to Future of Dev. We'll send you the most impactful news, insights, and free courses on agentic development — straight to your inbox.
-              </p>
-              <p style="margin:0 0 24px;font-size:15px;line-height:1.6;color:#475569;">
-                No spam, no fluff. Just the stuff that matters for your career in the AI era.
-              </p>
-              <!-- CTA -->
-              <table cellpadding="0" cellspacing="0">
-                <tr>
-                  <td style="background-color:#1e293b;border-radius:6px;">
-                    <a href="https://futureofdev.com/claude-academy" style="display:inline-block;padding:12px 24px;font-size:14px;font-weight:600;color:#f8fafc;text-decoration:none;font-family:'Inter',system-ui,sans-serif;">
-                      Explore Claude Academy — It's Free
-                    </a>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-          <!-- Footer -->
-          <tr>
-            <td style="padding:24px 32px;border-top:1px solid #e2e8f0;">
-              <p style="margin:0;font-size:12px;color:#94a3b8;line-height:1.5;">
-                You're receiving this because ${safeEmail} signed up at futureofdev.com.<br/>
-                <a href="https://futureofdev.com" style="color:#64748b;text-decoration:underline;">futureofdev.com</a>
-                &nbsp;·&nbsp;
-                <a href="${unsubscribeUrl}" style="color:#64748b;text-decoration:underline;">Unsubscribe</a>
-              </p>
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-  </table>
-</body>
-</html>`;
+function json(body: Record<string, unknown>, status = 200, headers: HeadersInit = {}): Response {
+  return new Response(JSON.stringify(body), {
+    status,
+    headers: {
+      "Content-Type": "application/json; charset=utf-8",
+      "Cache-Control": "no-store",
+      ...headers,
+    },
+  });
+}
+
+function boundedToken(value: unknown, max: number): string | undefined {
+  if (typeof value !== "string") return undefined;
+  const token = value.trim().toLowerCase().slice(0, max);
+  return TOKEN_PATTERN.test(token) ? token : undefined;
+}
+
+function boundedAttribution(value: unknown): Record<string, string> {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return {};
+  const allowed = ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content"];
+  const result: Record<string, string> = {};
+  for (const key of allowed) {
+    const candidate = (value as Record<string, unknown>)[key];
+    if (typeof candidate === "string") {
+      const clean = candidate.trim().replace(/[\u0000-\u001f\u007f]/g, "").slice(0, 100);
+      if (clean) result[key] = clean;
+    }
+  }
+  return result;
+}
+
+function safePageUrl(value: unknown): string | undefined {
+  if (typeof value !== "string" || value.length > 500) return undefined;
+  try {
+    const url = new URL(value);
+    if (!ALLOWED_HOSTS.has(url.hostname)) return undefined;
+    return `${url.origin}${url.pathname}`;
+  } catch {
+    return undefined;
+  }
+}
+
+function activeStatus(subscription: BeehiivSubscription | null): boolean {
+  return subscription ? ["active", "validating"].includes(subscription.status) : false;
 }
 
 export const POST: APIRoute = async ({ request, locals }) => {
+  const origin = request.headers.get("Origin");
+  if (origin) {
+    try {
+      if (!ALLOWED_HOSTS.has(new URL(origin).hostname)) return json({ error: "Forbidden" }, 403);
+    } catch {
+      return json({ error: "Forbidden" }, 403);
+    }
+  }
+
+  const declaredLength = Number(request.headers.get("Content-Length") || 0);
+  if (declaredLength > MAX_REQUEST_BYTES) return json({ error: "Request too large" }, 413);
+
+  if (!request.headers.get("Content-Type")?.toLowerCase().startsWith("application/json")) {
+    return json({ error: "Invalid request" }, 400);
+  }
+
+  let payload: NewsletterPayload;
   try {
-    const origin = request.headers.get("origin") ?? "";
-    if (!ALLOWED_ORIGINS.includes(origin) && !origin.startsWith("http://localhost")) {
-      return new Response(
-        JSON.stringify({ error: "Forbidden" }),
-        { status: 403, headers: { "Content-Type": "application/json" } },
-      );
+    const body = await request.text();
+    if (new TextEncoder().encode(body).byteLength > MAX_REQUEST_BYTES) {
+      return json({ error: "Request too large" }, 413);
+    }
+    const parsed: unknown = JSON.parse(body);
+    if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
+      return json({ error: "Invalid request" }, 400);
+    }
+    payload = parsed as NewsletterPayload;
+  } catch {
+    return json({ error: "Invalid request" }, 400);
+  }
+
+  const email = typeof payload.email === "string" ? payload.email.trim().toLowerCase() : "";
+  const placement = boundedToken(payload.placement, 50);
+  const offer = boundedToken(payload.offer, 80);
+  const pageUrl = safePageUrl(payload.pageUrl);
+  const attribution = boundedAttribution(payload.attribution);
+  const analyticsConsent = payload.analyticsConsent === true;
+
+  if (!email || email.length > 254 || !EMAIL_PATTERN.test(email)) {
+    return json({ error: "Please enter a valid email address" }, 400);
+  }
+  if (!placement) return json({ error: "Invalid signup placement" }, 400);
+  if (payload.offer !== undefined && !offer) return json({ error: "Invalid offer" }, 400);
+
+  const config = getBeehiivConfig(locals);
+  const env = getRuntimeEnv(locals);
+  const courseSecret = env.COURSE_DOWNLOAD_SECRET ?? import.meta.env.COURSE_DOWNLOAD_SECRET;
+  if (!config) return json({ error: "Newsletter service not configured" }, 503);
+  if (offer === COURSE_OFFER && !courseSecret) {
+    return json({ error: "Course download not configured" }, 503);
+  }
+  try {
+    let existing = await getSubscriptionByEmail(config, email);
+    const alreadySubscribed = activeStatus(existing);
+    let analyticsId = getAnalyticsId(existing) ?? crypto.randomUUID();
+
+    const created = alreadySubscribed
+      ? null
+      : await createSubscription(config, {
+          email,
+          reactivate_existing: true,
+          // Course delivery is synchronous: the signed URL is returned below.
+          // Do not depend on a Beehiiv welcome email or automation for fulfilment.
+          send_welcome_email: false,
+          referring_site: pageUrl,
+          utm_source: attribution.utm_source ?? "futureofdev",
+          utm_medium: attribution.utm_medium ?? "website",
+          utm_campaign: attribution.utm_campaign,
+          utm_term: attribution.utm_term,
+          utm_content: attribution.utm_content ?? placement,
+          custom_fields: [{ name: "analytics_id", value: analyticsId }],
+        });
+
+    // A concurrent request may have created the record first. Re-read it so
+    // both devices receive the stable identifier Beehiiv actually stores.
+    if (!created && !existing) existing = await getSubscriptionByEmail(config, email);
+    analyticsId = getAnalyticsId(created ?? existing) ?? analyticsId;
+
+    if (existing && !alreadySubscribed && !created) {
+      existing = await updateSubscriptionByEmail(config, email, {
+        unsubscribe: false,
+        custom_fields: [{ name: "analytics_id", value: analyticsId }],
+      });
+      analyticsId = getAnalyticsId(existing) ?? analyticsId;
+    } else if (!getAnalyticsId(created ?? existing)) {
+      const updated = await updateSubscriptionByEmail(config, email, {
+        custom_fields: [{ name: "analytics_id", value: analyticsId }],
+      });
+      analyticsId = getAnalyticsId(updated) ?? analyticsId;
     }
 
-    const body = await request.json();
-    const { email } = body;
-
-    if (!email || typeof email !== "string") {
-      return new Response(
-        JSON.stringify({ error: "Email is required" }),
-        { status: 400, headers: { "Content-Type": "application/json" } },
-      );
+    let downloadUrl: string | undefined;
+    if (offer === COURSE_OFFER) {
+      const token = await createCourseDownloadToken(courseSecret!);
+      downloadUrl = `/api/course-download?token=${encodeURIComponent(token)}`;
     }
 
-    if (!EMAIL_REGEX.test(email)) {
-      return new Response(
-        JSON.stringify({ error: "Please enter a valid email address" }),
-        { status: 400, headers: { "Content-Type": "application/json" } },
-      );
-    }
-
-    const runtime = (locals as { runtime?: { env?: Record<string, string> } }).runtime;
-    const apiKey = runtime?.env?.RESEND_API_KEY ?? import.meta.env.RESEND_API_KEY;
-    if (!apiKey) {
-      return new Response(
-        JSON.stringify({ error: "Newsletter service not configured" }),
-        { status: 500, headers: { "Content-Type": "application/json" } },
-      );
-    }
-
-    const audienceId = runtime?.env?.RESEND_AUDIENCE_ID ?? import.meta.env.RESEND_AUDIENCE_ID ?? "";
-    const resend = new Resend(apiKey);
-
-    await resend.contacts.create({
-      email,
-      audienceId,
+    return json({
+      success: true,
+      alreadySubscribed,
+      ...(analyticsConsent ? { analyticsId } : {}),
+      ...(downloadUrl ? { downloadUrl } : {}),
     });
-
-    // Send branded welcome email
-    await resend.emails.send({
-      from: "Future of Dev <hello@newsletter.futureofdev.com>",
-      to: email,
-      subject: "Welcome to Future of Dev!",
-      html: buildWelcomeEmail(email),
-    });
-
-    return new Response(
-      JSON.stringify({ success: true }),
-      { status: 200, headers: { "Content-Type": "application/json" } },
-    );
   } catch (error) {
-    console.error("Newsletter signup error:", error);
-    return new Response(
-      JSON.stringify({ error: "Failed to subscribe" }),
-      { status: 500, headers: { "Content-Type": "application/json" } },
-    );
+    if (error instanceof BeehiivApiError && error.status === 429) {
+      return json({ error: "Newsletter service is busy. Please try again shortly." }, 429, { "Retry-After": "60" });
+    }
+    // Never log the request payload or upstream error text: either may contain
+    // subscriber data. Operational logs only need the coarse failure class.
+    console.error("Newsletter signup failed", error instanceof BeehiivApiError ? error.status : "internal");
+    return json({ error: "Unable to subscribe right now. Please try again." }, 502);
   }
 };

@@ -1,0 +1,7 @@
+---
+interface Props { authors: string[] }
+const { authors } = Astro.props;
+---
+{authors.length ? authors.map((name, index) => <>{index > 0 && ", "}{name === "Luke Hennerley"
+  ? <a href="/about#luke-hennerley">{name}</a> : name === "Future of Dev" ? <a href="/about">{name}</a> : name}</>)
+  : <a href="/about">Future of Dev</a>}

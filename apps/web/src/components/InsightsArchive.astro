@@ -1,0 +1,66 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import NewsletterForm from "./NewsletterForm.astro";
+import StageTag from "./StageTag.astro";
+import Breadcrumbs from "./Breadcrumbs.astro";
+import { editionEmptyState } from "../content/site";
+import type { InsightSummary } from "../lib/insights";
+import { archivePath, insightPath } from "../lib/seo";
+import { formatEditionDate, splitTags } from "../lib/tags";
+interface Props { posts: InsightSummary[]; page: number; totalPages: number }
+const { posts, page, totalPages } = Astro.props;
+---
+
+<BaseLayout
+  title={page === 1 ? "Practical AI Insights and Exercises" : `AI Insights and Exercises, Page ${page}`}
+  description="Read Future of Dev editions on AI skills and digital work, with clear explanations, practical methods and exercises you can try."
+  canonicalPath={archivePath(page)}
+>
+  <header class="hero">
+    <div class="wrap">
+      <Breadcrumbs items={[{ name: "Home", path: "/" }, { name: "Insights", path: "/insights" }, ...(page > 1 ? [{ name: `Page ${page}`, path: archivePath(page) }] : [])]} />
+      <p class="eyebrow">Insights</p>
+      <h1 class="display-xl">Practical ideas for working with AI.</h1>
+      <p class="lede">Explore a method, try an exercise and use what you learn in your next project.</p>
+    </div>
+  </header>
+
+  <section class="section" aria-label="Published insights">
+    <div class="wrap">
+      {posts.length === 0 && <>
+        <h2>{editionEmptyState.heading}</h2>
+        <p class="lede">{editionEmptyState.body}</p>
+      </>}
+      {posts.map((post) => {
+        const tags = splitTags(post.tags);
+        return (
+          <a class="issue-card" href={insightPath(post.slug)}>
+            <span class="meta">{formatEditionDate(post.publishedAt)}</span>
+            <span class="issue-body">
+              <h2>{post.title}</h2>
+              <p>{post.excerpt}</p>
+              {(tags.stages.length > 0 || tags.topics.length > 0) && (
+                <span class="tag-row">
+                  {tags.stages.map((stage) => <StageTag stage={stage} />)}
+                  {tags.topics.map((topic) => <span class="tag">{topic}</span>)}
+                </span>
+              )}
+            </span>
+            <span class="issue-arrow" aria-hidden="true">→</span>
+          </a>
+        );
+      })}
+      {totalPages > 1 && <nav class="article-nav" aria-label="Archive pages">
+        {page > 1 ? <a href={archivePath(page - 1)} rel="prev">← Newer editions</a> : <span />}
+        <span>Page {page} of {totalPages}</span>
+        {page < totalPages && <a href={archivePath(page + 1)} rel="next">Older editions →</a>}
+      </nav>}
+    </div>
+  </section>
+
+  <section class="section build-focus">
+    <div class="wrap">
+      <NewsletterForm placement="insights-index" />
+    </div>
+  </section>
+</BaseLayout>
