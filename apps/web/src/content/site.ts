@@ -120,23 +120,23 @@ export const homepageCopy = {
   },
   audience: {
     eyebrow: "Who it is for",
-    heading: ["Anyone interested in developing AI skills."],
-    lede: "The insights and courses provided are suitable for every level.",
+    heading: ["Use AI with better judgement", "wherever you are starting."],
+    lede: "Develop skills through work you can try, inspect and explain.",
     groups: [
+      {
+        stage: "evolve",
+        title: "Improve how you work",
+        body: "You already work in software, product or digital delivery and want to use AI without lowering your standards.",
+      },
       {
         stage: "enter",
         title: "Build your foundations",
-        body: "You want to develop skills and understanding to take your first steps into the future.",
-      },
-      {
-        stage: "evolve",
-        title: "Adapt to change",
-        body: "You have an established career but want to turn AI-curiositry into action.",
+        body: "You are starting out or changing careers and need practical skills plus work you can show.",
       },
       {
         stage: "lead",
-        title: "Give direction",
-        body: "You're a leader that wants to understand more to help your team to evolve.",
+        title: "Set better standards",
+        body: "You guide a team or learning programme and need clear ways to judge how AI is being used.",
       },
     ],
   },
@@ -144,8 +144,8 @@ export const homepageCopy = {
     eyebrow: "Who writes it",
     heading: ["Written by", "Luke Hennerley."],
     paragraphs: [
-      "Future of Dev is written by Luke Hennerley. I work as VP of AI Operations at Sidetrade, a leading European tech company operating at the frontier of AI.",
-      "I take my every-day learnings and leadership, break it down and share it with others to help them to navigate the AI-native future.",
+      "Luke Hennerley writes Future of Dev alongside his role as VP of AI Operations at Sidetrade.",
+      "His background spans software engineering, product development and digital delivery. He turns lessons from that work into methods readers can try, check and adapt.",
     ],
     ctaLabel: "About Luke and Future of Dev →",
   },
