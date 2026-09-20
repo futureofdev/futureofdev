@@ -53,6 +53,24 @@ test("published Beehiiv content is the only edition source, including historic s
   assert.equal(detail?.html, post.content.free.web);
 });
 
+test("Beehiiv's default thumbnail is not rendered as an article image", async (t) => {
+  const post = {
+    id: "post_default_image",
+    slug: "default-image",
+    title: "No authored image",
+    status: "confirmed",
+    audience: "free",
+    platform: "both",
+    publish_date: 1_700_000_000,
+    thumbnail_url: "https://beehiiv-images-production.s3.amazonaws.com/static_assets/defaults/landscape_thumbnail.png",
+    content: { free: { web: "<p>Article content.</p>" } },
+  };
+  t.mock.method(globalThis, "fetch", async () => Response.json({ data: [post] }));
+
+  const detail = await getInsightBySlug(locals, post.slug);
+  assert.equal(detail?.image, undefined);
+});
+
 
 test("public listings exclude email-only, gated, hidden, draft and future editions", async (t) => {
   const base = { id: "post", slug: "public", title: "Public", status: "confirmed", audience: "free", platform: "both", publish_date: 1_700_000_000 };

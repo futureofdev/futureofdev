@@ -30,6 +30,20 @@ function isPublished(post: BeehiivPost): boolean {
     post.platform !== "email" && !post.hidden_from_feed && !post.enforce_gated_content;
 }
 
+function publicThumbnail(url?: string | null): string | undefined {
+  if (!url) return undefined;
+  try {
+    const parsed = new URL(url);
+    if (
+      parsed.hostname === "beehiiv-images-production.s3.amazonaws.com" &&
+      parsed.pathname.startsWith("/static_assets/defaults/")
+    ) return undefined;
+  } catch {
+    return undefined;
+  }
+  return url;
+}
+
 function summaryFromBeehiiv(post: BeehiivPost): InsightSummary {
   return {
     slug: post.slug,
@@ -39,7 +53,7 @@ function summaryFromBeehiiv(post: BeehiivPost): InsightSummary {
     author: post.authors?.filter(Boolean).join(", ") || "Future of Dev",
     authors: post.authors?.filter(Boolean) ?? [],
     tags: post.content_tags ?? [],
-    image: post.thumbnail_url || undefined,
+    image: publicThumbnail(post.thumbnail_url),
     source: "beehiiv",
   };
 }
